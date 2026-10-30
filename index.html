@@ -20,25 +20,42 @@
             }
         }
     </script>
+    <style>
+        .sold-card {
+            opacity: 0.72;
+            filter: grayscale(25%);
+        }
+    </style>
 </head>
 <body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col font-sans">
 
     <!-- Header -->
-    <header class="bg-primary text-white shadow-md sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+    <header class="bg-primary text-white shadow-md sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center gap-2">
             <div class="flex items-center space-x-3">
                 <div class="bg-secondary p-2 rounded-lg text-white">
                     <i class="fa-solid fa-store text-xl"></i>
                 </div>
                 <div>
-                    <h1 class="text-xl font-bold tracking-wide">നാട്ടുകൂട്ടം (Naattukoottam)</h1>
+                    <h1 class="text-lg md:text-xl font-bold tracking-wide leading-tight">നാട്ടുകൂട്ടം (Naattukoottam)</h1>
                     <p class="text-xs text-slate-300">Local Directory & Marketplace</p>
                 </div>
             </div>
-            <button onclick="openModal()" class="bg-secondary hover:bg-emerald-700 text-white px-4 py-2 rounded-lg text-sm font-medium shadow transition flex items-center space-x-2">
-                <i class="fa-solid fa-plus"></i>
-                <span>+ Add Listing</span>
-            </button>
+            
+            <div class="flex items-center gap-2">
+                <!-- PWA Install Button -->
+                <button id="pwa-install-btn" onclick="triggerPWAInstall()" class="hidden bg-amber-500 hover:bg-amber-600 text-white px-3 py-2 rounded-lg text-xs md:text-sm font-semibold shadow transition items-center space-x-1.5">
+                    <i class="fa-solid fa-mobile-screen-button"></i>
+                    <span class="hidden sm:inline">ആപ്പ് ഇൻസ്റ്റാൾ ചെയ്യുക</span>
+                    <span class="sm:hidden">Install</span>
+                </button>
+
+                <!-- Add Listing Button -->
+                <button onclick="openModal()" class="bg-secondary hover:bg-emerald-700 text-white px-3 md:px-4 py-2 rounded-lg text-xs md:text-sm font-medium shadow transition flex items-center space-x-1.5">
+                    <i class="fa-solid fa-plus"></i>
+                    <span>Add Listing</span>
+                </button>
+            </div>
         </div>
     </header>
 
@@ -83,6 +100,47 @@
         </div>
     </main>
 
+    <!-- Disclaimer / Terms Modal -->
+    <div id="disclaimerModal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+            <div class="text-center mb-4">
+                <div class="w-14 h-14 bg-emerald-100 text-secondary mx-auto rounded-full flex items-center justify-center text-2xl mb-2">
+                    <i class="fa-solid fa-handshake"></i>
+                </div>
+                <h3 class="text-xl font-bold text-primary">സ്വാഗതം! നാട്ടുകൂട്ടത്തിലേക്ക്</h3>
+                <p class="text-xs text-slate-500">Local Directory & Community Marketplace</p>
+            </div>
+
+            <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 text-xs md:text-sm text-slate-700 space-y-3 leading-relaxed">
+                <div class="flex items-start gap-2.5">
+                    <i class="fa-solid fa-circle-check text-secondary mt-0.5"></i>
+                    <div>
+                        <b class="text-slate-900">സൗജന്യ കൂട്ടായ്മ:</b> ഇത് പ്രദേശവാസികൾക്കായി പരസ്പരം വിവരങ്ങളും സാധനങ്ങളും സേവനങ്ങളും പങ്കുവെക്കാൻ സൗജന്യമായി തയ്യാറാക്കിയ പ്ലാറ്റ്‌ഫോമാണ്.
+                    </div>
+                </div>
+                <div class="flex items-start gap-2.5">
+                    <i class="fa-solid fa-triangle-exclamation text-amber-500 mt-0.5"></i>
+                    <div>
+                        <b class="text-slate-900">ഇടപാടുകളുടെ ഉത്തരവാദിത്തം:</b> ഇതിൽ നൽകുന്ന വിവരങ്ങൾ, ഫോൺ നമ്പറുകൾ, ഉൽപ്പന്നങ്ങളുടെ ഗുണനിലവാരം, പണമിടപാടുകൾ എന്നിവ പൂർണ്ണമായും ഉപയോക്താക്കൾ തമ്മിലുള്ള നേരിട്ടുള്ള ഉത്തരവാദിത്തമാണ്. സാമ്പത്തിക ഇടപാടുകളിലോ തർക്കങ്ങളിലോ ആപ്പ് ഡെവലപ്പർമാർക്കോ അഡ്മിൻമാർക്കോ യാതൊരു പങ്കോ ബാധ്യതയോ ഉണ്ടായിരിക്കില്ല.
+                    </div>
+                </div>
+                <div class="flex items-start gap-2.5">
+                    <i class="fa-solid fa-clock-rotate-left text-blue-600 mt-0.5"></i>
+                    <div>
+                        <b class="text-slate-900">സ്വയം നീക്കം ചെയ്യപ്പെടൽ:</b> ഡാറ്റാബേസ് സുരക്ഷിതമായി സൂക്ഷിക്കാൻ പരസ്യങ്ങൾ തിരഞ്ഞെടുത്ത കാലാവധി (പരമാവധി 15 ദിവസം) കഴിഞ്ഞാൽ ചിത്രങ്ങളടക്കം തനിയെ നീക്കം ചെയ്യപ്പെടും.
+                    </div>
+                </div>
+                <div class="pt-2 border-t border-slate-200 text-[11px] text-slate-500 italic">
+                    All listings and transactions are strictly peer-to-peer. Admins and developers hold no legal responsibility for claims, calls, or financial deals.
+                </div>
+            </div>
+
+            <button onclick="acceptDisclaimer()" class="mt-5 w-full bg-secondary hover:bg-emerald-700 text-white font-bold py-3 rounded-xl text-sm transition shadow-md">
+                സമ്മതിക്കുന്നു & തുടരുക (I Agree)
+            </button>
+        </div>
+    </div>
+
     <!-- Add Item Modal -->
     <div id="itemModal" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-xl max-w-lg w-full p-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
@@ -93,15 +151,15 @@
             <div class="flex items-center justify-between mb-4">
                 <h2 class="text-xl font-bold text-primary">Add New Listing / Item</h2>
                 <button type="button" onclick="toggleHelp()" class="text-xs bg-amber-100 text-amber-800 px-2.5 py-1 rounded-full font-semibold hover:bg-amber-200 transition flex items-center gap-1">
-                    <i class="fa-solid fa-circle-info"></i> ഫോട്ടോ എങ്ങനെ ചേർക്കാം?
+                    <i class="fa-solid fa-circle-info"></i> ഫോട്ടോ സഹായി
                 </button>
             </div>
 
-            <!-- Help Box (Hidden by default) -->
+            <!-- Help Box -->
             <div id="helpBox" class="hidden mb-4 p-3 bg-amber-50 border border-amber-200 rounded-lg text-xs text-amber-900 space-y-1">
                 <p class="font-bold">ഫോട്ടോ ചേർക്കുന്നതിനുള്ള വഴികൾ:</p>
-                <p>1. **ലിങ്ക് വഴി:** ImgBB പോലെയുള്ള സൈറ്റിൽ ഫോട്ടോ അപ്‌ലോഡ് ചെയ്ത് ലഭിക്കുന്ന ലിങ്ക് (URL) താഴെയുള്ള ബോക്സിൽ ഒട്ടിക്കുക.</p>
-                <p>2. **നേരിട്ട് അപ്‌ലോഡ് ചെയ്യാൻ:** നിങ്ങളുടെ ഫോണിൽ നിന്ന് ഫയൽ സെലക്ട് ചെയ്യാം (കൂടുതൽ സ്പേസ് പോകാതിരിക്കാൻ ചെറിയ സൈസ് ഫോട്ടോകൾ നൽകുക).</p>
+                <p>1. <b>ലിങ്ക് വഴി:</b> ImgBB പോലെയുള്ള സൈറ്റിൽ അപ്‌ലോഡ് ചെയ്ത ചിത്രത്തിന്റെ ലിങ്ക് (URL) താഴെ നൽകാം.</p>
+                <p>2. <b>നേരിട്ട്:</b> നിങ്ങളുടെ ഗാലറിയിൽ നിന്ന് ഫോട്ടോ തിരഞ്ഞെടുക്കാം (ആപ്പ് സ്വയം സൈസ് ചെറുതാക്കി ഡാറ്റ സൂക്ഷിക്കും).</p>
             </div>
             
             <form id="listingForm" onsubmit="saveItem(event)" class="space-y-4">
@@ -115,7 +173,7 @@
 
                 <div>
                     <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Title / Name</label>
-                    <input type="text" id="itemTitle" required placeholder="ഉദാഹരണത്തിന്: കമ്പ്യൂട്ടർ / ഫ്രഷ് ചിക്കൻ" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-primary focus:outline-none">
+                    <input type="text" id="itemTitle" required placeholder="ഉദാ: കമ്പ്യൂട്ടർ / റേഷൻ കട / ക്ലിനിക്ക്" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-primary focus:outline-none">
                 </div>
 
                 <div id="categoryFieldContainer">
@@ -130,17 +188,35 @@
 
                 <div id="priceFieldContainer" class="hidden">
                     <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Price (₹)</label>
-                    <input type="text" id="itemPrice" placeholder="ഉദാഹരണത്തിന്: ₹35000" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-primary focus:outline-none">
+                    <input type="text" id="itemPrice" placeholder="ഉദാ: ₹35000" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-primary focus:outline-none">
                 </div>
 
                 <div>
                     <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Phone Number</label>
-                    <input type="tel" id="itemPhone" required placeholder="ഉദാഹരണത്തിന്: 9847790786" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-primary focus:outline-none">
+                    <input type="tel" id="itemPhone" required placeholder="ഉദാ: 9847790786" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-primary focus:outline-none">
                 </div>
 
                 <div>
                     <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Description / Details</label>
                     <textarea id="itemDesc" rows="3" required placeholder="വിവരങ്ങൾ ഇവിടെ എഴുതുക..." class="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-primary focus:outline-none"></textarea>
+                </div>
+
+                <!-- Expiry & PIN Controls -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 p-3 bg-emerald-50/60 border border-emerald-200 rounded-lg">
+                    <div>
+                        <label class="block text-xs font-bold text-emerald-900 mb-1">കാലാവധി (Expiry)</label>
+                        <select id="itemDuration" class="w-full p-2 border border-slate-300 rounded-lg text-xs bg-white focus:outline-none">
+                            <option value="5">5 ദിവസങ്ങൾ</option>
+                            <option value="10" selected>10 ദിവസങ്ങൾ</option>
+                            <option value="15">15 ദിവസങ്ങൾ (പരമാവധി)</option>
+                        </select>
+                        <span class="text-[10px] text-slate-500">ഇതിന് ശേഷം പരസ്യം ഡിലീറ്റ് ആകും.</span>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-emerald-900 mb-1">4-അക്ക സെക്യൂരിറ്റി പിൻ (PIN)</label>
+                        <input type="password" id="itemPin" required maxlength="4" pattern="[0-9]{4}" placeholder="ഉദാ: 1234" class="w-full p-2 border border-slate-300 rounded-lg text-xs bg-white tracking-widest focus:outline-none">
+                        <span class="text-[10px] text-slate-500">വിൽക്കുമ്പോഴോ ഡിലീറ്റ് ചെയ്യുമ്പോഴോ ആവശ്യം.</span>
+                    </div>
                 </div>
 
                 <!-- Photo Options -->
@@ -162,7 +238,7 @@
 
                 <div class="flex justify-end space-x-3 pt-2">
                     <button type="button" onclick="closeModal()" class="px-4 py-2 border border-slate-300 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-100">Cancel</button>
-                    <button type="submit" class="px-5 py-2 bg-secondary text-white rounded-lg text-sm font-medium hover:bg-emerald-700 shadow">Save Item</button>
+                    <button type="submit" id="saveBtn" class="px-5 py-2 bg-secondary text-white rounded-lg text-sm font-medium hover:bg-emerald-700 shadow">Save Item</button>
                 </div>
             </form>
         </div>
@@ -178,7 +254,6 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
     <script>
-        // താങ്കളുടെ ഫയർബേസ് കോൺഫിഗറേഷൻ വിവരങ്ങൾ
         const firebaseConfig = {
             apiKey: "AIzaSyBVOaetjVqePS-v_JbSB6D2ZyeBQdJcibQ",
             authDomain: "nattukoottam-ec467.firebaseapp.com",
@@ -195,8 +270,52 @@
         let currentTab = 'directory';
         let currentCategory = 'All';
         let allItems = [];
+        let deferredPrompt = null;
 
+        // --- PWA Installation Logic ---
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            const pwaBtn = document.getElementById('pwa-install-btn');
+            if (pwaBtn) {
+                pwaBtn.classList.remove('hidden');
+                pwaBtn.classList.add('inline-flex');
+            }
+        });
+
+        function triggerPWAInstall() {
+            if (!deferredPrompt) {
+                alert("നിങ്ങളുടെ ബ്രൗസർ മെനുവിൽ നിന്ന് (Three dots) 'Install app' അല്ലെങ്കിൽ 'Add to Home screen' തിരഞ്ഞെടുക്കുക.");
+                return;
+            }
+            deferredPrompt.prompt();
+            deferredPrompt.userChoice.then((choiceResult) => {
+                if (choiceResult.outcome === 'accepted') {
+                    const pwaBtn = document.getElementById('pwa-install-btn');
+                    if (pwaBtn) pwaBtn.classList.add('hidden');
+                }
+                deferredPrompt = null;
+            });
+        }
+
+        // --- Disclaimer Modal Logic ---
+        function checkDisclaimer() {
+            const agreed = localStorage.getItem('naattukoottam_disclaimer_agreed_v1');
+            if (!agreed) {
+                document.getElementById('disclaimerModal').classList.remove('hidden');
+            }
+        }
+
+        function acceptDisclaimer() {
+            localStorage.setItem('naattukoottam_disclaimer_agreed_v1', 'true');
+            document.getElementById('disclaimerModal').classList.add('hidden');
+        }
+
+        // --- Data Loading & Auto-Expiry ---
         function loadData() {
+            checkDisclaimer();
+            autoCleanExpiredItems();
+
             db.collection("listings").onSnapshot((snapshot) => {
                 allItems = [];
                 snapshot.forEach((doc) => {
@@ -206,6 +325,22 @@
             }, (error) => {
                 console.error("Error loading data: ", error);
             });
+        }
+
+        // കാലാവധി കഴിഞ്ഞവ തനിയെ ഡാറ്റാബേസിൽ നിന്ന് നീക്കം ചെയ്യുന്നു
+        async function autoCleanExpiredItems() {
+            try {
+                const now = Date.now();
+                const snap = await db.collection("listings").get();
+                snap.forEach(async (docSnap) => {
+                    const data = docSnap.data();
+                    if (data.expiresAt && now > data.expiresAt) {
+                        await db.collection("listings").doc(docSnap.id).delete();
+                    }
+                });
+            } catch (e) {
+                console.error("Auto clean error: ", e);
+            }
         }
 
         function switchTab(tab) {
@@ -244,7 +379,8 @@
             
             let filtered = allItems.filter(item => {
                 const matchesTab = item.section === currentTab;
-                const matchesSearch = item.title.toLowerCase().includes(searchVal) || item.desc.toLowerCase().includes(searchVal);
+                const matchesSearch = (item.title && item.title.toLowerCase().includes(searchVal)) || 
+                                      (item.desc && item.desc.toLowerCase().includes(searchVal));
                 const matchesCat = (currentTab === 'marketplace' || currentCategory === 'All' || item.category === currentCategory);
                 return matchesTab && matchesSearch && matchesCat;
             });
@@ -254,22 +390,21 @@
                 return;
             }
 
-            grid.innerHTML = filtered.map(item => `
-                <div class="bg-white rounded-xl shadow-md overflow-hidden border border-slate-200 flex flex-col justify-between hover:shadow-lg transition">
-                    <div>
-                        <div class="h-40 bg-slate-200 relative overflow-hidden">
-                            <img src="${item.image || 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=600&q=80'}" alt="${item.title}" class="w-full h-full object-cover">
-                            <span class="absolute top-2 right-2 bg-slate-900/70 text-white text-xs px-2.5 py-1 rounded-full backdrop-blur-sm font-medium">
-                                ${item.section === 'directory' ? item.category : 'Marketplace'}
-                            </span>
-                            ${item.price ? `<span class="absolute bottom-2 left-2 bg-secondary text-white text-xs px-2.5 py-1 rounded-md font-bold shadow">${item.price}</span>` : ''}
+            grid.innerHTML = filtered.map(item => {
+                const isSold = item.sold === true;
+                const soldClass = isSold ? 'sold-card' : '';
+                const soldBadge = isSold ? `<span class="absolute top-2 left-2 bg-red-600 text-white text-xs px-3 py-1 rounded-md font-extrabold shadow-md tracking-wider">SOLD OUT</span>` : '';
+
+                // ആക്ഷൻ ബട്ടണുകൾ (Sold Out ആണെങ്കിൽ കോളും വാട്സാപ്പും ഡിസേബിൾ ചെയ്യും)
+                let contactButtons = '';
+                if(isSold) {
+                    contactButtons = `
+                        <div class="flex-1 bg-slate-200 text-slate-500 text-center py-2 rounded-lg text-xs font-semibold">
+                            ഇനം വിറ്റുപോയി (Sold)
                         </div>
-                        <div class="p-4">
-                            <h3 class="font-bold text-slate-800 text-lg mb-1">${item.title}</h3>
-                            <p class="text-slate-600 text-sm line-clamp-3">${item.desc}</p>
-                        </div>
-                    </div>
-                    <div class="p-4 pt-0 flex gap-2">
+                    `;
+                } else {
+                    contactButtons = `
                         <a href="tel:${item.phone}" class="flex-1 bg-secondary hover:bg-emerald-700 text-white text-center py-2 rounded-lg text-sm font-medium transition flex items-center justify-center space-x-1.5 shadow-sm">
                             <i class="fa-solid fa-phone"></i>
                             <span>Call</span>
@@ -277,9 +412,48 @@
                         <a href="https://wa.me/91${item.phone}?text=Hello,%20I%20saw%20your%20listing%20on%20Naattukoottam:%20${encodeURIComponent(item.title)}" target="_blank" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-2 rounded-lg text-sm transition flex items-center justify-center shadow-sm">
                             <i class="fa-brands fa-whatsapp text-lg"></i>
                         </a>
+                    `;
+                }
+
+                // ഉടമസ്ഥന് Sold ആക്കാനും Delete ചെയ്യാനുമുള്ള ഓപ്ഷൻ
+                const manageButtons = `
+                    <div class="flex items-center justify-between pt-2 border-t border-slate-100 text-xs text-slate-400">
+                        <button onclick="markAsSoldPrompt('${item.id}', ${isSold})" class="hover:text-amber-600 flex items-center gap-1 transition">
+                            <i class="fa-solid ${isSold ? 'fa-rotate-left' : 'fa-check'}"></i>
+                            <span>${isSold ? 'Mark Available' : 'Mark Sold'}</span>
+                        </button>
+                        <button onclick="deleteListingPrompt('${item.id}')" class="hover:text-red-600 flex items-center gap-1 transition">
+                            <i class="fa-solid fa-trash-can"></i>
+                            <span>Delete</span>
+                        </button>
                     </div>
-                </div>
-            `).join('');
+                `;
+
+                return `
+                    <div class="bg-white rounded-xl shadow-md overflow-hidden border border-slate-200 flex flex-col justify-between hover:shadow-lg transition relative ${soldClass}">
+                        <div>
+                            <div class="h-44 bg-slate-200 relative overflow-hidden">
+                                <img src="${item.image || 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=600&q=80'}" alt="${item.title}" class="w-full h-full object-cover">
+                                ${soldBadge}
+                                <span class="absolute top-2 right-2 bg-slate-900/75 text-white text-xs px-2.5 py-1 rounded-full backdrop-blur-sm font-medium">
+                                    ${item.section === 'directory' ? item.category : 'Marketplace'}
+                                </span>
+                                ${item.price ? `<span class="absolute bottom-2 left-2 bg-secondary text-white text-xs px-2.5 py-1 rounded-md font-bold shadow">${item.price}</span>` : ''}
+                            </div>
+                            <div class="p-4">
+                                <h3 class="font-bold text-slate-800 text-lg mb-1 leading-snug">${item.title}</h3>
+                                <p class="text-slate-600 text-sm line-clamp-3">${item.desc}</p>
+                            </div>
+                        </div>
+                        <div class="p-4 pt-0 space-y-3">
+                            <div class="flex gap-2">
+                                ${contactButtons}
+                            </div>
+                            ${manageButtons}
+                        </div>
+                    </div>
+                `;
+            }).join('');
         }
 
         function filterItems() {
@@ -316,15 +490,23 @@
             }
         }
 
-        // ഫോട്ടോ കംപ്രസ് ചെയ്ത് സേവ് ചെയ്യാനുള്ള ഫങ്ഷൻ
+        // --- Save Item with Expiry & Secret PIN ---
         function saveItem(e) {
             e.preventDefault();
+            const saveBtn = document.getElementById('saveBtn');
+            saveBtn.disabled = true;
+            saveBtn.innerText = "Saving...";
+
             const section = document.getElementById('itemSection').value;
             const title = document.getElementById('itemTitle').value;
             const category = section === 'directory' ? document.getElementById('itemCategory').value : 'Marketplace';
             const price = section === 'marketplace' ? document.getElementById('itemPrice').value : '';
             const phone = document.getElementById('itemPhone').value;
             const desc = document.getElementById('itemDesc').value;
+            const pin = document.getElementById('itemPin').value;
+            const durationDays = parseInt(document.getElementById('itemDuration').value) || 10;
+            const expiresAt = Date.now() + (durationDays * 24 * 60 * 60 * 1000);
+
             const imageUrlInput = document.getElementById('itemImage').value;
             const imageFileInput = document.getElementById('itemImageFile').files[0];
 
@@ -336,42 +518,94 @@
                         const canvas = document.createElement('canvas');
                         const ctx = canvas.getContext('2d');
                         
-                        // സൈസ് കുറയ്ക്കാൻ (Max width 400px)
-                        const MAX_WIDTH = 400;
+                        // സൈസ് കംപ്രസ് ചെയ്യാൻ (Max width 450px)
+                        const MAX_WIDTH = 450;
                         const scaleSize = MAX_WIDTH / img.width;
                         canvas.width = MAX_WIDTH;
                         canvas.height = img.height * scaleSize;
 
                         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                        const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.6); // 60% quality
+                        const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.65);
 
-                        uploadToFirebase(section, title, category, price, phone, desc, compressedDataUrl);
+                        uploadToFirebase({
+                            section, title, category, price, phone, desc, pin, expiresAt,
+                            sold: false,
+                            image: compressedDataUrl
+                        });
                     }
                     img.src = event.target.result;
                 }
                 reader.readAsDataURL(imageFileInput);
             } else {
-                uploadToFirebase(section, title, category, price, phone, desc, imageUrlInput || 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=600&q=80');
+                uploadToFirebase({
+                    section, title, category, price, phone, desc, pin, expiresAt,
+                    sold: false,
+                    image: imageUrlInput || 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=600&q=80'
+                });
             }
         }
 
-        function uploadToFirebase(section, title, category, price, phone, desc, image) {
-            const newItem = {
-                section: section,
-                title: title,
-                category: category,
-                price: price,
-                phone: phone,
-                desc: desc,
-                image: image,
+        function uploadToFirebase(dataObj) {
+            const saveBtn = document.getElementById('saveBtn');
+            const finalData = {
+                ...dataObj,
                 createdAt: firebase.firestore.FieldValue.serverTimestamp()
             };
 
-            db.collection("listings").add(newItem).then(() => {
+            db.collection("listings").add(finalData).then(() => {
+                saveBtn.disabled = false;
+                saveBtn.innerText = "Save Item";
                 closeModal();
             }).catch((error) => {
+                saveBtn.disabled = false;
+                saveBtn.innerText = "Save Item";
                 alert("Error adding item: " + error.message);
             });
+        }
+
+        // --- PIN Protected Sold / Delete Actions ---
+        async function markAsSoldPrompt(docId, currentSoldState) {
+            const enteredPin = prompt("പരസ്യം ചേർക്കുമ്പോൾ നൽകിയ 4-അക്ക PIN നമ്പർ നൽകുക:");
+            if (!enteredPin) return;
+
+            try {
+                const docRef = db.collection("listings").doc(docId);
+                const docSnap = await docRef.get();
+                if (!docSnap.exists) return;
+
+                const item = docSnap.data();
+                if (item.pin && item.pin !== enteredPin) {
+                    alert("തെറ്റായ PIN നമ്പർ! പരസ്യം ചേർത്ത ഉടമസ്ഥന് മാത്രമേ മാറ്റം വരുത്താൻ സാധിക്കൂ.");
+                    return;
+                }
+
+                await docRef.update({ sold: !currentSoldState });
+            } catch (err) {
+                alert("Action failed: " + err.message);
+            }
+        }
+
+        async function deleteListingPrompt(docId) {
+            const enteredPin = prompt("പരസ്യം ഡിലീറ്റ് ചെയ്യാൻ നിങ്ങളുടെ 4-അക്ക PIN നമ്പർ നൽകുക:");
+            if (!enteredPin) return;
+
+            try {
+                const docRef = db.collection("listings").doc(docId);
+                const docSnap = await docRef.get();
+                if (!docSnap.exists) return;
+
+                const item = docSnap.data();
+                if (item.pin && item.pin !== enteredPin) {
+                    alert("തെറ്റായ PIN നമ്പർ! പരസ്യം ചേർത്ത ഉടമസ്ഥന് മാത്രമേ ഇത് ഡിലീറ്റ് ചെയ്യാൻ സാധിക്കൂ.");
+                    return;
+                }
+
+                if (confirm("ഈ പരസ്യം പൂർണ്ണമായി നീക്കം ചെയ്യണമെന്ന് ഉറപ്പാണോ?")) {
+                    await docRef.delete();
+                }
+            } catch (err) {
+                alert("Delete failed: " + err.message);
+            }
         }
 
         window.onload = loadData;
