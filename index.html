@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>നാട്ടുകൂട്ടം (Naattukoottam) - Local Directory & Marketplace</title>
-    <!-- Google Font: Noto Sans Malayalam & Inter -->
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Noto+Sans+Malayalam:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- Tailwind CSS CDN -->
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
@@ -44,7 +44,7 @@
                 </div>
                 <div>
                     <h1 class="text-lg md:text-xl font-bold tracking-wide leading-tight">നാട്ടുകൂട്ടം (Naattukoottam)</h1>
-                    <p class="text-xs text-slate-300">Local Directory & Community Marketplace</p>
+                    <p class="text-xs text-slate-300">Local Directory & Marketplace</p>
                 </div>
             </div>
             
@@ -82,18 +82,18 @@
     <!-- Main Content -->
     <main class="flex-grow max-w-7xl w-full mx-auto px-4 py-6">
         
-        <!-- Search & Area Filter Bar -->
+        <!-- Search & Dynamic Filter Bar -->
         <div class="mb-6 flex flex-col md:flex-row gap-4 items-center justify-between">
             <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto flex-1 max-w-2xl">
-                <!-- Search Input -->
+                <!-- Search Box -->
                 <div class="relative flex-1">
                     <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
                         <i class="fa-solid fa-magnifying-glass"></i>
                     </span>
-                    <input type="text" id="searchInput" oninput="filterItems()" placeholder="Search shops, services, items..." class="w-full pl-10 pr-4 py-2 bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-sm shadow-sm">
+                    <input type="text" id="searchInput" oninput="filterItems()" placeholder="Search shops, services, places, items..." class="w-full pl-10 pr-4 py-2 bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-sm shadow-sm">
                 </div>
 
-                <!-- Default / Filter Area Selector -->
+                <!-- Location Filter -->
                 <div class="relative min-w-[200px]">
                     <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-emerald-600">
                         <i class="fa-solid fa-location-dot"></i>
@@ -104,7 +104,6 @@
                 </div>
             </div>
             
-            <!-- Category Filters for Directory -->
             <div id="categoryFilters" class="flex flex-wrap gap-2 w-full md:w-auto">
                 <button onclick="filterCategory('All')" class="cat-btn bg-primary text-white px-3 py-1.5 rounded-full text-xs font-medium shadow transition">All</button>
                 <button onclick="filterCategory('Shops')" class="cat-btn bg-white text-slate-700 border border-slate-300 px-3 py-1.5 rounded-full text-xs font-medium hover:bg-slate-100 transition">Shops</button>
@@ -139,7 +138,7 @@
                 <div class="flex items-start gap-2.5">
                     <i class="fa-solid fa-triangle-exclamation text-amber-500 mt-0.5"></i>
                     <div>
-                        <b class="text-slate-900">ഇടപാടുകളുടെ ഉത്തരവാദിത്തം:</b> ഫോൺ നമ്പറുകൾ, സേവനങ്ങൾ, ഉൽപ്പന്നങ്ങൾ, പണമിടപാടുകൾ എന്നിവ പൂർണ്ണമായും ഉപയോക്താക്കൾ തമ്മിലുള്ള നേരിട്ടുള്ള ഉത്തരവാദിത്തമാണ്. സാമ്പത്തിക ഇടപാടുകളിലോ തർക്കങ്ങളിലോ ആപ്പ് അഡ്മിൻമാർക്കോ ഡെവലപ്പർമാർക്കോ യാതൊരു പങ്കോ ബാധ്യതയോ ഉണ്ടായിരിക്കില്ല.
+                        <b class="text-slate-900">ഇടപാടുകളുടെ ഉത്തരവാദിത്തം:</b> ഫോൺ നമ്പറുകൾ, സേവനങ്ങൾ, ഉൽപ്പന്നങ്ങൾ, പണമിടപാടുകൾ എന്നിവ പൂർണ്ണമായും ഉപയോക്താക്കൾ തമ്മിലുള്ള നേരിട്ടുള്ള ഉത്തരവാദിത്തമാണ്. തർക്കങ്ങളിലോ ഇടപാടുകളിലോ ആപ്പ് അഡ്മിൻമാർക്കോ ഡെവലപ്പർമാർക്കോ യാതൊരു പങ്കോ ബാധ്യതയോ ഉണ്ടായിരിക്കില്ല.
                     </div>
                 </div>
                 <div class="flex items-start gap-2.5">
@@ -173,13 +172,6 @@
                 </button>
             </div>
 
-            <!-- Help Box -->
-            <div id="helpBox" class="hidden mb-4 p-3 bg-amber-50 border border-amber-200 rounded-lg text-xs text-amber-900 space-y-1">
-                <p class="font-bold">ഫോട്ടോ ചേർക്കുന്നതിനുള്ള വഴികൾ:</p>
-                <p>1. <b>ലിങ്ക് വഴി:</b> ImgBB പോലെയുള്ള സൈറ്റിൽ അപ്‌ലോഡ് ചെയ്ത ചിത്രത്തിന്റെ ലിങ്ക് (URL) താഴെ നൽകാം.</p>
-                <p>2. <b>നേരിട്ട്:</b> ഗാലറിയിൽ നിന്ന് ഫോട്ടോ തിരഞ്ഞെടുക്കാം (ആപ്പ് സ്വയം സൈസ് ചെറുതാക്കി ഡാറ്റ സൂക്ഷിക്കും).</p>
-            </div>
-            
             <form id="listingForm" onsubmit="saveItem(event)" class="space-y-4">
                 <div>
                     <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Section</label>
@@ -199,11 +191,9 @@
                     </select>
                 </div>
 
-                <!-- Sub-Category Dropdown (Dynamic based on Category) -->
                 <div id="subCategoryContainer">
                     <label class="block text-xs font-semibold uppercase text-slate-600 mb-1" id="subCategoryLabel">കടയുടെ ഇനം (Shop Type)</label>
                     <select id="itemSubCategory" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-primary focus:outline-none">
-                        <!-- Populated by JS -->
                     </select>
                 </div>
 
@@ -223,20 +213,53 @@
                     <span class="text-[10px] text-slate-500">ഒരു നമ്പറിൽ നിന്ന് പരമാവധി 3 ലിസ്റ്റിംഗുകൾ മാത്രമേ സാധ്യമാകൂ.</span>
                 </div>
 
-                <!-- സ്ഥലം & ലാൻഡ്മാർക്ക് with Auto Datalist -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <!-- കേരള ജില്ലയും മണ്ഡലവും -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 p-3 bg-blue-50/60 border border-blue-200 rounded-lg">
                     <div>
-                        <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">സ്ഥലം / പഞ്ചായത്ത് *</label>
-                        <input type="text" id="itemLocation" list="locationDatalist" required placeholder="ടൈപ്പ് ചെയ്യുക അല്ലെങ്കിൽ തിരഞ്ഞെടുക്കുക" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-primary focus:outline-none">
-                        <datalist id="locationDatalist"></datalist>
+                        <label class="block text-xs font-bold text-blue-950 mb-1">ജില്ല (District) *</label>
+                        <select id="itemDistrict" onchange="handleDistrictChange()" required class="w-full p-2 border border-slate-300 rounded-lg text-xs bg-white focus:outline-none">
+                            <option value="">-- ജില്ല തിരഞ്ഞെടുക്കുക --</option>
+                            <option value="Kozhikode">കോഴിക്കോട് (Kozhikode)</option>
+                            <option value="Malappuram">മലപ്പുറം (Malappuram)</option>
+                            <option value="Wayanad">വയനാട് (Wayanad)</option>
+                            <option value="Kannur">കണ്ണൂർ (Kannur)</option>
+                            <option value="Kasaragod">കാസർഗോഡ് (Kasaragod)</option>
+                            <option value="Palakkad">പാലക്കാട് (Palakkad)</option>
+                            <option value="Thrissur">തൃശ്ശൂർ (Thrissur)</option>
+                            <option value="Ernakulam">എറണാകുളം (Ernakulam)</option>
+                            <option value="Idukki">ഇടുക്കി (Idukki)</option>
+                            <option value="Kottayam">കോട്ടയം (Kottayam)</option>
+                            <option value="Alappuzha">ആലപ്പുഴ (Alappuzha)</option>
+                            <option value="Pathanamthitta">പത്തനംതിട്ട (Pathanamthitta)</option>
+                            <option value="Kollam">കൊല്ലം (Kollam)</option>
+                            <option value="Thiruvananthapuram">തിരുവനന്തപുരം (Thiruvananthapuram)</option>
+                        </select>
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">ലാൻഡ്മാർക്ക് (Landmark)</label>
-                        <input type="text" id="itemLandmark" placeholder="ഉദാ: ബസ് സ്റ്റാൻഡിന് സമീപം" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-primary focus:outline-none">
+                        <label class="block text-xs font-bold text-blue-950 mb-1">മണ്ഡലം (Constituency)</label>
+                        <select id="itemConstituency" class="w-full p-2 border border-slate-300 rounded-lg text-xs bg-white focus:outline-none">
+                            <option value="">-- മണ്ഡലം --</option>
+                        </select>
                     </div>
                 </div>
 
-                <!-- ഗൂഗിൾ മാപ്പ് ലിങ്ക് -->
+                <!-- തത്സമയ ജി.പി.എസ് ബട്ടണും സ്ഥലവും -->
+                <div>
+                    <div class="flex justify-between items-center mb-1">
+                        <label class="block text-xs font-semibold uppercase text-slate-600">സ്ഥലം / പഞ്ചായത്ത് *</label>
+                        <button type="button" onclick="fetchGPSLocation()" class="text-[11px] text-emerald-700 hover:text-emerald-800 font-bold flex items-center gap-1">
+                            <i class="fa-solid fa-crosshairs"></i> 📍 നിലവിലെ ലൊക്കേഷൻ എടുക്കുക
+                        </button>
+                    </div>
+                    <input type="text" id="itemLocation" list="locationDatalist" required placeholder="ടൈപ്പ് ചെയ്യുക അല്ലെങ്കിൽ ലിസ്റ്റിൽ നിന്ന് തിരഞ്ഞെടുക്കുക" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-primary focus:outline-none">
+                    <datalist id="locationDatalist"></datalist>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">ലാൻഡ്മാർക്ക് (Landmark)</label>
+                    <input type="text" id="itemLandmark" placeholder="ഉദാ: ബസ് സ്റ്റാൻഡിന് സമീപം, പള്ളിക്ക് എതിർവശം" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-primary focus:outline-none">
+                </div>
+
                 <div>
                     <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Google Maps Location Link (Optional)</label>
                     <input type="url" id="itemMapUrl" placeholder="https://maps.app.goo.gl/..." class="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-primary focus:outline-none">
@@ -265,25 +288,37 @@
                     </div>
                 </div>
 
-                <!-- സുരക്ഷാ മുന്നറിയിപ്പ് ബോക്സ് -->
-                <div class="p-3 bg-red-50 border border-red-200 rounded-lg text-xs text-red-800 space-y-1">
-                    <div class="font-bold flex items-center gap-1.5">
-                        <i class="fa-solid fa-shield-halved"></i> സുരക്ഷാ നിർദ്ദേശം / Anti-Fraud Notice
-                    </div>
-                    <p>വ്യാജ നമ്പറുകളോ വിവരങ്ങളോ നൽകരുത്. ആഡിറ്റ് ആവശ്യങ്ങൾക്കായി നിങ്ങളുടെ ബ്രൗസർ വിവരങ്ങൾ രേഖപ്പെടുത്തപ്പെടുന്നതാണ്.</p>
-                </div>
-
-                <!-- Photo Options -->
+                <!-- ഫോട്ടോ ഓപ്ഷനുകൾ (ക്യാമറയും ഫയലും) -->
                 <div class="space-y-3 p-3 bg-slate-50 border border-slate-200 rounded-lg">
-                    <label class="block text-xs font-semibold uppercase text-slate-700">Photo Option (ഏതെങ്കിലും ഒന്ന് തിരഞ്ഞെടുക്കുക)</label>
+                    <label class="block text-xs font-semibold uppercase text-slate-700">Photo Option (Max 200KB-ലേക്ക് ഓട്ടോ-കംപ്രസ് ആകും)</label>
+                    
+                    <!-- നേരിട്ട് ക്യാമറ ഓൺ ചെയ്യാനുള്ള ബട്ടൺ -->
                     <div>
-                        <label class="block text-xs text-slate-600 mb-1">Option 1: Image URL (ഇന്റർനെറ്റ് ലിങ്ക്)</label>
+                        <label class="block text-xs text-slate-600 mb-1 font-medium">📸 നേരിട്ട് ക്യാമറ ഓൺ ചെയ്ത് ഫോട്ടോ എടുക്കാൻ:</label>
+                        <input type="file" id="itemCameraFile" accept="image/*" capture="environment" onchange="previewSelectedImage(this)" class="w-full text-xs text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-emerald-600 file:text-white hover:file:bg-emerald-700 cursor-pointer">
+                    </div>
+
+                    <div class="text-center text-xs text-slate-400 font-medium">- OR -</div>
+
+                    <!-- ഗാലറിയിൽ നിന്നോ ഫയലുകളിൽ നിന്നോ -->
+                    <div>
+                        <label class="block text-xs text-slate-600 mb-1 font-medium">📁 ഗാലറി / കമ്പ്യൂട്ടറിൽ നിന്ന് തിരഞ്ഞെടുക്കാൻ:</label>
+                        <input type="file" id="itemImageFile" accept="image/*" onchange="previewSelectedImage(this)" class="w-full text-xs text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-primary file:text-white hover:file:bg-blue-800 cursor-pointer">
+                    </div>
+
+                    <div class="text-center text-xs text-slate-400 font-medium">- OR -</div>
+
+                    <div>
+                        <label class="block text-xs text-slate-600 mb-1 font-medium">🔗 ഇന്റർനെറ്റ് ഇമേജ് ലിങ്ക് (Image URL):</label>
                         <input type="url" id="itemImage" placeholder="https://..." class="w-full p-2 border border-slate-300 rounded-lg text-sm bg-white focus:outline-none">
                     </div>
-                    <div class="text-center text-xs text-slate-400 font-medium">- OR -</div>
-                    <div>
-                        <label class="block text-xs text-slate-600 mb-1">Option 2: Choose File (ഫോണിൽ നിന്ന് നേരിട്ട്)</label>
-                        <input type="file" id="itemImageFile" accept="image/*" class="w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-primary file:text-white hover:file:bg-blue-800 cursor-pointer">
+
+                    <!-- കംപ്രഷൻ പ്രിവ്യൂ -->
+                    <div id="imagePreviewContainer" class="hidden flex items-center gap-3 p-2 bg-emerald-50 rounded-lg border border-emerald-200">
+                        <img id="imagePreview" src="" alt="Preview" class="w-12 h-12 rounded object-cover border">
+                        <div class="text-xs text-emerald-800 font-medium">
+                            <span>ഫോട്ടോ റെഡിയാണ്. സൈസ് 150KB-ൽ താഴെയായി കംപ്രസ് ചെയ്യപ്പെടും.</span>
+                        </div>
                     </div>
                 </div>
 
@@ -323,11 +358,28 @@
         let allItems = [];
         let allLocations = new Set();
         let deferredPrompt = null;
+        let selectedFileToUpload = null;
 
-        // ഉപയോക്താവിന്റെ സ്ഥിരമായ ലൊക്കേഷൻ
         let userDefaultArea = localStorage.getItem('naattukoottam_saved_area') || 'All';
 
-        // Predefined Subcategories
+        // പ്രധാന നിയമസഭാ മണ്ഡലങ്ങൾ
+        const constituenciesByDistrict = {
+            Kozhikode: ["Vadakara", "Kuttiadi", "Nadapuram", "Koyilandy", "Balussery", "Elathur", "Kozhikode North", "Kozhikode South", "Beypore", "Kunnamangalam", "Koduvally", "Thiruvambady"],
+            Malappuram: ["Kondotty", "Eranad", "Nilambur", "Wandoor", "Manjeri", "Perinthalmanna", "Mankada", "Malappuram", "Vengara", "Vallikkunnu", "Tirurangadi", "Tanur", "Tirur", "Kottakkal", "Thavanur", "Ponnani"],
+            Wayanad: ["Mananthavady", "Sulthan Bathery", "Kalpetta"],
+            Kannur: ["Payyanur", "Kalliasseri", "Taliparamba", "Irikkur", "Azhikode", "Kannur", "Dharmadam", "Thalassery", "Kuthuparamba", "Mattannur", "Peravoor"],
+            Kasaragod: ["Manjeshwar", "Kasaragod", "Udma", "Kanhangad", "Trikaripur"],
+            Palakkad: ["Thrithala", "Pattambi", "Shornur", "Ottapalam", "Kongad", "Mannarkkad", "Malampuzha", "Palakkad", "Tarur", "Chittur", "Nenmara", "Alathur"],
+            Thrissur: ["Chelakkara", "Kunnamkulam", "Guruvayoor", "Manalur", "Wadakkanchery", "Ollur", "Thrissur", "Nattika", "Kaipamangalam", "Irinjalakuda", "Puthukkad", "Chalakudy", "Kodungallur"],
+            Ernakulam: ["Perumbavoor", "Angamaly", "Aluva", "Kalamassery", "Paravur", "Vypeen", "Kochi", "Thrippunithura", "Ernakulam", "Thrikkakara", "Kunnathunad", "Piravom", "Muvattupuzha", "Kothamangalam"],
+            Idukki: ["Devikulam", "Udumbanchola", "Thodupuzha", "Idukki", "Peerumade"],
+            Kottayam: ["Pala", "Kaduthuruthy", "Vaikom", "Ettumanoor", "Kottayam", "Puthuppally", "Changanassery", "Kanjirappally", "Poonjar"],
+            Alappuzha: ["Aroor", "Cherthala", "Alappuzha", "Ambalappuzha", "Kuttanad", "Haripad", "Kayamkulam", "Mavelikkara", "Chengannur"],
+            Pathanamthitta: ["Thiruvalla", "Ranni", "Aranmula", "Konni", "Adoor"],
+            Kollam: ["Karunagappally", "Chavara", "Kunnathur", "Kottarakkara", "Pathanapuram", "Punalur", "Chadayamangalam", "Kundara", "Kollam", "Eravipuram", "Chathannoor"],
+            Thiruvananthapuram: ["Varkala", "Attingal", "Chirayinkeezhu", "Nedumangad", "Vamanapuram", "Kazhakkoottam", "Vattiyoorkavu", "Thiruvananthapuram", "Nemom", "Aruvikkara", "Parassala", "Kattakkada", "Kovalam", "Neyyattinkara"]
+        };
+
         const subCategories = {
             Shops: [
                 "സൂപ്പർമാർക്കറ്റ് / പലചരക്ക് (Supermarket / Grocery)",
@@ -409,6 +461,67 @@
             document.getElementById('disclaimerModal').classList.add('hidden');
         }
 
+        // --- Live GPS Location Fetch ---
+        function fetchGPSLocation() {
+            if (!navigator.geolocation) {
+                alert("നിങ്ങളുടെ ബ്രൗസറിൽ GPS സൗകര്യം ലഭ്യമല്ല.");
+                return;
+            }
+            const locInput = document.getElementById('itemLocation');
+            locInput.value = "ലൊക്കേഷൻ കണ്ടെത്തുന്നു...";
+
+            navigator.geolocation.getCurrentPosition(async (pos) => {
+                const lat = pos.coords.latitude;
+                const lon = pos.coords.longitude;
+                try {
+                    // OpenStreetMap സൗജന്യ റിവേഴ്സ് ജിയോകോഡിംഗ്
+                    const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`);
+                    const data = await res.json();
+                    const addr = data.address;
+                    const place = addr.suburb || addr.village || addr.town || addr.city || addr.county || "";
+                    locInput.value = place || `${lat.toFixed(4)}, ${lon.toFixed(4)}`;
+                    
+                    // മാപ്പ് ലിങ്ക് ഓട്ടോമാറ്റിക് ആയി ഫിൽ ചെയ്യുന്നു
+                    const mapInput = document.getElementById('itemMapUrl');
+                    if (!mapInput.value) {
+                        mapInput.value = `https://www.google.com/maps?q=${lat},${lon}`;
+                    }
+                } catch (e) {
+                    locInput.value = "";
+                    alert("ലൊക്കേഷൻ പേര് ലഭിച്ചില്ല. ദയവായി സ്ഥലം നേരിട്ട് ടൈപ്പ് ചെയ്യുക.");
+                }
+            }, (err) => {
+                locInput.value = "";
+                alert("GPS അനുമതി ലഭിച്ചില്ല. ദയവായി ലൊക്കേഷൻ പെർമിഷൻ നൽകുക അല്ലെങ്കിൽ നേരിട്ട് ടൈപ്പ് ചെയ്യുക.");
+            }, { enableHighAccuracy: true });
+        }
+
+        function handleDistrictChange() {
+            const dist = document.getElementById('itemDistrict').value;
+            const constSelect = document.getElementById('itemConstituency');
+            constSelect.innerHTML = '<option value="">-- മണ്ഡലം തിരഞ്ഞെടുക്കുക --</option>';
+
+            const list = constituenciesByDistrict[dist] || [];
+            list.forEach(c => {
+                const opt = document.createElement('option');
+                opt.value = c;
+                opt.textContent = c;
+                constSelect.appendChild(opt);
+            });
+        }
+
+        function previewSelectedImage(input) {
+            if (input.files && input.files[0]) {
+                selectedFileToUpload = input.files[0];
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('imagePreview').src = e.target.result;
+                    document.getElementById('imagePreviewContainer').classList.remove('hidden');
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
         // --- Data Loading & Setup ---
         function loadData() {
             checkDisclaimer();
@@ -432,24 +545,19 @@
             });
         }
 
-        // Update Location Datalist and Top Filter
         function updateLocationDropdowns() {
             const datalist = document.getElementById('locationDatalist');
             const topFilter = document.getElementById('userAreaFilter');
-            
             datalist.innerHTML = '';
             
-            // Keep current selection
             const currentSelected = topFilter.value || userDefaultArea;
             topFilter.innerHTML = `<option value="All">എല്ലാ സ്ഥലങ്ങളും (All Areas)</option>`;
 
             Array.from(allLocations).sort().forEach(loc => {
-                // Populate modal datalist
                 const opt = document.createElement('option');
                 opt.value = loc;
                 datalist.appendChild(opt);
 
-                // Populate top filter
                 const topOpt = document.createElement('option');
                 topOpt.value = loc;
                 topOpt.textContent = `📍 ${loc}`;
@@ -468,7 +576,6 @@
             renderItems();
         }
 
-        // Auto clean expired items (10-15 days)
         async function autoCleanExpiredItems() {
             try {
                 const now = Date.now();
@@ -524,11 +631,10 @@
                 const matchesSearch = (item.title && item.title.toLowerCase().includes(searchVal)) || 
                                       (item.desc && item.desc.toLowerCase().includes(searchVal)) ||
                                       (item.subCategory && item.subCategory.toLowerCase().includes(searchVal)) ||
-                                      (item.location && item.location.toLowerCase().includes(searchVal));
+                                      (item.location && item.location.toLowerCase().includes(searchVal)) ||
+                                      (item.district && item.district.toLowerCase().includes(searchVal));
                 
                 const matchesCat = (currentTab === 'marketplace' || currentCategory === 'All' || item.category === currentCategory);
-                
-                // ഏരിയ ഫിൽട്ടർ പരിശോധന
                 const matchesArea = (selectedArea === 'All' || !item.location || item.location.toLowerCase() === selectedArea.toLowerCase());
 
                 return matchesTab && matchesSearch && matchesCat && matchesArea;
@@ -597,7 +703,7 @@
                             <div class="p-4">
                                 <div class="flex items-center gap-1.5 text-xs text-emerald-700 font-bold mb-1">
                                     <i class="fa-solid fa-location-dot"></i>
-                                    <span>${item.location || 'Local Area'}${item.landmark ? ' (' + item.landmark + ')' : ''}</span>
+                                    <span>${item.location || 'Local Area'} ${item.district ? '• ' + item.district : ''} ${item.landmark ? '(' + item.landmark + ')' : ''}</span>
                                 </div>
                                 <h3 class="font-bold text-slate-800 text-lg mb-1 leading-snug">${item.title}</h3>
                                 <p class="text-slate-600 text-sm line-clamp-3">${item.desc}</p>
@@ -625,14 +731,14 @@
         function closeModal() {
             document.getElementById('itemModal').classList.add('hidden');
             document.getElementById('listingForm').reset();
-            document.getElementById('helpBox').classList.add('hidden');
+            document.getElementById('imagePreviewContainer').classList.add('hidden');
+            selectedFileToUpload = null;
             toggleFormFields();
             handleCategoryChange();
         }
 
         function toggleHelp() {
-            const help = document.getElementById('helpBox');
-            help.classList.toggle('hidden');
+            alert("ഫോട്ടോ നേരിട്ട് ക്യാമറയിൽ എടുത്തോ ഗാലറിയിൽ നിന്നോ തിരഞ്ഞെടുക്കാം. ആപ്പ് സ്വയം സൈസ് 150KB-ലേക്ക് കുറച്ച് ഡാറ്റാബേസിൽ സൂക്ഷിക്കും.");
         }
 
         function toggleFormFields() {
@@ -674,7 +780,7 @@
             });
         }
 
-        // --- Save Item with Limits & Clean Formats ---
+        // --- Save Item with Anti-Fraud Checks & Strict 150KB Compressor ---
         async function saveItem(e) {
             e.preventDefault();
             const saveBtn = document.getElementById('saveBtn');
@@ -683,7 +789,6 @@
 
             const phone = document.getElementById('itemPhone').value.trim();
 
-            // 1. ഫിൽട്ടർ: പരമാവധി 3 ലിസ്റ്റിംഗ് മാത്രം അനുവദിക്കുക
             try {
                 const phoneCheckSnap = await db.collection("listings").where("phone", "==", phone).get();
                 if (phoneCheckSnap.size >= 3) {
@@ -699,7 +804,6 @@
             saveBtn.innerText = "Saving...";
 
             const section = document.getElementById('itemSection').value;
-            // ഇംഗ്ലീഷ് ആണെങ്കിൽ CAPITAL ആക്കുക, മലയാളം ആണെങ്കിൽ അതുപോലെ തന്നെ
             let title = document.getElementById('itemTitle').value.trim();
             if (/^[a-zA-Z0-9\s.,'-]+$/.test(title)) {
                 title = title.toUpperCase();
@@ -708,6 +812,8 @@
             const category = section === 'directory' ? document.getElementById('itemCategory').value : 'Marketplace';
             const subCategory = section === 'directory' ? document.getElementById('itemSubCategory').value : '';
             const price = section === 'marketplace' ? document.getElementById('itemPrice').value.trim() : '';
+            const district = document.getElementById('itemDistrict').value;
+            const constituency = document.getElementById('itemConstituency').value;
             const location = document.getElementById('itemLocation').value.trim();
             const landmark = document.getElementById('itemLandmark').value.trim();
             const mapUrl = document.getElementById('itemMapUrl').value.trim();
@@ -717,16 +823,20 @@
             const expiresAt = Date.now() + (durationDays * 24 * 60 * 60 * 1000);
 
             const imageUrlInput = document.getElementById('itemImage').value.trim();
-            const imageFileInput = document.getElementById('itemImageFile').files[0];
 
             const basePayload = {
                 section, title, category, subCategory, price, phone,
-                location, landmark, mapUrl, desc, pin, expiresAt,
+                district, constituency, location, landmark, mapUrl, desc, pin, expiresAt,
                 sold: false,
                 userAgent: navigator.userAgent
             };
 
-            if (imageFileInput) {
+            // ഫോട്ടോ ക്യാമറയിൽ നിന്നോ ഫയലിൽ നിന്നോ എടുത്തത് കംപ്രസ് ചെയ്യൽ
+            const fileToProcess = selectedFileToUpload || 
+                                  document.getElementById('itemCameraFile').files[0] || 
+                                  document.getElementById('itemImageFile').files[0];
+
+            if (fileToProcess) {
                 const reader = new FileReader();
                 reader.onload = function(event) {
                     const img = new Image();
@@ -734,13 +844,15 @@
                         const canvas = document.createElement('canvas');
                         const ctx = canvas.getContext('2d');
                         
+                        // സൈസ് 150KB-ൽ താഴെയാക്കാൻ വീതി 450px ആക്കി കുറയ്ക്കുന്നു
                         const MAX_WIDTH = 450;
                         const scaleSize = MAX_WIDTH / img.width;
                         canvas.width = MAX_WIDTH;
                         canvas.height = img.height * scaleSize;
 
                         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                        const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.65);
+                        // 60% ഗുണനിലവാരത്തിലേക്ക് കംപ്രസ് ചെയ്യുന്നു (100KB - 150KB Max)
+                        const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.60);
 
                         uploadToFirebase({
                             ...basePayload,
@@ -749,7 +861,7 @@
                     }
                     img.src = event.target.result;
                 }
-                reader.readAsDataURL(imageFileInput);
+                reader.readAsDataURL(fileToProcess);
             } else {
                 uploadToFirebase({
                     ...basePayload,
