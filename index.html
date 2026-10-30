@@ -1,9 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>നാട്ടുകൂട്ടം (Naattukoottam) - Local Directory & Marketplace</title>
+    <!-- Google Font: Noto Sans Malayalam & Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Noto+Sans+Malayalam:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -12,22 +16,24 @@
             theme: {
                 extend: {
                     colors: {
-                        primary: '#1e3a8a', // Deep Royal Blue
-                        secondary: '#047857', // Emerald Green
-                        accent: '#dc2626' // Coral Red
+                        primary: '#1e3a8a',
+                        secondary: '#047857',
+                        accent: '#dc2626'
+                    },
+                    fontFamily: {
+                        sans: ['"Noto Sans Malayalam"', 'Inter', 'sans-serif']
                     }
                 }
             }
         }
     </script>
     <style>
-        .sold-card {
-            opacity: 0.72;
-            filter: grayscale(25%);
-        }
+        body { font-family: 'Noto Sans Malayalam', 'Inter', sans-serif; }
+        .sold-card { opacity: 0.72; filter: grayscale(25%); }
+        .uppercase-input { text-transform: uppercase; }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col font-sans">
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
 
     <!-- Header -->
     <header class="bg-primary text-white shadow-md sticky top-0 z-40">
@@ -38,7 +44,7 @@
                 </div>
                 <div>
                     <h1 class="text-lg md:text-xl font-bold tracking-wide leading-tight">നാട്ടുകൂട്ടം (Naattukoottam)</h1>
-                    <p class="text-xs text-slate-300">Local Directory & Marketplace</p>
+                    <p class="text-xs text-slate-300">Local Directory & Community Marketplace</p>
                 </div>
             </div>
             
@@ -76,28 +82,40 @@
     <!-- Main Content -->
     <main class="flex-grow max-w-7xl w-full mx-auto px-4 py-6">
         
-        <!-- Search & Filter Bar -->
+        <!-- Search & Area Filter Bar -->
         <div class="mb-6 flex flex-col md:flex-row gap-4 items-center justify-between">
-            <div class="relative w-full md:w-96">
-                <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                </span>
-                <input type="text" id="searchInput" oninput="filterItems()" placeholder="Search shops, doctors, places, items..." class="w-full pl-10 pr-4 py-2 bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-sm shadow-sm">
+            <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto flex-1 max-w-2xl">
+                <!-- Search Input -->
+                <div class="relative flex-1">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </span>
+                    <input type="text" id="searchInput" oninput="filterItems()" placeholder="Search shops, services, items..." class="w-full pl-10 pr-4 py-2 bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-sm shadow-sm">
+                </div>
+
+                <!-- Default / Filter Area Selector -->
+                <div class="relative min-w-[200px]">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-emerald-600">
+                        <i class="fa-solid fa-location-dot"></i>
+                    </span>
+                    <select id="userAreaFilter" onchange="changeDefaultArea(this.value)" class="w-full pl-9 pr-8 py-2 bg-white border border-emerald-300 rounded-lg text-sm text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-secondary shadow-sm">
+                        <option value="All">എല്ലാ സ്ഥലങ്ങളും (All Areas)</option>
+                    </select>
+                </div>
             </div>
             
+            <!-- Category Filters for Directory -->
             <div id="categoryFilters" class="flex flex-wrap gap-2 w-full md:w-auto">
                 <button onclick="filterCategory('All')" class="cat-btn bg-primary text-white px-3 py-1.5 rounded-full text-xs font-medium shadow transition">All</button>
                 <button onclick="filterCategory('Shops')" class="cat-btn bg-white text-slate-700 border border-slate-300 px-3 py-1.5 rounded-full text-xs font-medium hover:bg-slate-100 transition">Shops</button>
+                <button onclick="filterCategory('Services')" class="cat-btn bg-white text-slate-700 border border-slate-300 px-3 py-1.5 rounded-full text-xs font-medium hover:bg-slate-100 transition">Services</button>
                 <button onclick="filterCategory('Doctors')" class="cat-btn bg-white text-slate-700 border border-slate-300 px-3 py-1.5 rounded-full text-xs font-medium hover:bg-slate-100 transition">Doctors</button>
                 <button onclick="filterCategory('Hospitals')" class="cat-btn bg-white text-slate-700 border border-slate-300 px-3 py-1.5 rounded-full text-xs font-medium hover:bg-slate-100 transition">Hospitals</button>
-                <button onclick="filterCategory('Services')" class="cat-btn bg-white text-slate-700 border border-slate-300 px-3 py-1.5 rounded-full text-xs font-medium hover:bg-slate-100 transition">Services</button>
             </div>
         </div>
 
         <!-- Cards Grid Container -->
-        <div id="itemsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- Dynamic Cards will load here -->
-        </div>
+        <div id="itemsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
     </main>
 
     <!-- Disclaimer / Terms Modal -->
@@ -121,17 +139,17 @@
                 <div class="flex items-start gap-2.5">
                     <i class="fa-solid fa-triangle-exclamation text-amber-500 mt-0.5"></i>
                     <div>
-                        <b class="text-slate-900">ഇടപാടുകളുടെ ഉത്തരവാദിത്തം:</b> ഇതിൽ നൽകുന്ന ഫോൺ നമ്പറുകൾ, ഉൽപ്പന്നങ്ങളുടെ ഗുണനിലവാരം, പണമിടപാടുകൾ എന്നിവ പൂർണ്ണമായും ഉപയോക്താക്കൾ തമ്മിലുള്ള നേരിട്ടുള്ള ഉത്തരവാദിത്തമാണ്. സാമ്പത്തിക ഇടപാടുകളിലോ തർക്കങ്ങളിലോ ആപ്പ് ഡെവലപ്പർമാർക്കോ അഡ്മിൻമാർക്കോ യാതൊരു പങ്കോ ബാധ്യതയോ ഉണ്ടായിരിക്കില്ല.
+                        <b class="text-slate-900">ഇടപാടുകളുടെ ഉത്തരവാദിത്തം:</b> ഫോൺ നമ്പറുകൾ, സേവനങ്ങൾ, ഉൽപ്പന്നങ്ങൾ, പണമിടപാടുകൾ എന്നിവ പൂർണ്ണമായും ഉപയോക്താക്കൾ തമ്മിലുള്ള നേരിട്ടുള്ള ഉത്തരവാദിത്തമാണ്. സാമ്പത്തിക ഇടപാടുകളിലോ തർക്കങ്ങളിലോ ആപ്പ് അഡ്മിൻമാർക്കോ ഡെവലപ്പർമാർക്കോ യാതൊരു പങ്കോ ബാധ്യതയോ ഉണ്ടായിരിക്കില്ല.
                     </div>
                 </div>
                 <div class="flex items-start gap-2.5">
                     <i class="fa-solid fa-clock-rotate-left text-blue-600 mt-0.5"></i>
                     <div>
-                        <b class="text-slate-900">സ്വയം നീക്കം ചെയ്യപ്പെടൽ:</b> ഡാറ്റാബേസ് സൂക്ഷിപ്പിനായി ഓരോ പരസ്യവും തിരഞ്ഞെടുത്ത കാലാവധി (പരമാവധി 15 ദിവസം) കഴിഞ്ഞാൽ ചിത്രങ്ങളടക്കം തനിയെ നീക്കം ചെയ്യപ്പെടും.
+                        <b class="text-slate-900">സ്വയം നീക്കം ചെയ്യപ്പെടൽ:</b> ഓരോ പരസ്യവും തിരഞ്ഞെടുത്ത കാലാവധി (പരമാവധി 15 ദിവസം) കഴിഞ്ഞാൽ ചിത്രങ്ങളടക്കം തനിയെ നീക്കം ചെയ്യപ്പെടും.
                     </div>
                 </div>
                 <div class="pt-2 border-t border-slate-200 text-[11px] text-slate-500 italic">
-                    All listings and transactions are strictly peer-to-peer. Admins and developers hold no legal responsibility for transactions or verification.
+                    All listings are peer-to-peer. Admins hold no liability for transactions, verification, or contacts.
                 </div>
             </div>
 
@@ -166,24 +184,32 @@
                 <div>
                     <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Section</label>
                     <select id="itemSection" onchange="toggleFormFields()" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-primary focus:outline-none">
-                        <option value="directory">Local Directory (Shops, Doctors, Services, etc.)</option>
+                        <option value="directory">Local Directory (Shops, Services, Doctors)</option>
                         <option value="marketplace">Marketplace / Classifieds (Sell Items)</option>
                     </select>
                 </div>
 
-                <div>
-                    <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Title / Name *</label>
-                    <input type="text" id="itemTitle" required placeholder="ഉദാ: കമ്പ്യൂട്ടർ / റേഷൻ കട / ഇലക്ട്രീഷ്യൻ" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-primary focus:outline-none">
-                </div>
-
                 <div id="categoryFieldContainer">
                     <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Category</label>
-                    <select id="itemCategory" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-primary focus:outline-none">
+                    <select id="itemCategory" onchange="handleCategoryChange()" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-primary focus:outline-none">
                         <option value="Shops">Shops (കടകൾ)</option>
+                        <option value="Services">Services (തൊഴിലുകൾ & സേവനങ്ങൾ)</option>
                         <option value="Doctors">Doctors (ഡോക്ടർമാർ)</option>
                         <option value="Hospitals">Hospitals & Clinics</option>
-                        <option value="Services">Services (പ്ലംബിംഗ്, ഇലക്ട്രീഷ്യൻ, ടാക്സി etc.)</option>
                     </select>
+                </div>
+
+                <!-- Sub-Category Dropdown (Dynamic based on Category) -->
+                <div id="subCategoryContainer">
+                    <label class="block text-xs font-semibold uppercase text-slate-600 mb-1" id="subCategoryLabel">കടയുടെ ഇനം (Shop Type)</label>
+                    <select id="itemSubCategory" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-primary focus:outline-none">
+                        <!-- Populated by JS -->
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Title / Name * (CAPITAL LETTERS / മലയാളം)</label>
+                    <input type="text" id="itemTitle" required placeholder="NAME / പേര്" class="uppercase-input w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-primary focus:outline-none">
                 </div>
 
                 <div id="priceFieldContainer" class="hidden">
@@ -192,15 +218,17 @@
                 </div>
 
                 <div>
-                    <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Phone Number *</label>
-                    <input type="tel" id="itemPhone" required placeholder="ഉദാ: 9847790786" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-primary focus:outline-none">
+                    <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Phone Number * (10 Digits)</label>
+                    <input type="tel" id="itemPhone" required maxlength="10" pattern="[0-9]{10}" placeholder="ഉദാ: 9847790786" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-primary focus:outline-none">
+                    <span class="text-[10px] text-slate-500">ഒരു നമ്പറിൽ നിന്ന് പരമാവധി 3 ലിസ്റ്റിംഗുകൾ മാത്രമേ സാധ്യമാകൂ.</span>
                 </div>
 
-                <!-- സ്ഥലം & ലാൻഡ്മാർക്ക് -->
+                <!-- സ്ഥലം & ലാൻഡ്മാർക്ക് with Auto Datalist -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
-                        <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">സ്ഥലം / ഗ്രാമം / പഞ്ചായത്ത് *</label>
-                        <input type="text" id="itemLocation" required placeholder="ഉദാ: നരിക്കുനി, പൂനൂർ" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-primary focus:outline-none">
+                        <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">സ്ഥലം / പഞ്ചായത്ത് *</label>
+                        <input type="text" id="itemLocation" list="locationDatalist" required placeholder="ടൈപ്പ് ചെയ്യുക അല്ലെങ്കിൽ തിരഞ്ഞെടുക്കുക" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-primary focus:outline-none">
+                        <datalist id="locationDatalist"></datalist>
                     </div>
                     <div>
                         <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">ലാൻഡ്മാർക്ക് (Landmark)</label>
@@ -215,8 +243,8 @@
                 </div>
 
                 <div>
-                    <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Description / സേവന വിവരങ്ങൾ *</label>
-                    <textarea id="itemDesc" rows="3" required placeholder="വിവരങ്ങൾ ഇവിടെ വിശദമായി എഴുതുക..." class="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-primary focus:outline-none"></textarea>
+                    <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Description / വിവരങ്ങൾ *</label>
+                    <textarea id="itemDesc" rows="3" required placeholder="വിവരങ്ങൾ ഇവിടെ എഴുതുക..." class="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-primary focus:outline-none"></textarea>
                 </div>
 
                 <!-- Expiry & PIN Controls -->
@@ -228,12 +256,12 @@
                             <option value="10" selected>10 ദിവസങ്ങൾ</option>
                             <option value="15">15 ദിവസങ്ങൾ (പരമാവധി)</option>
                         </select>
-                        <span class="text-[10px] text-slate-500">ഇതിന് ശേഷം പരസ്യം ഡിലീറ്റ് ആകും.</span>
+                        <span class="text-[10px] text-slate-500">ഇതിന് ശേഷം പരസ്യം തനിയെ ഡിലീറ്റ് ആകും.</span>
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-emerald-900 mb-1">4-അക്ക സെക്യൂരിറ്റി പിൻ (PIN) *</label>
                         <input type="password" id="itemPin" required maxlength="4" pattern="[0-9]{4}" placeholder="ഉദാ: 1234" class="w-full p-2 border border-slate-300 rounded-lg text-xs bg-white tracking-widest focus:outline-none">
-                        <span class="text-[10px] text-slate-500">വിൽക്കുമ്പോഴോ ഡിലീറ്റ് ചെയ്യുമ്പോഴോ ആവശ്യം.</span>
+                        <span class="text-[10px] text-slate-500">ഡിലീറ്റ് ചെയ്യാനോ Sold ആക്കാനോ ആവശ്യം.</span>
                     </div>
                 </div>
 
@@ -242,20 +270,17 @@
                     <div class="font-bold flex items-center gap-1.5">
                         <i class="fa-solid fa-shield-halved"></i> സുരക്ഷാ നിർദ്ദേശം / Anti-Fraud Notice
                     </div>
-                    <p>വ്യാജ നമ്പറുകളോ വിവരങ്ങളോ നൽകി മറ്റുള്ളവരെ ശല്യപ്പെടുത്തരുത്. സൈബർ സുരക്ഷയ്ക്കായി പോസ്റ്റ് ചെയ്യുന്ന സമയം, ബ്രൗസർ വിവരങ്ങൾ എന്നിവ ഫയർബേസിൽ രേഖപ്പെടുത്തപ്പെടുന്നതാണ്.</p>
+                    <p>വ്യാജ നമ്പറുകളോ വിവരങ്ങളോ നൽകരുത്. ആഡിറ്റ് ആവശ്യങ്ങൾക്കായി നിങ്ങളുടെ ബ്രൗസർ വിവരങ്ങൾ രേഖപ്പെടുത്തപ്പെടുന്നതാണ്.</p>
                 </div>
 
                 <!-- Photo Options -->
                 <div class="space-y-3 p-3 bg-slate-50 border border-slate-200 rounded-lg">
                     <label class="block text-xs font-semibold uppercase text-slate-700">Photo Option (ഏതെങ്കിലും ഒന്ന് തിരഞ്ഞെടുക്കുക)</label>
-                    
                     <div>
                         <label class="block text-xs text-slate-600 mb-1">Option 1: Image URL (ഇന്റർനെറ്റ് ലിങ്ക്)</label>
-                        <input type="url" id="itemImage" placeholder="https://... അല്ലെങ്കിൽ താഴെ ഫയൽ തിരഞ്ഞെടുക്കുക" class="w-full p-2 border border-slate-300 rounded-lg text-sm bg-white focus:outline-none">
+                        <input type="url" id="itemImage" placeholder="https://..." class="w-full p-2 border border-slate-300 rounded-lg text-sm bg-white focus:outline-none">
                     </div>
-
                     <div class="text-center text-xs text-slate-400 font-medium">- OR -</div>
-
                     <div>
                         <label class="block text-xs text-slate-600 mb-1">Option 2: Choose File (ഫോണിൽ നിന്ന് നേരിട്ട്)</label>
                         <input type="file" id="itemImageFile" accept="image/*" class="w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-primary file:text-white hover:file:bg-blue-800 cursor-pointer">
@@ -296,7 +321,54 @@
         let currentTab = 'directory';
         let currentCategory = 'All';
         let allItems = [];
+        let allLocations = new Set();
         let deferredPrompt = null;
+
+        // ഉപയോക്താവിന്റെ സ്ഥിരമായ ലൊക്കേഷൻ
+        let userDefaultArea = localStorage.getItem('naattukoottam_saved_area') || 'All';
+
+        // Predefined Subcategories
+        const subCategories = {
+            Shops: [
+                "സൂപ്പർമാർക്കറ്റ് / പലചരക്ക് (Supermarket / Grocery)",
+                "പച്ചക്കറി / പഴങ്ങൾ (Vegetables & Fruits)",
+                "ബേക്കറി & ടീ ഷോപ്പ് (Bakery & Tea Shop)",
+                "ഹോട്ടൽ / റസ്റ്റോറന്റ് (Hotel & Restaurant)",
+                "വസ്ത്രശാല / ടെക്സ്റ്റൈൽസ് (Textiles & Dress)",
+                "മെഡിക്കൽ ഷോപ്പ് / ഫാർമസി (Pharmacy)",
+                "ഇലക്ട്രിക്കൽ & ഹാർഡ്‌വെയർ (Electrical & Hardware)",
+                "മൊബൈൽ & ഇലക്ട്രോണിക്സ് (Mobile & Electronics)",
+                "വർക്ക്‌ഷോപ്പ് & ഗാരേജ് (Automobile / Workshop)",
+                "മറ്റ് കടകൾ (Other Shops)"
+            ],
+            Services: [
+                "ഇലക്ട്രീഷ്യൻ (Electrician)",
+                "പ്ലംബർ (Plumbing)",
+                "ആശാരിപ്പണി (Carpentry)",
+                "കൽപ്പണി / വാർപ്പ് (Masonry / Construction)",
+                "പെയിന്റിംഗ് (Painting Works)",
+                "ഡ്രൈവർ (Heavy / Light Driver)",
+                "ഓട്ടോ / ടാക്സി സർവീസ് (Auto / Taxi)",
+                "വെൽഡിംഗ് & ഫാബ്രിക്കേഷൻ (Welding Works)",
+                "കൂലിപ്പണി / തോട്ടപ്പണി (Gardening / Labour)",
+                "ഹോം ട്യൂഷൻ / അധ്യാപകർ (Tuition / Teaching)",
+                "മറ്റ് സേവനങ്ങൾ (Other Services)"
+            ],
+            Doctors: [
+                "ജനറൽ മെഡിസിൻ (General Physician)",
+                "ശിശുരോഗ വിദഗ്ദ്ധൻ (Pediatrician)",
+                "ദന്തഡോക്ടർ (Dentist)",
+                "അസ്ഥിരോഗ വിദഗ്ദ്ധൻ (Orthopedic)",
+                "ഹോമിയോ / ആയുർവേദം (Homeo / Ayurveda)",
+                "മറ്റ് സ്പെഷ്യലിസ്റ്റുകൾ (Other Specialists)"
+            ],
+            Hospitals: [
+                "ക്ലിനിക്ക് (Clinic)",
+                "ഹോസ്പിറ്റൽ (Hospital)",
+                "ലാബ് & ഡയഗ്നോസ്റ്റിക്സ് (Diagnostic Lab)",
+                "സ്കാനിംഗ് സെന്റർ (Scanning Centre)"
+            ]
+        };
 
         // --- PWA Installation Logic ---
         window.addEventListener('beforeinstallprompt', (e) => {
@@ -311,7 +383,7 @@
 
         function triggerPWAInstall() {
             if (!deferredPrompt) {
-                alert("നിങ്ങളുടെ ബ്രൗസർ മെനുവിൽ നിന്ന് (Three dots) 'Install app' അല്ലെങ്കിൽ 'Add to Home screen' തിരഞ്ഞെടുക്കുക.");
+                alert("ബ്രൗസർ മെനുവിൽ നിന്ന് (Three dots) 'Install app' അല്ലെങ്കിൽ 'Add to Home screen' ക്ലിക്ക് ചെയ്യുക.");
                 return;
             }
             deferredPrompt.prompt();
@@ -324,36 +396,79 @@
             });
         }
 
-        // --- Disclaimer Modal Logic ---
+        // --- Disclaimer Logic ---
         function checkDisclaimer() {
-            const agreed = localStorage.getItem('naattukoottam_disclaimer_agreed_v1');
+            const agreed = localStorage.getItem('naattukoottam_disclaimer_agreed_v2');
             if (!agreed) {
                 document.getElementById('disclaimerModal').classList.remove('hidden');
             }
         }
 
         function acceptDisclaimer() {
-            localStorage.setItem('naattukoottam_disclaimer_agreed_v1', 'true');
+            localStorage.setItem('naattukoottam_disclaimer_agreed_v2', 'true');
             document.getElementById('disclaimerModal').classList.add('hidden');
         }
 
-        // --- Data Loading & Auto-Expiry ---
+        // --- Data Loading & Setup ---
         function loadData() {
             checkDisclaimer();
+            handleCategoryChange();
             autoCleanExpiredItems();
 
             db.collection("listings").onSnapshot((snapshot) => {
                 allItems = [];
+                allLocations.clear();
                 snapshot.forEach((doc) => {
-                    allItems.push({ id: doc.id, ...doc.data() });
+                    const data = doc.data();
+                    allItems.push({ id: doc.id, ...data });
+                    if (data.location) {
+                        allLocations.add(data.location.trim());
+                    }
                 });
+                updateLocationDropdowns();
                 renderItems();
             }, (error) => {
                 console.error("Error loading data: ", error);
             });
         }
 
-        // കാലാവധി കഴിഞ്ഞവ തനിയെ ഡാറ്റാബേസിൽ നിന്ന് നീക്കം ചെയ്യുന്നു
+        // Update Location Datalist and Top Filter
+        function updateLocationDropdowns() {
+            const datalist = document.getElementById('locationDatalist');
+            const topFilter = document.getElementById('userAreaFilter');
+            
+            datalist.innerHTML = '';
+            
+            // Keep current selection
+            const currentSelected = topFilter.value || userDefaultArea;
+            topFilter.innerHTML = `<option value="All">എല്ലാ സ്ഥലങ്ങളും (All Areas)</option>`;
+
+            Array.from(allLocations).sort().forEach(loc => {
+                // Populate modal datalist
+                const opt = document.createElement('option');
+                opt.value = loc;
+                datalist.appendChild(opt);
+
+                // Populate top filter
+                const topOpt = document.createElement('option');
+                topOpt.value = loc;
+                topOpt.textContent = `📍 ${loc}`;
+                if (loc === currentSelected) topOpt.selected = true;
+                topFilter.appendChild(topOpt);
+            });
+
+            if (currentSelected && currentSelected !== 'All') {
+                topFilter.value = currentSelected;
+            }
+        }
+
+        function changeDefaultArea(area) {
+            userDefaultArea = area;
+            localStorage.setItem('naattukoottam_saved_area', area);
+            renderItems();
+        }
+
+        // Auto clean expired items (10-15 days)
         async function autoCleanExpiredItems() {
             try {
                 const now = Date.now();
@@ -402,19 +517,25 @@
         function renderItems() {
             const grid = document.getElementById('itemsGrid');
             const searchVal = document.getElementById('searchInput').value.toLowerCase();
+            const selectedArea = document.getElementById('userAreaFilter').value;
             
             let filtered = allItems.filter(item => {
                 const matchesTab = item.section === currentTab;
                 const matchesSearch = (item.title && item.title.toLowerCase().includes(searchVal)) || 
                                       (item.desc && item.desc.toLowerCase().includes(searchVal)) ||
-                                      (item.location && item.location.toLowerCase().includes(searchVal)) ||
-                                      (item.landmark && item.landmark.toLowerCase().includes(searchVal));
+                                      (item.subCategory && item.subCategory.toLowerCase().includes(searchVal)) ||
+                                      (item.location && item.location.toLowerCase().includes(searchVal));
+                
                 const matchesCat = (currentTab === 'marketplace' || currentCategory === 'All' || item.category === currentCategory);
-                return matchesTab && matchesSearch && matchesCat;
+                
+                // ഏരിയ ഫിൽട്ടർ പരിശോധന
+                const matchesArea = (selectedArea === 'All' || !item.location || item.location.toLowerCase() === selectedArea.toLowerCase());
+
+                return matchesTab && matchesSearch && matchesCat && matchesArea;
             });
 
             if(filtered.length === 0) {
-                grid.innerHTML = `<div class="col-span-full text-center py-12 text-slate-400"><i class="fa-solid fa-box-open text-4xl mb-2"></i><p>വിവരങ്ങളൊന്നും ലഭ്യമായില്ല.</p></div>`;
+                grid.innerHTML = `<div class="col-span-full text-center py-12 text-slate-400"><i class="fa-solid fa-box-open text-4xl mb-2"></i><p>തിരഞ്ഞെടുത്ത സ്ഥലത്ത് വിവരങ്ങളൊന്നും ലഭ്യമായില്ല.</p></div>`;
                 return;
             }
 
@@ -423,7 +544,6 @@
                 const soldClass = isSold ? 'sold-card' : '';
                 const soldBadge = isSold ? `<span class="absolute top-2 left-2 bg-red-600 text-white text-xs px-3 py-1 rounded-md font-extrabold shadow-md tracking-wider">SOLD OUT</span>` : '';
 
-                // ഗൂഗിൾ മാപ്പ് ഡയറക്ഷൻ ബട്ടൺ
                 const mapBtn = item.mapUrl ? `
                     <a href="${item.mapUrl}" target="_blank" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-lg text-sm transition flex items-center justify-center shadow-sm" title="Location on Map">
                         <i class="fa-solid fa-location-dot"></i>
@@ -470,12 +590,12 @@
                                 <img src="${item.image || 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=600&q=80'}" alt="${item.title}" class="w-full h-full object-cover">
                                 ${soldBadge}
                                 <span class="absolute top-2 right-2 bg-slate-900/75 text-white text-xs px-2.5 py-1 rounded-full backdrop-blur-sm font-medium">
-                                    ${item.section === 'directory' ? item.category : 'Marketplace'}
+                                    ${item.subCategory || (item.section === 'directory' ? item.category : 'Marketplace')}
                                 </span>
                                 ${item.price ? `<span class="absolute bottom-2 left-2 bg-secondary text-white text-xs px-2.5 py-1 rounded-md font-bold shadow">${item.price}</span>` : ''}
                             </div>
                             <div class="p-4">
-                                <div class="flex items-center gap-1.5 text-xs text-emerald-700 font-semibold mb-1">
+                                <div class="flex items-center gap-1.5 text-xs text-emerald-700 font-bold mb-1">
                                     <i class="fa-solid fa-location-dot"></i>
                                     <span>${item.location || 'Local Area'}${item.landmark ? ' (' + item.landmark + ')' : ''}</span>
                                 </div>
@@ -507,6 +627,7 @@
             document.getElementById('listingForm').reset();
             document.getElementById('helpBox').classList.add('hidden');
             toggleFormFields();
+            handleCategoryChange();
         }
 
         function toggleHelp() {
@@ -517,45 +638,92 @@
         function toggleFormFields() {
             const section = document.getElementById('itemSection').value;
             const catContainer = document.getElementById('categoryFieldContainer');
+            const subCatContainer = document.getElementById('subCategoryContainer');
             const priceContainer = document.getElementById('priceFieldContainer');
 
             if(section === 'marketplace') {
                 catContainer.classList.add('hidden');
+                subCatContainer.classList.add('hidden');
                 priceContainer.classList.remove('hidden');
             } else {
                 catContainer.classList.remove('hidden');
+                subCatContainer.classList.remove('hidden');
                 priceContainer.classList.add('hidden');
+                handleCategoryChange();
             }
         }
 
-        // --- Save Item with Location, Expiry, Security Logs & PIN ---
-        function saveItem(e) {
+        function handleCategoryChange() {
+            const cat = document.getElementById('itemCategory').value;
+            const subCatSelect = document.getElementById('itemSubCategory');
+            const subCatLabel = document.getElementById('subCategoryLabel');
+
+            subCatSelect.innerHTML = '';
+            const list = subCategories[cat] || [];
+
+            if (cat === 'Shops') subCatLabel.innerText = "കടയുടെ ഇനം (Shop Type)";
+            else if (cat === 'Services') subCatLabel.innerText = "തൊഴിൽ / സേവന ഇനം (Service Type)";
+            else if (cat === 'Doctors') subCatLabel.innerText = "വിഭാഗം (Specialization)";
+            else if (cat === 'Hospitals') subCatLabel.innerText = "സ്ഥാപന ഇനം (Facility Type)";
+
+            list.forEach(item => {
+                const opt = document.createElement('option');
+                opt.value = item;
+                opt.textContent = item;
+                subCatSelect.appendChild(opt);
+            });
+        }
+
+        // --- Save Item with Limits & Clean Formats ---
+        async function saveItem(e) {
             e.preventDefault();
             const saveBtn = document.getElementById('saveBtn');
             saveBtn.disabled = true;
+            saveBtn.innerText = "Checking...";
+
+            const phone = document.getElementById('itemPhone').value.trim();
+
+            // 1. ഫിൽട്ടർ: പരമാവധി 3 ലിസ്റ്റിംഗ് മാത്രം അനുവദിക്കുക
+            try {
+                const phoneCheckSnap = await db.collection("listings").where("phone", "==", phone).get();
+                if (phoneCheckSnap.size >= 3) {
+                    alert("ഈ ഫോൺ നമ്പർ ഉപയോഗിച്ച് ഇതിനകം 3 ലിസ്റ്റിംഗുകൾ ചേർത്തിട്ടുണ്ട്! പുതിയത് ചേർക്കാൻ പഴയവയിൽ ഒന്ന് ഡിലീറ്റ് ചെയ്യുക.");
+                    saveBtn.disabled = false;
+                    saveBtn.innerText = "Save Item";
+                    return;
+                }
+            } catch (err) {
+                console.error("Check error", err);
+            }
+
             saveBtn.innerText = "Saving...";
 
             const section = document.getElementById('itemSection').value;
-            const title = document.getElementById('itemTitle').value;
+            // ഇംഗ്ലീഷ് ആണെങ്കിൽ CAPITAL ആക്കുക, മലയാളം ആണെങ്കിൽ അതുപോലെ തന്നെ
+            let title = document.getElementById('itemTitle').value.trim();
+            if (/^[a-zA-Z0-9\s.,'-]+$/.test(title)) {
+                title = title.toUpperCase();
+            }
+
             const category = section === 'directory' ? document.getElementById('itemCategory').value : 'Marketplace';
-            const price = section === 'marketplace' ? document.getElementById('itemPrice').value : '';
-            const phone = document.getElementById('itemPhone').value;
-            const location = document.getElementById('itemLocation').value;
-            const landmark = document.getElementById('itemLandmark').value;
-            const mapUrl = document.getElementById('itemMapUrl').value;
-            const desc = document.getElementById('itemDesc').value;
-            const pin = document.getElementById('itemPin').value;
+            const subCategory = section === 'directory' ? document.getElementById('itemSubCategory').value : '';
+            const price = section === 'marketplace' ? document.getElementById('itemPrice').value.trim() : '';
+            const location = document.getElementById('itemLocation').value.trim();
+            const landmark = document.getElementById('itemLandmark').value.trim();
+            const mapUrl = document.getElementById('itemMapUrl').value.trim();
+            const desc = document.getElementById('itemDesc').value.trim();
+            const pin = document.getElementById('itemPin').value.trim();
             const durationDays = parseInt(document.getElementById('itemDuration').value) || 10;
             const expiresAt = Date.now() + (durationDays * 24 * 60 * 60 * 1000);
 
-            const imageUrlInput = document.getElementById('itemImage').value;
+            const imageUrlInput = document.getElementById('itemImage').value.trim();
             const imageFileInput = document.getElementById('itemImageFile').files[0];
 
             const basePayload = {
-                section, title, category, price, phone,
+                section, title, category, subCategory, price, phone,
                 location, landmark, mapUrl, desc, pin, expiresAt,
                 sold: false,
-                userAgent: navigator.userAgent // ഏത് ഡിവൈസിൽ നിന്നാണ് നൽകിയതെന്ന ആഡിറ്റ് ലോഗ്
+                userAgent: navigator.userAgent
             };
 
             if (imageFileInput) {
@@ -608,9 +776,9 @@
             });
         }
 
-        // --- PIN Protected Sold / Delete Actions ---
+        // --- PIN Protected Actions ---
         async function markAsSoldPrompt(docId, currentSoldState) {
-            const enteredPin = prompt("പരസ്യം ചേർക്കുമ്പോൾ നൽകിയ 4-അക്ക PIN നമ്പർ നൽകുക:");
+            const enteredPin = prompt("പരസ്യം ചേർക്കുമ്പോൾ നൽകിയ 4-അക്ക PIN നൽകുക:");
             if (!enteredPin) return;
 
             try {
@@ -620,7 +788,7 @@
 
                 const item = docSnap.data();
                 if (item.pin && item.pin !== enteredPin) {
-                    alert("തെറ്റായ PIN നമ്പർ! പരസ്യം ചേർത്ത ഉടമസ്ഥന് മാത്രമേ മാറ്റം വരുത്താൻ സാധിക്കൂ.");
+                    alert("തെറ്റായ PIN നമ്പർ! പരസ്യം ചേർത്ത വ്യക്തിക്ക് മാത്രമേ മാറ്റം വരുത്താൻ അനുവാദമുള്ളൂ.");
                     return;
                 }
 
@@ -631,7 +799,7 @@
         }
 
         async function deleteListingPrompt(docId) {
-            const enteredPin = prompt("പരസ്യം ഡിലീറ്റ് ചെയ്യാൻ നിങ്ങളുടെ 4-അക്ക PIN നമ്പർ നൽകുക:");
+            const enteredPin = prompt("ഡിലീറ്റ് ചെയ്യാൻ നിങ്ങളുടെ 4-അക്ക PIN നൽകുക:");
             if (!enteredPin) return;
 
             try {
@@ -641,7 +809,7 @@
 
                 const item = docSnap.data();
                 if (item.pin && item.pin !== enteredPin) {
-                    alert("തെറ്റായ PIN നമ്പർ! പരസ്യം ചേർത്ത ഉടമസ്ഥന് മാത്രമേ ഇത് ഡിലീറ്റ് ചെയ്യാൻ സാധിക്കൂ.");
+                    alert("തെറ്റായ PIN നമ്പർ! ഇത് ചേർത്ത ഉടമസ്ഥന് മാത്രമേ ഡിലീറ്റ് ചെയ്യാൻ സാധിക്കൂ.");
                     return;
                 }
 
