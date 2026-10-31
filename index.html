@@ -66,7 +66,11 @@
                 </button>
 
                 <!-- Add Listing Button -->
-                <button onclick="openModal()" class="bg-secondary hover:bg-emerald-700 text-white px-2.5 py-1.5 sm:px-4 sm:py-2 rounded-lg text-xs sm:text-sm font-semibold shadow transition flex items-center space-x-1">
+                <!-- പഴയത്: bg-secondary hover:bg-emerald-700 -->
+<button onclick="openModal()" class="bg-amber-600 hover:bg-amber-700 text-white px-2.5 py-1.5 sm:px-4 sm:py-2 rounded-lg text-xs sm:text-sm font-semibold shadow transition flex items-center space-x-1">
+    <i class="fa-solid fa-plus text-xs"></i>
+    <span class="text-xs sm:text-sm">Add</span>
+</button>
                     <i class="fa-solid fa-plus text-xs"></i>
                     <span class="text-xs sm:text-sm">Add</span>
                 </button>
@@ -831,7 +835,11 @@
                             <i class="fa-solid fa-phone text-[10px]"></i>
                             <span>Call</span>
                         </a>
-                        <a href="https://wa.me/91${item.phone}?text=Hello,%20I%20saw%20your%20listing%20on%20Naattukoottam:%20${encodeURIComponent(item.title)}" target="_blank" class="bg-emerald-600 hover:bg-emerald-700 text-white px-2 py-1.5 rounded text-xs transition flex items-center justify-center shadow-sm">
+                        // പഴയത്: bg-secondary hover:bg-emerald-700
+<a href="tel:${item.phone}" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white text-center py-1.5 rounded text-xs font-semibold transition flex items-center justify-center space-x-1 shadow-sm">
+    <i class="fa-solid fa-phone text-[10px]"></i>
+    <span>Call</span>
+</a>
                             <i class="fa-brands fa-whatsapp text-sm"></i>
                         </a>
                         ${mapBtn}
