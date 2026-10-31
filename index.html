@@ -44,7 +44,7 @@
                 </div>
                 <div>
                     <h1 class="text-lg md:text-xl font-bold tracking-wide leading-tight">നാട്ടുകൂട്ടം (Naattukoottam)</h1>
-                    <p class="text-xs text-slate-300">Local Directory & Marketplace</p>
+                    <p class="text-xs text-slate-300">Local Directory & Community Marketplace</p>
                 </div>
             </div>
             
@@ -88,7 +88,7 @@
     <!-- Main Content -->
     <main class="flex-grow max-w-7xl w-full mx-auto px-4 py-6">
         
-        <!-- Search & Dynamic Filter Bar -->
+        <!-- Search & Area Filter Bar -->
         <div class="mb-6 flex flex-col md:flex-row gap-4 items-center justify-between">
             <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto flex-1 max-w-2xl">
                 <!-- Search Box -->
@@ -99,7 +99,7 @@
                     <input type="text" id="searchInput" oninput="filterItems()" placeholder="Search shops, services, places, items..." class="w-full pl-10 pr-4 py-2 bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-sm shadow-sm">
                 </div>
 
-                <!-- Location Filter -->
+                <!-- Verified Locations Filter -->
                 <div class="relative min-w-[200px]">
                     <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-emerald-600">
                         <i class="fa-solid fa-location-dot"></i>
@@ -161,13 +161,14 @@
         </div>
     </div>
 
-    <!-- Admin Login / Control Modal -->
+    <!-- Admin Master Management Modal -->
     <div id="adminModal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl relative">
+        <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
             <button onclick="closeAdminModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600">
                 <i class="fa-solid fa-xmark text-xl"></i>
             </button>
 
+            <!-- Login Form -->
             <div id="adminLoginForm">
                 <div class="text-center mb-4">
                     <div class="w-12 h-12 bg-blue-100 text-primary mx-auto rounded-full flex items-center justify-center text-xl mb-2">
@@ -191,15 +192,59 @@
                 </div>
             </div>
 
-            <div id="adminLoggedPanel" class="hidden text-center space-y-4">
-                <div class="w-12 h-12 bg-emerald-100 text-secondary mx-auto rounded-full flex items-center justify-center text-xl">
-                    <i class="fa-solid fa-shield-check"></i>
+            <!-- Logged Panel & Master Controls -->
+            <div id="adminLoggedPanel" class="hidden space-y-5">
+                <div class="flex items-center justify-between border-b pb-3">
+                    <div class="flex items-center gap-2 text-emerald-700 font-bold">
+                        <i class="fa-solid fa-circle-check"></i>
+                        <span>Admin Dashboard</span>
+                    </div>
+                    <button onclick="handleAdminLogout()" class="text-xs bg-red-100 text-red-700 px-3 py-1 rounded-md font-semibold hover:bg-red-200 transition">
+                        Logout
+                    </button>
                 </div>
-                <h3 class="text-lg font-bold text-slate-800">Admin Mode Active</h3>
-                <p class="text-xs text-slate-500">നിങ്ങൾക്ക് ഇപ്പോൾ ഏത് ലിസ്റ്റിംഗും നേരിട്ട് എഡിറ്റ് ചെയ്യാനും ഡിലീറ്റ് ചെയ്യാനും അനുവാദമുണ്ട്.</p>
-                <button onclick="handleAdminLogout()" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2 rounded-lg text-sm shadow transition">
-                    Logout from Admin
-                </button>
+
+                <!-- Manage Locations -->
+                <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200">
+                    <h4 class="text-xs font-bold text-slate-700 uppercase mb-2 flex items-center gap-1.5">
+                        <i class="fa-solid fa-location-dot text-emerald-600"></i> സ്ഥലങ്ങൾ ക്രമീകരിക്കുക (Locations)
+                    </h4>
+                    <div class="flex gap-2 mb-2">
+                        <input type="text" id="newLocationInput" placeholder="പുതിയ സ്ഥലം (ഉദാ: ചെമ്പ്രശ്ശേരി)" class="flex-1 p-2 text-xs border border-slate-300 rounded-lg">
+                        <button onclick="addNewLocation()" class="bg-secondary text-white px-3 py-2 text-xs rounded-lg font-bold shadow hover:bg-emerald-700">Add</button>
+                    </div>
+                    <div id="adminLocationList" class="flex flex-wrap gap-1.5 max-h-32 overflow-y-auto pt-1">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Manage Shop Types -->
+                <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200">
+                    <h4 class="text-xs font-bold text-slate-700 uppercase mb-2 flex items-center gap-1.5">
+                        <i class="fa-solid fa-store text-blue-600"></i> കടകളുടെ ഇനം (Shop Types)
+                    </h4>
+                    <div class="flex gap-2 mb-2">
+                        <input type="text" id="newShopTypeInput" placeholder="ഉദാ: സ്റ്റേഷനറി, ഫാൻസി" class="flex-1 p-2 text-xs border border-slate-300 rounded-lg">
+                        <button onclick="addNewCategoryItem('Shops')" class="bg-primary text-white px-3 py-2 text-xs rounded-lg font-bold shadow hover:bg-blue-800">Add</button>
+                    </div>
+                    <div id="adminShopList" class="flex flex-wrap gap-1.5 max-h-32 overflow-y-auto pt-1">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Manage Service Types -->
+                <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200">
+                    <h4 class="text-xs font-bold text-slate-700 uppercase mb-2 flex items-center gap-1.5">
+                        <i class="fa-solid fa-wrench text-amber-600"></i> തൊഴിലുകൾ / സേവനങ്ങൾ (Service Types)
+                    </h4>
+                    <div class="flex gap-2 mb-2">
+                        <input type="text" id="newServiceTypeInput" placeholder="ഉദാ: വാർക്കപ്പണി, ടൈൽസ് വർക്ക്" class="flex-1 p-2 text-xs border border-slate-300 rounded-lg">
+                        <button onclick="addNewCategoryItem('Services')" class="bg-amber-600 text-white px-3 py-2 text-xs rounded-lg font-bold shadow hover:bg-amber-700">Add</button>
+                    </div>
+                    <div id="adminServiceList" class="flex flex-wrap gap-1.5 max-h-32 overflow-y-auto pt-1">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -259,21 +304,17 @@
                     <span class="text-[10px] text-slate-500">ഒരു നമ്പറിൽ നിന്ന് പരമാവധി 3 ലിസ്റ്റിംഗുകൾ മാത്രമേ സാധ്യമാകൂ.</span>
                 </div>
 
-                <!-- സ്ഥലം & തത്സമയ ജി.പി.എസ് -->
+                <!-- അഡ്മിൻ നൽകുന്ന ഡ്രോപ്പ്-ഡൗൺ സ്ഥലം മാത്രം -->
                 <div>
-                    <div class="flex justify-between items-center mb-1">
-                        <label class="block text-xs font-semibold uppercase text-slate-600">സ്ഥലം / പ്രദേശം / പഞ്ചായത്ത് *</label>
-                        <button type="button" onclick="fetchGPSLocation()" class="text-[11px] text-emerald-700 hover:text-emerald-800 font-bold flex items-center gap-1">
-                            <i class="fa-solid fa-crosshairs"></i> 📍 GPS ലൊക്കേഷൻ എടുക്കുക
-                        </button>
-                    </div>
-                    <input type="text" id="itemLocation" list="locationDatalist" required placeholder="ഉദാ: നരിക്കുനി, താമരശ്ശേരി, പൂനൂർ..." class="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-primary focus:outline-none">
-                    <datalist id="locationDatalist"></datalist>
+                    <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">സ്ഥലം / പ്രദേശം (Location) *</label>
+                    <select id="itemLocation" required class="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-primary focus:outline-none">
+                        <!-- Populated strictly by Admin Locations -->
+                    </select>
                 </div>
 
                 <div>
                     <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">ലാൻഡ്മാർക്ക് (Landmark)</label>
-                    <input type="text" id="itemLandmark" placeholder="ഉദാ: ബസ് സ്റ്റാൻഡിന് സമീപം, പള്ളിക്ക് എതിർവശം" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-primary focus:outline-none">
+                    <input type="text" id="itemLandmark" placeholder="ഉദാ: പഴയ ജുമാ മസ്ജിദിന് സമീപം" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-primary focus:outline-none">
                 </div>
 
                 <div>
@@ -369,15 +410,16 @@
         let currentTab = 'directory';
         let currentCategory = 'All';
         let allItems = [];
-        let allLocations = new Set();
         let deferredPrompt = null;
         let selectedFileToUpload = null;
 
-        // Admin Session Check
+        // Admin & Area Preferences
         let isAdminLoggedIn = localStorage.getItem('naattukoottam_admin_logged') === 'true';
         let userDefaultArea = localStorage.getItem('naattukoottam_saved_area') || 'All';
 
-        const subCategories = {
+        // Initial App Masters (Synced via Firebase `app_settings`)
+        let appLocations = ["Chembrasseri", "Idiyangara", "Pandikkad"];
+        let appSubCategories = {
             Shops: [
                 "സൂപ്പർമാർക്കറ്റ് / പലചരക്ക് (Supermarket / Grocery)",
                 "പച്ചക്കറി / പഴങ്ങൾ (Vegetables & Fruits)",
@@ -444,7 +486,124 @@
             return 'https://images.unsplash.com/photo-1604719312566-8912e9227c6a?auto=format&fit=crop&w=600&q=80';
         }
 
-        // --- Admin Controls ---
+        // --- Master Settings Sync with Firebase ---
+        function loadMasterSettings() {
+            db.collection("app_settings").doc("masters").onSnapshot((doc) => {
+                if (doc.exists) {
+                    const data = doc.data();
+                    if (data.locations && data.locations.length > 0) appLocations = data.locations;
+                    if (data.subCategories) appSubCategories = data.subCategories;
+                } else {
+                    // ആദ്യമായി ഡാറ്റാബേസിലേക്ക് മാസ്റ്റർ സേവ് ചെയ്യുന്നു
+                    db.collection("app_settings").doc("masters").set({
+                        locations: appLocations,
+                        subCategories: appSubCategories
+                    });
+                }
+                updateDropdownUI();
+                renderAdminMasterLists();
+                handleCategoryChange();
+            });
+        }
+
+        function updateDropdownUI() {
+            const topFilter = document.getElementById('userAreaFilter');
+            const itemLocSelect = document.getElementById('itemLocation');
+
+            const currentSelected = topFilter.value || userDefaultArea;
+            topFilter.innerHTML = `<option value="All">എല്ലാ സ്ഥലങ്ങളും (All Areas)</option>`;
+            itemLocSelect.innerHTML = `<option value="">-- സ്ഥലം തിരഞ്ഞെടുക്കുക --</option>`;
+
+            appLocations.sort().forEach(loc => {
+                // Top Filter
+                const topOpt = document.createElement('option');
+                topOpt.value = loc;
+                topOpt.textContent = `📍 ${loc}`;
+                if (loc === currentSelected) topOpt.selected = true;
+                topFilter.appendChild(topOpt);
+
+                // Form Location Select
+                const formOpt = document.createElement('option');
+                formOpt.value = loc;
+                formOpt.textContent = loc;
+                itemLocSelect.appendChild(formOpt);
+            });
+
+            if (currentSelected && currentSelected !== 'All') {
+                topFilter.value = currentSelected;
+            }
+        }
+
+        function renderAdminMasterLists() {
+            const locList = document.getElementById('adminLocationList');
+            const shopList = document.getElementById('adminShopList');
+            const srvList = document.getElementById('adminServiceList');
+
+            if (!locList) return;
+
+            // Locations Pills
+            locList.innerHTML = appLocations.map(loc => `
+                <span class="inline-flex items-center gap-1 bg-white border border-slate-300 px-2 py-1 rounded text-xs">
+                    ${loc}
+                    <i class="fa-solid fa-xmark text-red-500 cursor-pointer ml-1" onclick="removeLocation('${loc}')"></i>
+                </span>
+            `).join('');
+
+            // Shop Types Pills
+            shopList.innerHTML = (appSubCategories.Shops || []).map(sh => `
+                <span class="inline-flex items-center gap-1 bg-white border border-slate-300 px-2 py-1 rounded text-[11px]">
+                    ${sh}
+                    <i class="fa-solid fa-xmark text-red-500 cursor-pointer ml-1" onclick="removeCategoryItem('Shops', '${sh}')"></i>
+                </span>
+            `).join('');
+
+            // Services Pills
+            srvList.innerHTML = (appSubCategories.Services || []).map(sv => `
+                <span class="inline-flex items-center gap-1 bg-white border border-slate-300 px-2 py-1 rounded text-[11px]">
+                    ${sv}
+                    <i class="fa-solid fa-xmark text-red-500 cursor-pointer ml-1" onclick="removeCategoryItem('Services', '${sv}')"></i>
+                </span>
+            `).join('');
+        }
+
+        // Admin Add / Remove Masters
+        async function addNewLocation() {
+            const input = document.getElementById('newLocationInput');
+            const val = input.value.trim();
+            if (!val) return;
+            if (!appLocations.includes(val)) {
+                appLocations.push(val);
+                await db.collection("app_settings").doc("masters").update({ locations: appLocations });
+                input.value = '';
+            }
+        }
+
+        async function removeLocation(loc) {
+            if (confirm(`'${loc}' എന്ന സ്ഥലം ലിസ്റ്റിൽ നിന്ന് നീക്കം ചെയ്യണോ?`)) {
+                appLocations = appLocations.filter(l => l !== loc);
+                await db.collection("app_settings").doc("masters").update({ locations: appLocations });
+            }
+        }
+
+        async function addNewCategoryItem(cat) {
+            const input = cat === 'Shops' ? document.getElementById('newShopTypeInput') : document.getElementById('newServiceTypeInput');
+            const val = input.value.trim();
+            if (!val) return;
+            if (!appSubCategories[cat].includes(val)) {
+                appSubCategories[cat].push(val);
+                await db.collection("app_settings").doc("masters").update({ subCategories: appSubCategories });
+                input.value = '';
+            }
+        }
+
+        async function removeCategoryItem(cat, item) {
+            if (confirm(`'${item}' ലിസ്റ്റിൽ നിന്ന് നീക്കം ചെയ്യണോ?`)) {
+                appSubCategories[cat] = appSubCategories[cat].filter(i => i !== item);
+                await db.collection("app_settings").doc("masters").update({ subCategories: appSubCategories });
+            }
+        }
+
+        // --- Admin Authentication UI ---
         function updateAdminUI() {
             const btnLabel = document.getElementById('adminBtnLabel');
             if (isAdminLoggedIn) {
@@ -476,7 +635,6 @@
                 updateAdminUI();
                 renderItems();
                 alert("അഡ്മിൻ ലോഗിൻ വിജയകരം!");
-                closeAdminModal();
             } else {
                 alert("തെറ്റായ Username അല്ലെങ്കിൽ Password!");
             }
@@ -517,7 +675,6 @@
             });
         }
 
-        // --- Disclaimer Logic ---
         function checkDisclaimer() {
             const agreed = localStorage.getItem('naattukoottam_disclaimer_agreed_v2');
             if (!agreed) {
@@ -528,39 +685,6 @@
         function acceptDisclaimer() {
             localStorage.setItem('naattukoottam_disclaimer_agreed_v2', 'true');
             document.getElementById('disclaimerModal').classList.add('hidden');
-        }
-
-        // --- Live GPS Fetch ---
-        function fetchGPSLocation() {
-            if (!navigator.geolocation) {
-                alert("നിങ്ങളുടെ ബ്രൗസറിൽ GPS സൗകര്യം ലഭ്യമല്ല.");
-                return;
-            }
-            const locInput = document.getElementById('itemLocation');
-            locInput.value = "ലൊക്കേഷൻ കണ്ടെത്തുന്നു...";
-
-            navigator.geolocation.getCurrentPosition(async (pos) => {
-                const lat = pos.coords.latitude;
-                const lon = pos.coords.longitude;
-                try {
-                    const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`);
-                    const data = await res.json();
-                    const addr = data.address;
-                    const place = addr.suburb || addr.village || addr.town || addr.city || addr.county || "";
-                    locInput.value = place || `${lat.toFixed(4)}, ${lon.toFixed(4)}`;
-                    
-                    const mapInput = document.getElementById('itemMapUrl');
-                    if (!mapInput.value) {
-                        mapInput.value = `https://www.google.com/maps?q=${lat},${lon}`;
-                    }
-                } catch (e) {
-                    locInput.value = "";
-                    alert("ലൊക്കേഷൻ നേരിട്ട് ടൈപ്പ് ചെയ്യുക.");
-                }
-            }, (err) => {
-                locInput.value = "";
-                alert("GPS അനുമതി ലഭിച്ചില്ല. ദയവായി നേരിട്ട് സ്ഥലം ടൈപ്പ് ചെയ്യുക.");
-            }, { enableHighAccuracy: true });
         }
 
         function previewSelectedImage(input) {
@@ -579,49 +703,18 @@
         function loadData() {
             checkDisclaimer();
             updateAdminUI();
-            handleCategoryChange();
+            loadMasterSettings();
             autoCleanExpiredItems();
 
             db.collection("listings").onSnapshot((snapshot) => {
                 allItems = [];
-                allLocations.clear();
                 snapshot.forEach((doc) => {
-                    const data = doc.data();
-                    allItems.push({ id: doc.id, ...data });
-                    if (data.location) {
-                        allLocations.add(data.location.trim());
-                    }
+                    allItems.push({ id: doc.id, ...doc.data() });
                 });
-                updateLocationDropdowns();
                 renderItems();
             }, (error) => {
                 console.error("Error loading data: ", error);
             });
-        }
-
-        function updateLocationDropdowns() {
-            const datalist = document.getElementById('locationDatalist');
-            const topFilter = document.getElementById('userAreaFilter');
-            datalist.innerHTML = '';
-            
-            const currentSelected = topFilter.value || userDefaultArea;
-            topFilter.innerHTML = `<option value="All">എല്ലാ സ്ഥലങ്ങളും (All Areas)</option>`;
-
-            Array.from(allLocations).sort().forEach(loc => {
-                const opt = document.createElement('option');
-                opt.value = loc;
-                datalist.appendChild(opt);
-
-                const topOpt = document.createElement('option');
-                topOpt.value = loc;
-                topOpt.textContent = `📍 ${loc}`;
-                if (loc === currentSelected) topOpt.selected = true;
-                topFilter.appendChild(topOpt);
-            });
-
-            if (currentSelected && currentSelected !== 'All') {
-                topFilter.value = currentSelected;
-            }
         }
 
         function changeDefaultArea(area) {
@@ -729,7 +822,7 @@
                     `;
                 }
 
-                // അഡ്മിൻ മോഡിൽ എക്സ്ട്രാ വിവരങ്ങൾ (Audit Details)
+                // അഡ്മിൻ മോഡ് വിവരങ്ങൾ (Audit Details)[cite: 26]
                 const adminAuditInfo = isAdminLoggedIn ? `
                     <div class="bg-amber-50 p-2 rounded text-[11px] text-amber-900 border border-amber-200 mt-2">
                         <div><b>PIN:</b> ${item.pin || 'None'} | <b>Phone:</b> ${item.phone}</div>
@@ -834,7 +927,7 @@
             const subCatLabel = document.getElementById('subCategoryLabel');
 
             subCatSelect.innerHTML = '';
-            const list = subCategories[cat] || [];
+            const list = appSubCategories[cat] || [];
 
             if (cat === 'Shops') subCatLabel.innerText = "കടയുടെ ഇനം (Shop Type)";
             else if (cat === 'Services') subCatLabel.innerText = "തൊഴിൽ / സേവന ഇനം (Service Type)";
@@ -849,7 +942,7 @@
             });
         }
 
-        // --- Save Item ---
+        // --- Save Item with Location from Dropdown ---
         async function saveItem(e) {
             e.preventDefault();
             const saveBtn = document.getElementById('saveBtn');
@@ -883,7 +976,7 @@
             const category = section === 'directory' ? document.getElementById('itemCategory').value : 'Marketplace';
             const subCategory = section === 'directory' ? document.getElementById('itemSubCategory').value : '';
             const price = section === 'marketplace' ? document.getElementById('itemPrice').value.trim() : '';
-            const location = document.getElementById('itemLocation').value.trim();
+            const location = document.getElementById('itemLocation').value;
             const landmark = document.getElementById('itemLandmark').value.trim();
             const mapUrl = document.getElementById('itemMapUrl').value.trim();
             const desc = document.getElementById('itemDesc').value.trim();
@@ -954,7 +1047,7 @@
             });
         }
 
-        // --- PIN Protected / Admin Direct Actions ---
+        // --- Actions ---
         async function markAsSoldPrompt(docId, currentSoldState) {
             if (!isAdminLoggedIn) {
                 const enteredPin = prompt("പരസ്യം ചേർക്കുമ്പോൾ നൽകിയ 4-അക്ക PIN നൽകുക:");
@@ -1017,14 +1110,14 @@
             const newPhone = prompt("ഫോൺ നമ്പർ മാറ്റുക:", item.phone);
             if (newPhone === null) return;
 
-            const newLocation = prompt("സ്ഥലം മാറ്റുക:", item.location);
-            if (newLocation === null) return;
+            const newLandmark = prompt("ലാൻഡ്മാർക്ക് മാറ്റുക:", item.landmark || '');
+            if (newLandmark === null) return;
 
             try {
                 await docRef.update({
                     title: newTitle.trim(),
                     phone: newPhone.trim(),
-                    location: newLocation.trim()
+                    landmark: newLandmark.trim()
                 });
                 alert("വിവരങ്ങൾ അപ്ഡേറ്റ് ചെയ്തു!");
             } catch (e) {
