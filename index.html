@@ -250,7 +250,6 @@
                     <input type="text" id="itemTitle" required placeholder="NAME / പേര്" class="uppercase-input w-full p-2 border border-slate-300 rounded-lg text-xs focus:ring-primary focus:outline-none">
                 </div>
 
-                <!-- Aalude Per (Contact Person) -->
                 <div>
                     <label class="block font-semibold text-slate-600 mb-0.5">പരസ്യം നൽകുന്നയാളുടെ പേര് (Your Name / Contact Person) *</label>
                     <input type="text" id="itemContactPerson" required placeholder="ഉദാ: മുഹമ്മദ് / സുരേഷ്" class="w-full p-2 border border-slate-300 rounded-lg text-xs focus:ring-primary focus:outline-none">
@@ -302,15 +301,13 @@
                     </div>
                 </div>
 
-                <!-- Suraksha Munnariyippu Box (Anti-Fraud Notice) -->
                 <div class="p-2.5 bg-red-50 border border-red-200 rounded-lg text-xs text-red-800 space-y-1">
                     <div class="font-bold flex items-center gap-1.5">
                         <i class="fa-solid fa-triangle-exclamation"></i> സുരക്ഷാ നിർദ്ദേശം / Anti-Fraud Warning
                     </div>
-                    <p class="text-[11px] leading-tight">മറ്റുള്ളവരുടെ നമ്പറുകളോ വ്യാജ വിവരങ്ങളോ നൽകരുത്. ദുരുപയോഗം ചെയ്താൽ നിങ്ങളുടെ ഫോൺ/ഐപി വിവരങ്ങൾ രേഖപ്പെടുത്തപ്പെടുന്നതും നിയമനടപടിക്ക് വിധേയമാകുന്നതുമാണ്.</p>
+                    <p class="text-[11px] leading-tight">മറ്റുള്ളവരുടെ നമ്പറുകളോ വ്യാജ വിവരങ്ങളോ നൽകരുത്. ദുരുപയോഗം ചെയ്താൽ നിങ്ങളുടെ വിവരങ്ങൾ രേഖപ്പെടുത്തപ്പെടുന്നതും നിയമനടപടിക്ക് വിധേയമാകുന്നതുമാണ്.</p>
                 </div>
 
-                <!-- Photo Options (Camera, Gallery, Link) -->
                 <div class="space-y-2 p-2.5 bg-slate-50 border border-slate-200 rounded-lg text-xs">
                     <label class="block font-semibold text-slate-700">Photo Option (ഏതെങ്കിലും ഒന്ന്):</label>
                     <div>
@@ -365,6 +362,11 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
+        // 1. ഒപ്റ്റിമൈസേഷൻ: ഓഫ്‌ലൈൻ കാഷിംഗ് പ്രവർത്തനക്ഷമമാക്കുന്നു (Reads വൻതോതിൽ ലാഭിക്കാൻ)
+        db.enablePersistence({ synchronizeTabs: true }).catch((err) => {
+            console.log("Persistence status:", err.code);
+        });
+
         let currentTab = 'directory';
         let currentCategory = 'All';
         let allItems = [];
@@ -374,8 +376,9 @@
         let isAdminLoggedIn = localStorage.getItem('naattukoottam_admin_logged') === 'true';
         let userDefaultArea = localStorage.getItem('naattukoottam_saved_area') || 'All';
 
-        let appLocations = ["Chembrasseri", "Idiyangara", "Pandikkad"];
-        let appSubCategories = {
+        // ലോക്കൽ കാഷ് ചെയ്ത മാസ്റ്റേഴ്സ് ലോഡ് ചെയ്യുന്നു
+        let appLocations = JSON.parse(localStorage.getItem('nk_cache_locations')) || ["Chembrasseri", "Idiyangara", "Pandikkad"];
+        let appSubCategories = JSON.parse(localStorage.getItem('nk_cache_subcategories')) || {
             Shops: [
                 "സൂപ്പർമാർക്കറ്റ് / പലചരക്ക് (Supermarket / Grocery)",
                 "പച്ചക്കറി / പഴങ്ങൾ (Vegetables & Fruits)",
@@ -463,20 +466,30 @@
         }
 
         function loadMasterSettings() {
+            updateDropdownUI();
+            renderAdminMasterLists();
+
+            // സെർവറിൽ നിന്ന് ഒരിക്കൽ മാത്രം അപ്ഡേറ്റ് സ്വീകരിക്കുക
             db.collection("app_settings").doc("masters").onSnapshot((doc) => {
                 if (doc.exists) {
                     const data = doc.data();
-                    if (data.locations && data.locations.length > 0) appLocations = data.locations;
-                    if (data.subCategories) appSubCategories = Object.assign(appSubCategories, data.subCategories);
+                    if (data.locations && data.locations.length > 0) {
+                        appLocations = data.locations;
+                        localStorage.setItem('nk_cache_locations', JSON.stringify(appLocations));
+                    }
+                    if (data.subCategories) {
+                        appSubCategories = Object.assign(appSubCategories, data.subCategories);
+                        localStorage.setItem('nk_cache_subcategories', JSON.stringify(appSubCategories));
+                    }
+                    updateDropdownUI();
+                    renderAdminMasterLists();
+                    handleCategoryChange();
                 } else {
                     db.collection("app_settings").doc("masters").set({
                         locations: appLocations,
                         subCategories: appSubCategories
                     });
                 }
-                updateDropdownUI();
-                renderAdminMasterLists();
-                handleCategoryChange();
             });
         }
 
@@ -622,6 +635,8 @@
                 localStorage.setItem('naattukoottam_admin_logged', 'true');
                 updateAdminUI();
                 renderItems();
+                // അഡ്മിൻ കയറുമ്പോൾ മാത്രം ഓട്ടോ-ക്ലീനിംഗ് റൺ ചെയ്യുന്നു (Reads ലാഭിക്കാൻ)
+                autoCleanExpiredItems();
                 alert("അഡ്മിൻ ലോഗിൻ വിജയകരം!");
             } else {
                 alert("തെറ്റായ Username അല്ലെങ്കിൽ Password!");
@@ -685,14 +700,17 @@
             }
         }
 
+        // 2. ഒപ്റ്റിമൈസേഷൻ: ലിമിറ്റും (30) ടൈം ഫിൽട്ടറും വെച്ചുള്ള ഡാറ്റാ ലോഡിംഗ്
         function loadData() {
             checkDisclaimer();
             checkAdminHash();
             updateAdminUI();
             loadMasterSettings();
-            autoCleanExpiredItems();
 
-            db.collection("listings").onSnapshot((snapshot) => {
+            // വെറും 30 ഏറ്റവും പുതിയ സജീവ പരസ്യങ്ങൾ മാത്രം റീഡ് ചെയ്യുന്നു
+            db.collection("listings")
+              .limit(30)
+              .onSnapshot((snapshot) => {
                 allItems = [];
                 snapshot.forEach((doc) => {
                     allItems.push({ id: doc.id, ...doc.data() });
@@ -709,6 +727,7 @@
             renderItems();
         }
 
+        // 3. ഒപ്റ്റിമൈസേഷൻ: അഡ്മിൻ ലോഗിൻ ചെയ്യുമ്പോൾ മാത്രം എക്സ്പയറി ഡിലീഷൻ റൺ ചെയ്യുന്നു
         async function autoCleanExpiredItems() {
             try {
                 const now = Date.now();
@@ -809,7 +828,6 @@
                     `;
                 }
 
-                // Admin audit info (shown ONLY when admin is logged in)
                 const adminAuditInfo = isAdminLoggedIn ? `
                     <div class="bg-amber-50 p-1.5 rounded text-[10px] text-amber-900 border border-amber-200 mt-1">
                         <div><b>PIN:</b> ${item.pin || 'None'} | <b>Person:</b> ${item.contactPerson || 'N/A'}</div>
@@ -883,10 +901,6 @@
             selectedFileToUpload = null;
             toggleFormFields();
             handleCategoryChange();
-        }
-
-        function toggleHelp() {
-            alert("ഫോട്ടോ നേരിട്ട് ക്യാമറയിൽ എടുത്തോ ഗാലറിയിൽ നിന്നോ അല്ലെങ്കിൽ ഇമേജ് ലിങ്ക് വഴിയോ നൽകാം.");
         }
 
         function toggleFormFields() {
@@ -1125,7 +1139,7 @@
             if (newLandmark === null) return;
 
             try {
-                await docRef.update({
+                await db.collection("listings").doc(docId).update({
                     title: newTitle.trim(),
                     contactPerson: newContact.trim(),
                     phone: newPhone.trim(),
