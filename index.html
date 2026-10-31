@@ -190,10 +190,11 @@
                         <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
                         <h3 class="text-base font-bold text-slate-800">Admin Management Panel</h3>
                     </div>
-                    <div class="flex items-center gap-2 mr-8">
-                        <button id="admTabSettings" onclick="switchAdminTab('settings')" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-900 text-white transition">മാസ്റ്റർ വിവരങ്ങൾ</button>
-                        <button id="admTabLogs" onclick="switchAdminTab('logs')" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition">Deleted History Log</button>
-                        <button onclick="handleAdminLogout()" class="text-xs bg-red-50 text-red-600 hover:bg-red-100 px-3 py-1.5 rounded-lg font-semibold transition ml-2">Logout</button>
+                    <div class="flex items-center gap-1.5 mr-8">
+                        <button id="admTabSettings" onclick="switchAdminTab('settings')" class="px-2.5 py-1.5 rounded-lg text-xs font-bold bg-slate-900 text-white transition">മാസ്റ്റർ വിവരങ്ങൾ</button>
+                        <button id="admTabActive" onclick="switchAdminTab('active')" class="px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition">സജീവ ലിസ്റ്റിംഗുകൾ (Audit)</button>
+                        <button id="admTabLogs" onclick="switchAdminTab('logs')" class="px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition">Deleted History Log</button>
+                        <button onclick="handleAdminLogout()" class="text-xs bg-red-50 text-red-600 hover:bg-red-100 px-2.5 py-1.5 rounded-lg font-semibold transition ml-1">Logout</button>
                     </div>
                 </div>
 
@@ -258,7 +259,33 @@
                     </div>
                 </div>
 
-                <!-- TAB 2: History & Removed Ads Table -->
+                <!-- TAB 2: Active Listings Audit Table -->
+                <div id="adminTabContentActive" class="hidden overflow-y-auto py-3 flex-grow">
+                    <div class="flex items-center justify-between mb-3 text-xs">
+                        <span class="text-slate-500">ഇപ്പോൾ സൈറ്റിലുള്ള എല്ലാ പരസ്യങ്ങളും ചേർത്ത വിവരങ്ങളും:</span>
+                        <button onclick="loadActiveAuditTable()" class="text-blue-600 hover:underline font-bold flex items-center gap-1">
+                            <i class="fa-solid fa-arrows-rotate"></i> Refresh
+                        </button>
+                    </div>
+                    <div class="border border-slate-200 rounded-xl overflow-hidden shadow-sm">
+                        <table class="w-full text-left text-xs text-slate-600">
+                            <thead class="bg-slate-100 text-slate-700 font-bold border-b border-slate-200">
+                                <tr>
+                                    <th class="p-2.5">Title & Section</th>
+                                    <th class="p-2.5">പേര് & Phone</th>
+                                    <th class="p-2.5">സ്ഥലം</th>
+                                    <th class="p-2.5">PIN & Device/IP</th>
+                                    <th class="p-2.5">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="activeAuditTableBody" class="divide-y divide-slate-100">
+                                <tr><td colspan="5" class="p-4 text-center text-slate-400">ലോഡ് ചെയ്യുന്നു...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- TAB 3: History & Removed Ads Table -->
                 <div id="adminTabContentLogs" class="hidden overflow-y-auto py-3 flex-grow">
                     <div class="flex items-center justify-between mb-3 text-xs">
                         <span class="text-slate-500">കാലാവധി കഴിഞ്ഞതും ഡിലീറ്റ് ചെയ്തതുമായ പരസ്യങ്ങളുടെ റെക്കോർഡ്:</span>
@@ -383,7 +410,7 @@
                     <div class="font-bold flex items-center gap-1.5">
                         <i class="fa-solid fa-triangle-exclamation"></i> സുരക്ഷാ നിർദ്ദേശം / Anti-Fraud Warning
                     </div>
-                    <p class="text-[11px] leading-tight">മറ്റുള്ളവരുടെ നമ്പറുകളോ വ്യാജ വിവരങ്ങളോ നൽകരുത്. ദുരുപയോഗം ചെയ്താൽ നിങ്ങളുടെ വിവരങ്ങൾ രേഖപ്പെടുത്തപ്പെടുന്നതും നിയമനടപടിക്ക് വിധേയമാകുന്നതുമാണ്.</p>
+                    <p class="text-[11px] leading-tight">മറ്റുള്ളവരുടെ നമ്പറുകളോ വ്യാജ വിവരങ്ങളോ നൽകരുത്. ദുരുപയോഗം ചെയ്താൽ നിങ്ങളുടെ IP വിവരങ്ങൾ രേഖപ്പെടുത്തപ്പെടുന്നതും നിയമനടപടിക്ക് വിധേയമാകുന്നതുമാണ്.</p>
                 </div>
 
                 <div class="space-y-2 p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs">
@@ -517,6 +544,19 @@
         db.enablePersistence({ synchronizeTabs: true }).catch((err) => {
             console.log("Persistence status:", err.code);
         });
+
+        // 2. Device Identity & IP Capture
+        let userDeviceToken = localStorage.getItem('nk_user_token');
+        if (!userDeviceToken) {
+            userDeviceToken = 'dev_' + Math.random().toString(36).substring(2) + Date.now();
+            localStorage.setItem('nk_user_token', userDeviceToken);
+        }
+
+        let currentDeviceIp = 'Detecting...';
+        fetch('https://api.ipify.org?format=json')
+            .then(res => res.json())
+            .then(data => { currentDeviceIp = data.ip; })
+            .catch(() => { currentDeviceIp = 'Unknown'; });
 
         let currentTab = 'directory';
         let currentCategory = 'All';
@@ -803,22 +843,72 @@
         }
 
         function switchAdminTab(tab) {
-            const setTabBtn = document.getElementById('admTabSettings');
-            const logTabBtn = document.getElementById('admTabLogs');
-            const setContent = document.getElementById('adminTabContentSettings');
-            const logContent = document.getElementById('adminTabContentLogs');
+            const setBtn = document.getElementById('admTabSettings');
+            const actBtn = document.getElementById('admTabActive');
+            const logBtn = document.getElementById('admTabLogs');
+            const setCont = document.getElementById('adminTabContentSettings');
+            const actCont = document.getElementById('adminTabContentActive');
+            const logCont = document.getElementById('adminTabContentLogs');
+
+            [setBtn, actBtn, logBtn].forEach(b => b.className = "px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition");
+            [setCont, actCont, logCont].forEach(c => c.classList.add('hidden'));
 
             if (tab === 'settings') {
-                setTabBtn.className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-900 text-white transition";
-                logTabBtn.className = "px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition";
-                setContent.classList.remove('hidden');
-                logContent.classList.add('hidden');
+                setBtn.className = "px-2.5 py-1.5 rounded-lg text-xs font-bold bg-slate-900 text-white transition";
+                setCont.classList.remove('hidden');
+            } else if (tab === 'active') {
+                actBtn.className = "px-2.5 py-1.5 rounded-lg text-xs font-bold bg-slate-900 text-white transition";
+                actCont.classList.remove('hidden');
+                loadActiveAuditTable();
             } else {
-                logTabBtn.className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-900 text-white transition";
-                setTabBtn.className = "px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition";
-                logContent.classList.remove('hidden');
-                setContent.classList.add('hidden');
+                logBtn.className = "px-2.5 py-1.5 rounded-lg text-xs font-bold bg-slate-900 text-white transition";
+                logCont.classList.remove('hidden');
                 loadHistoryLogs();
+            }
+        }
+
+        // Active Listings Audit Load
+        async function loadActiveAuditTable() {
+            const tbody = document.getElementById('activeAuditTableBody');
+            if (!tbody) return;
+            tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-400">ഡാറ്റ എടുക്കുന്നു...</td></tr>`;
+
+            try {
+                const snap = await db.collection("listings").orderBy("createdAt", "desc").limit(50).get();
+                if (snap.empty) {
+                    tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-400">പരസ്യങ്ങൾ ഒന്നും ലഭ്യമല്ല.</td></tr>`;
+                    return;
+                }
+
+                tbody.innerHTML = snap.docs.map(doc => {
+                    const d = doc.data();
+                    const created = d.createdAt ? (d.createdAt.toDate ? d.createdAt.toDate().toLocaleDateString('en-IN') : new Date(d.createdAt).toLocaleDateString('en-IN')) : 'N/A';
+
+                    return `
+                        <tr class="hover:bg-slate-50 transition border-b border-slate-100">
+                            <td class="p-2.5 font-bold text-slate-800">
+                                ${d.title || d.name || 'Untitled'}
+                                <div class="text-[10px] text-orange-600 font-semibold uppercase">${d.section || 'directory'} • ${d.category || ''}</div>
+                            </td>
+                            <td class="p-2.5">
+                                <span class="font-medium">${d.contactPerson || '-'}</span><br>
+                                <a href="tel:${d.phone}" class="text-blue-600 font-mono font-bold text-[11px]">${d.phone || ''}</a>
+                            </td>
+                            <td class="p-2.5">${d.location || d.place || '-'}</td>
+                            <td class="p-2.5">
+                                <span class="bg-amber-100 text-amber-900 px-1.5 py-0.5 rounded text-[10px] font-bold">PIN: ${d.pin || 'None'}</span>
+                                <div class="text-[9px] text-slate-500 font-mono mt-0.5">IP: ${d.deviceIp || 'N/A'}</div>
+                                <div class="text-[9px] text-slate-400 truncate max-w-[150px]">${created}</div>
+                            </td>
+                            <td class="p-2.5 whitespace-nowrap">
+                                <button onclick="editListingAdmin('${doc.id}')" class="text-blue-600 font-bold hover:underline mr-2">Edit</button>
+                                <button onclick="deleteListingPrompt('${doc.id}')" class="text-red-600 font-bold hover:underline">Delete</button>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+            } catch (e) {
+                tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-red-500">Error: ${e.message}</td></tr>`;
             }
         }
 
@@ -926,7 +1016,6 @@
             }
         }
 
-        // 2. ഒപ്റ്റിമൈസേഷൻ: ലിമിറ്റും (30) കാഷിംഗും
         function loadData() {
             checkDisclaimer();
             checkAdminHash();
@@ -952,7 +1041,6 @@
             renderItems();
         }
 
-        // 3. ഒപ്റ്റിമൈസേഷൻ: ഓട്ടോ-ക്ലീനിംഗ് വിത്ത് ആർക്കൈവിംഗ്
         async function autoCleanExpiredItems() {
             try {
                 const now = Date.now();
@@ -1026,7 +1114,7 @@
             grid.innerHTML = filtered.map(item => {
                 const isSold = item.sold === true;
                 const soldClass = isSold ? 'sold-card' : '';
-                const soldBadge = isSold ? `<span class="absolute top-1.5 left-1.5 bg-red-600 text-white text-[9px] px-1.5 py-0.5 rounded font-extrabold shadow tracking-wider">SOLD</span>` : '';
+                const soldBadge = (item.section === 'marketplace' && isSold) ? `<span class="absolute top-1.5 left-1.5 bg-red-600 text-white text-[9px] px-1.5 py-0.5 rounded font-extrabold shadow tracking-wider">SOLD</span>` : '';
 
                 let badgeColor = 'bg-slate-900/80';
                 if (item.category === 'Shops') badgeColor = 'bg-purple-700';
@@ -1041,7 +1129,7 @@
                 ` : '';
 
                 let contactButtons = '';
-                if(isSold) {
+                if(item.section === 'marketplace' && isSold) {
                     contactButtons = `
                         <div class="flex-1 bg-slate-200 text-slate-500 text-center py-1.5 rounded-lg text-[10px] font-semibold">
                             Sold Out
@@ -1065,24 +1153,43 @@
                 const adminAuditInfo = isAdminLoggedIn ? `
                     <div class="bg-amber-50 p-1.5 rounded-lg text-[10px] text-amber-900 border border-amber-200 mt-1">
                         <div><b>PIN:</b> ${item.pin || 'None'} | <b>Person:</b> ${item.contactPerson || 'N/A'}</div>
-                        <div class="truncate text-[9px] text-slate-500"><b>Dev:</b> ${item.userAgent || 'Unknown'}</div>
+                        <div class="truncate text-[9px] text-slate-500"><b>IP:</b> ${item.deviceIp || 'Unknown'}</div>
                     </div>
                 ` : '';
 
-                const manageButtons = `
-                    <div class="flex items-center justify-between pt-1.5 border-t border-slate-100 text-[10px] text-slate-400">
-                        <button onclick="markAsSoldPrompt('${item.id}', ${isSold})" class="hover:text-amber-600 flex items-center gap-0.5 transition">
-                            <i class="fa-solid ${isSold ? 'fa-rotate-left' : 'fa-check'}"></i>
-                            <span>${isSold ? 'Avail' : 'Sold'}</span>
-                        </button>
-                        ${isAdminLoggedIn ? `
-                            <button onclick="editListingAdmin('${item.id}')" class="text-blue-600 font-bold hover:underline">Edit</button>
-                        ` : ''}
-                        <button onclick="deleteListingPrompt('${item.id}')" class="hover:text-red-600 p-1 transition" title="Delete">
-                            <i class="fa-solid fa-trash-can"></i>
-                        </button>
-                    </div>
-                `;
+                // Smart Buttons: Directory vs Marketplace Logic
+                let manageButtons = '';
+                if (item.section === 'marketplace') {
+                    manageButtons = `
+                        <div class="flex items-center justify-between pt-1.5 border-t border-slate-100 text-[10px] text-slate-400">
+                            <button onclick="markAsSoldPrompt('${item.id}', ${isSold})" class="hover:text-amber-600 flex items-center gap-0.5 transition">
+                                <i class="fa-solid ${isSold ? 'fa-rotate-left' : 'fa-check'}"></i>
+                                <span>${isSold ? 'Avail' : 'Sold'}</span>
+                            </button>
+                            ${isAdminLoggedIn ? `
+                                <button onclick="editListingAdmin('${item.id}')" class="text-blue-600 font-bold hover:underline">Edit</button>
+                            ` : ''}
+                            <button onclick="deleteListingPrompt('${item.id}')" class="hover:text-red-600 p-1 transition" title="Delete">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </div>
+                    `;
+                } else {
+                    // Directory: No Sold Button, Clean Verified State
+                    manageButtons = `
+                        <div class="flex items-center justify-between pt-1.5 border-t border-slate-100 text-[10px] text-slate-400">
+                            <span class="text-[9px] text-slate-400"><i class="fa-solid fa-circle-check text-emerald-500"></i> Verified</span>
+                            <div class="flex items-center gap-2">
+                                ${isAdminLoggedIn ? `
+                                    <button onclick="editListingAdmin('${item.id}')" class="text-blue-600 font-bold hover:underline">Edit</button>
+                                ` : ''}
+                                <button onclick="deleteListingPrompt('${item.id}')" class="hover:text-red-600 p-1 transition" title="Delete">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                }
 
                 const finalImage = item.image || getDefaultImage(item.category, item.subCategory, item.section);
 
@@ -1246,6 +1353,8 @@
                 section, title, contactPerson, category, subCategory, price, phone,
                 location, landmark, mapUrl, desc, pin, expiresAt,
                 sold: false,
+                ownerToken: userDeviceToken,
+                deviceIp: currentDeviceIp,
                 userAgent: navigator.userAgent
             };
 
@@ -1303,7 +1412,7 @@
             });
         }
 
-        // --- Custom PIN Actions ---
+        // --- Custom PIN & Security Verification Actions ---
         let currentActionDocId = null;
         let currentActionType = null;
 
@@ -1356,13 +1465,20 @@
 
                 const item = docSnap.data();
 
-                if (!isAdminLoggedIn && item.pin && item.pin !== enteredPin) {
-                    alert("തെറ്റായ PIN നമ്പർ! ദയവായി ശരിയായ PIN നൽകുക.");
-                    return;
+                // Device Fingerprint & PIN Matching Security Check
+                if (!isAdminLoggedIn) {
+                    if (item.ownerToken && item.ownerToken !== localStorage.getItem('nk_user_token')) {
+                        alert("സുരക്ഷാ തടസ്സം: ഈ പരസ്യം ചേർത്ത അതേ മൊബൈലിൽ നിന്ന് മാത്രമേ ഇത് മാറ്റാൻ സാധിക്കൂ!");
+                        return;
+                    }
+                    if (item.pin && item.pin !== enteredPin) {
+                        alert("തെറ്റായ PIN നമ്പർ! ദയവായി ശരിയായ PIN നൽകുക.");
+                        return;
+                    }
                 }
 
                 if (currentActionType === 'delete') {
-                    await archiveItemBeforeDelete(currentActionDocId, isAdminLoggedIn ? "Admin Deleted" : "User PIN Deleted");
+                    await archiveItemBeforeDelete(currentActionDocId, isAdminLoggedIn ? "Admin Deleted" : "Owner PIN Deleted");
                     await docRef.delete();
                 } else if (currentActionType === 'sold') {
                     await docRef.update({ sold: !item.sold });
