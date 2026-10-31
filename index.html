@@ -38,10 +38,11 @@
     <!-- Header -->
     <header class="bg-primary text-white shadow-md sticky top-0 z-40">
         <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center gap-2">
+            
+            <!-- Logo & Title -->
             <div class="flex items-center space-x-3">
-                <div class="bg-secondary p-2 rounded-lg text-white">
-                    <i class="fa-solid fa-store text-xl"></i>
-                </div>
+                <!-- നിങ്ങളുടെ ലോഗോ ഇമേജ് ഇവിടെ നൽകാം. നിലവിൽ ഡിഫോൾട്ട് വെക്റ്റർ ലോഗോ നൽകിയിരിക്കുന്നു -->
+                <img id="appLogo" src="logo.png" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/3710/3710274.png';" alt="Naattukoottam Logo" class="w-10 h-10 object-contain rounded-lg bg-white/10 p-1">
                 <div>
                     <h1 class="text-lg md:text-xl font-bold tracking-wide leading-tight">നാട്ടുകൂട്ടം (Naattukoottam)</h1>
                     <p class="text-xs text-slate-300">Local Directory & Community Marketplace</p>
@@ -54,12 +55,6 @@
                     <i class="fa-solid fa-mobile-screen-button"></i>
                     <span class="hidden sm:inline">ആപ്പ് ഇൻസ്റ്റാൾ ചെയ്യുക</span>
                     <span class="sm:hidden">Install</span>
-                </button>
-
-                <!-- Admin Button -->
-                <button id="adminHeaderBtn" onclick="openAdminModal()" class="bg-blue-800 hover:bg-blue-700 text-white px-3 py-2 rounded-lg text-xs md:text-sm font-semibold shadow transition flex items-center space-x-1">
-                    <i class="fa-solid fa-lock"></i>
-                    <span id="adminBtnLabel">Admin</span>
                 </button>
 
                 <!-- Add Listing Button -->
@@ -99,7 +94,7 @@
                     <input type="text" id="searchInput" oninput="filterItems()" placeholder="Search shops, services, places, items..." class="w-full pl-10 pr-4 py-2 bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-sm shadow-sm">
                 </div>
 
-                <!-- Verified Locations Filter -->
+                <!-- Locations Filter -->
                 <div class="relative min-w-[200px]">
                     <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-emerald-600">
                         <i class="fa-solid fa-location-dot"></i>
@@ -161,7 +156,7 @@
         </div>
     </div>
 
-    <!-- Admin Master Management Modal -->
+    <!-- Hidden / URL-Triggered Admin Modal (#admin) -->
     <div id="adminModal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
             <button onclick="closeAdminModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600">
@@ -174,7 +169,7 @@
                     <div class="w-12 h-12 bg-blue-100 text-primary mx-auto rounded-full flex items-center justify-center text-xl mb-2">
                         <i class="fa-solid fa-user-shield"></i>
                     </div>
-                    <h3 class="text-lg font-bold text-primary">അഡ്മിൻ ലോഗിൻ (Admin Login)</h3>
+                    <h3 class="text-lg font-bold text-primary">അഡ്മിൻ പോർട്ടൽ (Admin Portal)</h3>
                 </div>
 
                 <div class="space-y-3">
@@ -187,7 +182,7 @@
                         <input type="password" id="adminPass" placeholder="••••••••" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary">
                     </div>
                     <button onclick="handleAdminLogin()" class="w-full bg-primary hover:bg-blue-800 text-white font-bold py-2.5 rounded-lg text-sm shadow transition">
-                        Login
+                        Login to Admin
                     </button>
                 </div>
             </div>
@@ -197,7 +192,7 @@
                 <div class="flex items-center justify-between border-b pb-3">
                     <div class="flex items-center gap-2 text-emerald-700 font-bold">
                         <i class="fa-solid fa-circle-check"></i>
-                        <span>Admin Dashboard</span>
+                        <span>Admin Dashboard Active</span>
                     </div>
                     <button onclick="handleAdminLogout()" class="text-xs bg-red-100 text-red-700 px-3 py-1 rounded-md font-semibold hover:bg-red-200 transition">
                         Logout
@@ -213,9 +208,7 @@
                         <input type="text" id="newLocationInput" placeholder="പുതിയ സ്ഥലം (ഉദാ: ചെമ്പ്രശ്ശേരി)" class="flex-1 p-2 text-xs border border-slate-300 rounded-lg">
                         <button onclick="addNewLocation()" class="bg-secondary text-white px-3 py-2 text-xs rounded-lg font-bold shadow hover:bg-emerald-700">Add</button>
                     </div>
-                    <div id="adminLocationList" class="flex flex-wrap gap-1.5 max-h-32 overflow-y-auto pt-1">
-                        <!-- Populated by JS -->
-                    </div>
+                    <div id="adminLocationList" class="flex flex-wrap gap-1.5 max-h-32 overflow-y-auto pt-1"></div>
                 </div>
 
                 <!-- Manage Shop Types -->
@@ -227,9 +220,7 @@
                         <input type="text" id="newShopTypeInput" placeholder="ഉദാ: സ്റ്റേഷനറി, ഫാൻസി" class="flex-1 p-2 text-xs border border-slate-300 rounded-lg">
                         <button onclick="addNewCategoryItem('Shops')" class="bg-primary text-white px-3 py-2 text-xs rounded-lg font-bold shadow hover:bg-blue-800">Add</button>
                     </div>
-                    <div id="adminShopList" class="flex flex-wrap gap-1.5 max-h-32 overflow-y-auto pt-1">
-                        <!-- Populated by JS -->
-                    </div>
+                    <div id="adminShopList" class="flex flex-wrap gap-1.5 max-h-32 overflow-y-auto pt-1"></div>
                 </div>
 
                 <!-- Manage Service Types -->
@@ -241,9 +232,7 @@
                         <input type="text" id="newServiceTypeInput" placeholder="ഉദാ: വാർക്കപ്പണി, ടൈൽസ് വർക്ക്" class="flex-1 p-2 text-xs border border-slate-300 rounded-lg">
                         <button onclick="addNewCategoryItem('Services')" class="bg-amber-600 text-white px-3 py-2 text-xs rounded-lg font-bold shadow hover:bg-amber-700">Add</button>
                     </div>
-                    <div id="adminServiceList" class="flex flex-wrap gap-1.5 max-h-32 overflow-y-auto pt-1">
-                        <!-- Populated by JS -->
-                    </div>
+                    <div id="adminServiceList" class="flex flex-wrap gap-1.5 max-h-32 overflow-y-auto pt-1"></div>
                 </div>
             </div>
         </div>
@@ -308,7 +297,7 @@
                 <div>
                     <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">സ്ഥലം / പ്രദേശം (Location) *</label>
                     <select id="itemLocation" required class="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-primary focus:outline-none">
-                        <!-- Populated strictly by Admin Locations -->
+                        <!-- Populated by Admin Locations -->
                     </select>
                 </div>
 
@@ -417,7 +406,6 @@
         let isAdminLoggedIn = localStorage.getItem('naattukoottam_admin_logged') === 'true';
         let userDefaultArea = localStorage.getItem('naattukoottam_saved_area') || 'All';
 
-        // Initial App Masters (Synced via Firebase `app_settings`)
         let appLocations = ["Chembrasseri", "Idiyangara", "Pandikkad"];
         let appSubCategories = {
             Shops: [
@@ -486,7 +474,7 @@
             return 'https://images.unsplash.com/photo-1604719312566-8912e9227c6a?auto=format&fit=crop&w=600&q=80';
         }
 
-        // --- Master Settings Sync with Firebase ---
+        // --- Master Settings Sync ---
         function loadMasterSettings() {
             db.collection("app_settings").doc("masters").onSnapshot((doc) => {
                 if (doc.exists) {
@@ -494,7 +482,6 @@
                     if (data.locations && data.locations.length > 0) appLocations = data.locations;
                     if (data.subCategories) appSubCategories = data.subCategories;
                 } else {
-                    // ആദ്യമായി ഡാറ്റാബേസിലേക്ക് മാസ്റ്റർ സേവ് ചെയ്യുന്നു
                     db.collection("app_settings").doc("masters").set({
                         locations: appLocations,
                         subCategories: appSubCategories
@@ -515,14 +502,12 @@
             itemLocSelect.innerHTML = `<option value="">-- സ്ഥലം തിരഞ്ഞെടുക്കുക --</option>`;
 
             appLocations.sort().forEach(loc => {
-                // Top Filter
                 const topOpt = document.createElement('option');
                 topOpt.value = loc;
                 topOpt.textContent = `📍 ${loc}`;
                 if (loc === currentSelected) topOpt.selected = true;
                 topFilter.appendChild(topOpt);
 
-                // Form Location Select
                 const formOpt = document.createElement('option');
                 formOpt.value = loc;
                 formOpt.textContent = loc;
@@ -541,7 +526,6 @@
 
             if (!locList) return;
 
-            // Locations Pills
             locList.innerHTML = appLocations.map(loc => `
                 <span class="inline-flex items-center gap-1 bg-white border border-slate-300 px-2 py-1 rounded text-xs">
                     ${loc}
@@ -549,7 +533,6 @@
                 </span>
             `).join('');
 
-            // Shop Types Pills
             shopList.innerHTML = (appSubCategories.Shops || []).map(sh => `
                 <span class="inline-flex items-center gap-1 bg-white border border-slate-300 px-2 py-1 rounded text-[11px]">
                     ${sh}
@@ -557,7 +540,6 @@
                 </span>
             `).join('');
 
-            // Services Pills
             srvList.innerHTML = (appSubCategories.Services || []).map(sv => `
                 <span class="inline-flex items-center gap-1 bg-white border border-slate-300 px-2 py-1 rounded text-[11px]">
                     ${sv}
@@ -566,7 +548,6 @@
             `).join('');
         }
 
-        // Admin Add / Remove Masters
         async function addNewLocation() {
             const input = document.getElementById('newLocationInput');
             const val = input.value.trim();
@@ -603,15 +584,19 @@
             }
         }
 
-        // --- Admin Authentication UI ---
+        // --- Hidden URL-Triggered Admin Controls ---
+        function checkAdminHash() {
+            if (window.location.hash === '#admin') {
+                openAdminModal();
+            }
+        }
+        window.addEventListener('hashchange', checkAdminHash);
+
         function updateAdminUI() {
-            const btnLabel = document.getElementById('adminBtnLabel');
             if (isAdminLoggedIn) {
-                btnLabel.innerHTML = 'Admin ✓';
                 document.getElementById('adminLoginForm').classList.add('hidden');
                 document.getElementById('adminLoggedPanel').classList.remove('hidden');
             } else {
-                btnLabel.innerHTML = 'Admin';
                 document.getElementById('adminLoginForm').classList.remove('hidden');
                 document.getElementById('adminLoggedPanel').classList.add('hidden');
             }
@@ -624,6 +609,9 @@
 
         function closeAdminModal() {
             document.getElementById('adminModal').classList.add('hidden');
+            if (window.location.hash === '#admin') {
+                history.replaceState(null, null, ' ');
+            }
         }
 
         function handleAdminLogin() {
@@ -702,6 +690,7 @@
         // --- Data Loading & Setup ---
         function loadData() {
             checkDisclaimer();
+            checkAdminHash();
             updateAdminUI();
             loadMasterSettings();
             autoCleanExpiredItems();
@@ -822,7 +811,7 @@
                     `;
                 }
 
-                // അഡ്മിൻ മോഡ് വിവരങ്ങൾ (Audit Details)[cite: 26]
+                // അഡ്മിൻ മോഡ് വിവരങ്ങൾ
                 const adminAuditInfo = isAdminLoggedIn ? `
                     <div class="bg-amber-50 p-2 rounded text-[11px] text-amber-900 border border-amber-200 mt-2">
                         <div><b>PIN:</b> ${item.pin || 'None'} | <b>Phone:</b> ${item.phone}</div>
@@ -942,7 +931,7 @@
             });
         }
 
-        // --- Save Item with Location from Dropdown ---
+        // --- Save Item ---
         async function saveItem(e) {
             e.preventDefault();
             const saveBtn = document.getElementById('saveBtn');
@@ -1114,7 +1103,7 @@
             if (newLandmark === null) return;
 
             try {
-                await docRef.update({
+                await db.collection("listings").doc(docId).update({
                     title: newTitle.trim(),
                     phone: newPhone.trim(),
                     landmark: newLandmark.trim()
