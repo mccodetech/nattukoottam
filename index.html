@@ -56,6 +56,12 @@
                     <span class="sm:hidden">Install</span>
                 </button>
 
+                <!-- Admin Button -->
+                <button id="adminHeaderBtn" onclick="openAdminModal()" class="bg-blue-800 hover:bg-blue-700 text-white px-3 py-2 rounded-lg text-xs md:text-sm font-semibold shadow transition flex items-center space-x-1">
+                    <i class="fa-solid fa-lock"></i>
+                    <span id="adminBtnLabel">Admin</span>
+                </button>
+
                 <!-- Add Listing Button -->
                 <button onclick="openModal()" class="bg-secondary hover:bg-emerald-700 text-white px-3 md:px-4 py-2 rounded-lg text-xs md:text-sm font-medium shadow transition flex items-center space-x-1.5">
                     <i class="fa-solid fa-plus"></i>
@@ -147,14 +153,54 @@
                         <b class="text-slate-900">സ്വയം നീക്കം ചെയ്യപ്പെടൽ:</b> ഓരോ പരസ്യവും തിരഞ്ഞെടുത്ത കാലാവധി (പരമാവധി 15 ദിവസം) കഴിഞ്ഞാൽ ചിത്രങ്ങളടക്കം തനിയെ നീക്കം ചെയ്യപ്പെടും.
                     </div>
                 </div>
-                <div class="pt-2 border-t border-slate-200 text-[11px] text-slate-500 italic">
-                    All listings are peer-to-peer. Admins hold no liability for transactions, verification, or contacts.
-                </div>
             </div>
 
             <button onclick="acceptDisclaimer()" class="mt-5 w-full bg-secondary hover:bg-emerald-700 text-white font-bold py-3 rounded-xl text-sm transition shadow-md">
                 സമ്മതിക്കുന്നു & തുടരുക (I Agree)
             </button>
+        </div>
+    </div>
+
+    <!-- Admin Login / Control Modal -->
+    <div id="adminModal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl relative">
+            <button onclick="closeAdminModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+
+            <div id="adminLoginForm">
+                <div class="text-center mb-4">
+                    <div class="w-12 h-12 bg-blue-100 text-primary mx-auto rounded-full flex items-center justify-center text-xl mb-2">
+                        <i class="fa-solid fa-user-shield"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-primary">അഡ്മിൻ ലോഗിൻ (Admin Login)</h3>
+                </div>
+
+                <div class="space-y-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Username</label>
+                        <input type="text" id="adminUser" placeholder="admin" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Password</label>
+                        <input type="password" id="adminPass" placeholder="••••••••" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary">
+                    </div>
+                    <button onclick="handleAdminLogin()" class="w-full bg-primary hover:bg-blue-800 text-white font-bold py-2.5 rounded-lg text-sm shadow transition">
+                        Login
+                    </button>
+                </div>
+            </div>
+
+            <div id="adminLoggedPanel" class="hidden text-center space-y-4">
+                <div class="w-12 h-12 bg-emerald-100 text-secondary mx-auto rounded-full flex items-center justify-center text-xl">
+                    <i class="fa-solid fa-shield-check"></i>
+                </div>
+                <h3 class="text-lg font-bold text-slate-800">Admin Mode Active</h3>
+                <p class="text-xs text-slate-500">നിങ്ങൾക്ക് ഇപ്പോൾ ഏത് ലിസ്റ്റിംഗും നേരിട്ട് എഡിറ്റ് ചെയ്യാനും ഡിലീറ്റ് ചെയ്യാനും അനുവാദമുണ്ട്.</p>
+                <button onclick="handleAdminLogout()" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2 rounded-lg text-sm shadow transition">
+                    Logout from Admin
+                </button>
+            </div>
         </div>
     </div>
 
@@ -213,45 +259,15 @@
                     <span class="text-[10px] text-slate-500">ഒരു നമ്പറിൽ നിന്ന് പരമാവധി 3 ലിസ്റ്റിംഗുകൾ മാത്രമേ സാധ്യമാകൂ.</span>
                 </div>
 
-                <!-- കേരള ജില്ലയും മണ്ഡലവും -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 p-3 bg-blue-50/60 border border-blue-200 rounded-lg">
-                    <div>
-                        <label class="block text-xs font-bold text-blue-950 mb-1">ജില്ല (District) *</label>
-                        <select id="itemDistrict" onchange="handleDistrictChange()" required class="w-full p-2 border border-slate-300 rounded-lg text-xs bg-white focus:outline-none">
-                            <option value="">-- ജില്ല തിരഞ്ഞെടുക്കുക --</option>
-                            <option value="Kozhikode">കോഴിക്കോട് (Kozhikode)</option>
-                            <option value="Malappuram">മലപ്പുറം (Malappuram)</option>
-                            <option value="Wayanad">വയനാട് (Wayanad)</option>
-                            <option value="Kannur">കണ്ണൂർ (Kannur)</option>
-                            <option value="Kasaragod">കാസർഗോഡ് (Kasaragod)</option>
-                            <option value="Palakkad">പാലക്കാട് (Palakkad)</option>
-                            <option value="Thrissur">തൃശ്ശൂർ (Thrissur)</option>
-                            <option value="Ernakulam">എറണാകുളം (Ernakulam)</option>
-                            <option value="Idukki">ഇടുക്കി (Idukki)</option>
-                            <option value="Kottayam">കോട്ടയം (Kottayam)</option>
-                            <option value="Alappuzha">ആലപ്പുഴ (Alappuzha)</option>
-                            <option value="Pathanamthitta">പത്തനംതിട്ട (Pathanamthitta)</option>
-                            <option value="Kollam">കൊല്ലം (Kollam)</option>
-                            <option value="Thiruvananthapuram">തിരുവനന്തപുരം (Thiruvananthapuram)</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-blue-950 mb-1">മണ്ഡലം (Constituency)</label>
-                        <select id="itemConstituency" class="w-full p-2 border border-slate-300 rounded-lg text-xs bg-white focus:outline-none">
-                            <option value="">-- മണ്ഡലം --</option>
-                        </select>
-                    </div>
-                </div>
-
-                <!-- തത്സമയ ജി.പി.എസ് ബട്ടണും സ്ഥലവും -->
+                <!-- സ്ഥലം & തത്സമയ ജി.പി.എസ് -->
                 <div>
                     <div class="flex justify-between items-center mb-1">
-                        <label class="block text-xs font-semibold uppercase text-slate-600">സ്ഥലം / പഞ്ചായത്ത് *</label>
+                        <label class="block text-xs font-semibold uppercase text-slate-600">സ്ഥലം / പ്രദേശം / പഞ്ചായത്ത് *</label>
                         <button type="button" onclick="fetchGPSLocation()" class="text-[11px] text-emerald-700 hover:text-emerald-800 font-bold flex items-center gap-1">
-                            <i class="fa-solid fa-crosshairs"></i> 📍 നിലവിലെ ലൊക്കേഷൻ എടുക്കുക
+                            <i class="fa-solid fa-crosshairs"></i> 📍 GPS ലൊക്കേഷൻ എടുക്കുക
                         </button>
                     </div>
-                    <input type="text" id="itemLocation" list="locationDatalist" required placeholder="ടൈപ്പ് ചെയ്യുക അല്ലെങ്കിൽ ലിസ്റ്റിൽ നിന്ന് തിരഞ്ഞെടുക്കുക" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-primary focus:outline-none">
+                    <input type="text" id="itemLocation" list="locationDatalist" required placeholder="ഉദാ: നരിക്കുനി, താമരശ്ശേരി, പൂനൂർ..." class="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-primary focus:outline-none">
                     <datalist id="locationDatalist"></datalist>
                 </div>
 
@@ -288,11 +304,10 @@
                     </div>
                 </div>
 
-                <!-- ഫോട്ടോ ഓപ്ഷനുകൾ (ക്യാമറയും ഫയലും) -->
+                <!-- ഫോട്ടോ ഓപ്ഷനുകൾ -->
                 <div class="space-y-3 p-3 bg-slate-50 border border-slate-200 rounded-lg">
-                    <label class="block text-xs font-semibold uppercase text-slate-700">Photo Option (Max 200KB-ലേക്ക് ഓട്ടോ-കംപ്രസ് ആകും)</label>
+                    <label class="block text-xs font-semibold uppercase text-slate-700">Photo Option (150KB-ലേക്ക് ഓട്ടോ-കംപ്രസ് ആകും)</label>
                     
-                    <!-- നേരിട്ട് ക്യാമറ ഓൺ ചെയ്യാനുള്ള ബട്ടൺ -->
                     <div>
                         <label class="block text-xs text-slate-600 mb-1 font-medium">📸 നേരിട്ട് ക്യാമറ ഓൺ ചെയ്ത് ഫോട്ടോ എടുക്കാൻ:</label>
                         <input type="file" id="itemCameraFile" accept="image/*" capture="environment" onchange="previewSelectedImage(this)" class="w-full text-xs text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-emerald-600 file:text-white hover:file:bg-emerald-700 cursor-pointer">
@@ -300,9 +315,8 @@
 
                     <div class="text-center text-xs text-slate-400 font-medium">- OR -</div>
 
-                    <!-- ഗാലറിയിൽ നിന്നോ ഫയലുകളിൽ നിന്നോ -->
                     <div>
-                        <label class="block text-xs text-slate-600 mb-1 font-medium">📁 ഗാലറി / കമ്പ്യൂട്ടറിൽ നിന്ന് തിരഞ്ഞെടുക്കാൻ:</label>
+                        <label class="block text-xs text-slate-600 mb-1 font-medium">📁 ഗാലറിയിൽ നിന്ന് തിരഞ്ഞെടുക്കാൻ:</label>
                         <input type="file" id="itemImageFile" accept="image/*" onchange="previewSelectedImage(this)" class="w-full text-xs text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-primary file:text-white hover:file:bg-blue-800 cursor-pointer">
                     </div>
 
@@ -313,11 +327,10 @@
                         <input type="url" id="itemImage" placeholder="https://..." class="w-full p-2 border border-slate-300 rounded-lg text-sm bg-white focus:outline-none">
                     </div>
 
-                    <!-- കംപ്രഷൻ പ്രിവ്യൂ -->
                     <div id="imagePreviewContainer" class="hidden flex items-center gap-3 p-2 bg-emerald-50 rounded-lg border border-emerald-200">
                         <img id="imagePreview" src="" alt="Preview" class="w-12 h-12 rounded object-cover border">
                         <div class="text-xs text-emerald-800 font-medium">
-                            <span>ഫോട്ടോ റെഡിയാണ്. സൈസ് 150KB-ൽ താഴെയായി കംപ്രസ് ചെയ്യപ്പെടും.</span>
+                            <span>ഫോട്ടോ തിരഞ്ഞെടുക്കപ്പെട്ടു. സൈസ് 150KB-ൽ താഴെയായി കംപ്രസ് ചെയ്യപ്പെടും.</span>
                         </div>
                     </div>
                 </div>
@@ -360,25 +373,9 @@
         let deferredPrompt = null;
         let selectedFileToUpload = null;
 
+        // Admin Session Check
+        let isAdminLoggedIn = localStorage.getItem('naattukoottam_admin_logged') === 'true';
         let userDefaultArea = localStorage.getItem('naattukoottam_saved_area') || 'All';
-
-        // പ്രധാന നിയമസഭാ മണ്ഡലങ്ങൾ
-        const constituenciesByDistrict = {
-            Kozhikode: ["Vadakara", "Kuttiadi", "Nadapuram", "Koyilandy", "Balussery", "Elathur", "Kozhikode North", "Kozhikode South", "Beypore", "Kunnamangalam", "Koduvally", "Thiruvambady"],
-            Malappuram: ["Kondotty", "Eranad", "Nilambur", "Wandoor", "Manjeri", "Perinthalmanna", "Mankada", "Malappuram", "Vengara", "Vallikkunnu", "Tirurangadi", "Tanur", "Tirur", "Kottakkal", "Thavanur", "Ponnani"],
-            Wayanad: ["Mananthavady", "Sulthan Bathery", "Kalpetta"],
-            Kannur: ["Payyanur", "Kalliasseri", "Taliparamba", "Irikkur", "Azhikode", "Kannur", "Dharmadam", "Thalassery", "Kuthuparamba", "Mattannur", "Peravoor"],
-            Kasaragod: ["Manjeshwar", "Kasaragod", "Udma", "Kanhangad", "Trikaripur"],
-            Palakkad: ["Thrithala", "Pattambi", "Shornur", "Ottapalam", "Kongad", "Mannarkkad", "Malampuzha", "Palakkad", "Tarur", "Chittur", "Nenmara", "Alathur"],
-            Thrissur: ["Chelakkara", "Kunnamkulam", "Guruvayoor", "Manalur", "Wadakkanchery", "Ollur", "Thrissur", "Nattika", "Kaipamangalam", "Irinjalakuda", "Puthukkad", "Chalakudy", "Kodungallur"],
-            Ernakulam: ["Perumbavoor", "Angamaly", "Aluva", "Kalamassery", "Paravur", "Vypeen", "Kochi", "Thrippunithura", "Ernakulam", "Thrikkakara", "Kunnathunad", "Piravom", "Muvattupuzha", "Kothamangalam"],
-            Idukki: ["Devikulam", "Udumbanchola", "Thodupuzha", "Idukki", "Peerumade"],
-            Kottayam: ["Pala", "Kaduthuruthy", "Vaikom", "Ettumanoor", "Kottayam", "Puthuppally", "Changanassery", "Kanjirappally", "Poonjar"],
-            Alappuzha: ["Aroor", "Cherthala", "Alappuzha", "Ambalappuzha", "Kuttanad", "Haripad", "Kayamkulam", "Mavelikkara", "Chengannur"],
-            Pathanamthitta: ["Thiruvalla", "Ranni", "Aranmula", "Konni", "Adoor"],
-            Kollam: ["Karunagappally", "Chavara", "Kunnathur", "Kottarakkara", "Pathanapuram", "Punalur", "Chadayamangalam", "Kundara", "Kollam", "Eravipuram", "Chathannoor"],
-            Thiruvananthapuram: ["Varkala", "Attingal", "Chirayinkeezhu", "Nedumangad", "Vamanapuram", "Kazhakkoottam", "Vattiyoorkavu", "Thiruvananthapuram", "Nemom", "Aruvikkara", "Parassala", "Kattakkada", "Kovalam", "Neyyattinkara"]
-        };
 
         const subCategories = {
             Shops: [
@@ -422,6 +419,78 @@
             ]
         };
 
+        // സ്മാർട്ട് ഡിഫോൾട്ട് ചിത്രങ്ങൾ
+        function getDefaultImage(cat, subCat, section) {
+            if (section === 'marketplace') {
+                return 'https://images.unsplash.com/photo-1526738549149-8e07eca6c147?auto=format&fit=crop&w=600&q=80';
+            }
+            const text = (subCat || cat || '').toLowerCase();
+            if (text.includes('ഇലക്ട്രീഷ്യൻ') || text.includes('electrician')) return 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=600&q=80';
+            if (text.includes('പ്ലംബർ') || text.includes('plumbing')) return 'https://images.unsplash.com/photo-1581244277943-fe4a9c777189?auto=format&fit=crop&w=600&q=80';
+            if (text.includes('പെയിന്റിംഗ്') || text.includes('painting')) return 'https://images.unsplash.com/photo-1589939705384-5185137a7f0f?auto=format&fit=crop&w=600&q=80';
+            if (text.includes('ആശാരി') || text.includes('carpentry')) return 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?auto=format&fit=crop&w=600&q=80';
+            if (text.includes('കൽപ്പണി') || text.includes('masonry') || text.includes('construction')) return 'https://images.unsplash.com/photo-1541888946425-d0fbb186c5f9?auto=format&fit=crop&w=600&q=80';
+            if (text.includes('ഡ്രൈവർ') || text.includes('ടാക്സി') || text.includes('auto') || text.includes('driver')) return 'https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?auto=format&fit=crop&w=600&q=80';
+            if (text.includes('വെൽഡിംഗ്') || text.includes('welding')) return 'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?auto=format&fit=crop&w=600&q=80';
+            if (cat === 'Services') return 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=600&q=80';
+            if (cat === 'Doctors' || cat === 'Hospitals' || text.includes('doctor') || text.includes('clinic')) return 'https://images.unsplash.com/photo-1505751172876-fa1923c5c528?auto=format&fit=crop&w=600&q=80';
+            if (text.includes('പച്ചക്കറി') || text.includes('vegetables')) return 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=600&q=80';
+            if (text.includes('ബേക്കറി') || text.includes('bakery') || text.includes('tea')) return 'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=600&q=80';
+            if (text.includes('ഹോട്ടൽ') || text.includes('restaurant')) return 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=600&q=80';
+            if (text.includes('വസ്ത്ര') || text.includes('textiles')) return 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=600&q=80';
+            if (text.includes('മെഡിക്കൽ') || text.includes('pharmacy')) return 'https://images.unsplash.com/photo-1471864190281-a93a3070b6de?auto=format&fit=crop&w=600&q=80';
+            if (text.includes('വർക്ക്‌ഷോപ്പ്') || text.includes('garage')) return 'https://images.unsplash.com/photo-1486006920555-c77dce18193b?auto=format&fit=crop&w=600&q=80';
+            if (text.includes('മൊബൈൽ') || text.includes('electronics')) return 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=600&q=80';
+            return 'https://images.unsplash.com/photo-1604719312566-8912e9227c6a?auto=format&fit=crop&w=600&q=80';
+        }
+
+        // --- Admin Controls ---
+        function updateAdminUI() {
+            const btnLabel = document.getElementById('adminBtnLabel');
+            if (isAdminLoggedIn) {
+                btnLabel.innerHTML = 'Admin ✓';
+                document.getElementById('adminLoginForm').classList.add('hidden');
+                document.getElementById('adminLoggedPanel').classList.remove('hidden');
+            } else {
+                btnLabel.innerHTML = 'Admin';
+                document.getElementById('adminLoginForm').classList.remove('hidden');
+                document.getElementById('adminLoggedPanel').classList.add('hidden');
+            }
+        }
+
+        function openAdminModal() {
+            updateAdminUI();
+            document.getElementById('adminModal').classList.remove('hidden');
+        }
+
+        function closeAdminModal() {
+            document.getElementById('adminModal').classList.add('hidden');
+        }
+
+        function handleAdminLogin() {
+            const u = document.getElementById('adminUser').value.trim();
+            const p = document.getElementById('adminPass').value.trim();
+            if (u === 'admin' && p === 'admin12345') {
+                isAdminLoggedIn = true;
+                localStorage.setItem('naattukoottam_admin_logged', 'true');
+                updateAdminUI();
+                renderItems();
+                alert("അഡ്മിൻ ലോഗിൻ വിജയകരം!");
+                closeAdminModal();
+            } else {
+                alert("തെറ്റായ Username അല്ലെങ്കിൽ Password!");
+            }
+        }
+
+        function handleAdminLogout() {
+            isAdminLoggedIn = false;
+            localStorage.removeItem('naattukoottam_admin_logged');
+            updateAdminUI();
+            renderItems();
+            alert("അഡ്മിൻ ലോഗ്ഔട്ട് ആയി.");
+            closeAdminModal();
+        }
+
         // --- PWA Installation Logic ---
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
@@ -433,75 +502,9 @@
             }
         });
 
-        // കാറ്റഗറിയും തൊഴിലും അനുസരിച്ച് അനുയോജ്യമായ ഫോട്ടോ നൽകുന്ന ഫങ്ഷൻ
-function getDefaultImage(cat, subCat, section) {
-    if (section === 'marketplace') {
-        return 'https://images.unsplash.com/photo-1526738549149-8e07eca6c147?auto=format&fit=crop&w=600&q=80'; // Gadgets & Items
-    }
-    
-    const text = (subCat || cat || '').toLowerCase();
-
-    // സർവീസുകൾ & തൊഴിലുകൾ
-    if (text.includes('ഇലക്ട്രീഷ്യൻ') || text.includes('electrician')) {
-        return 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=600&q=80'; // Electrician
-    }
-    if (text.includes('പ്ലംബർ') || text.includes('plumbing')) {
-        return 'https://images.unsplash.com/photo-1581244277943-fe4a9c777189?auto=format&fit=crop&w=600&q=80'; // Plumbing
-    }
-    if (text.includes('പെയിന്റിംഗ്') || text.includes('painting')) {
-        return 'https://images.unsplash.com/photo-1589939705384-5185137a7f0f?auto=format&fit=crop&w=600&q=80'; // Painting
-    }
-    if (text.includes('ആശാരി') || text.includes('carpentry')) {
-        return 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?auto=format&fit=crop&w=600&q=80'; // Carpentry
-    }
-    if (text.includes('കൽപ്പണി') || text.includes('masonry') || text.includes('construction')) {
-        return 'https://images.unsplash.com/photo-1541888946425-d0fbb186c5f9?auto=format&fit=crop&w=600&q=80'; // Construction
-    }
-    if (text.includes('ഡ്രൈവർ') || text.includes('ടാക്സി') || text.includes('auto') || text.includes('driver')) {
-        return 'https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?auto=format&fit=crop&w=600&q=80'; // Driver / Taxi
-    }
-    if (text.includes('വെൽഡിംഗ്') || text.includes('welding')) {
-        return 'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?auto=format&fit=crop&w=600&q=80'; // Welding
-    }
-    if (cat === 'Services') {
-        return 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=600&q=80'; // General Service Tools
-    }
-
-    // ആരോഗ്യരംഗം (Doctors & Hospitals)
-    if (cat === 'Doctors' || cat === 'Hospitals' || text.includes('doctor') || text.includes('clinic')) {
-        return 'https://images.unsplash.com/photo-1505751172876-fa1923c5c528?auto=format&fit=crop&w=600&q=80'; // Medical / Stethoscope
-    }
-
-    // കടകൾ (Shops)
-    if (text.includes('പച്ചക്കറി') || text.includes('vegetables')) {
-        return 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=600&q=80'; // Veg
-    }
-    if (text.includes('ബേക്കറി') || text.includes('bakery') || text.includes('tea')) {
-        return 'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=600&q=80'; // Bakery
-    }
-    if (text.includes('ഹോട്ടൽ') || text.includes('restaurant')) {
-        return 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=600&q=80'; // Restaurant
-    }
-    if (text.includes('വസ്ത്ര') || text.includes('textiles')) {
-        return 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=600&q=80'; // Clothing
-    }
-    if (text.includes('മെഡിക്കൽ') || text.includes('pharmacy')) {
-        return 'https://images.unsplash.com/photo-1471864190281-a93a3070b6de?auto=format&fit=crop&w=600&q=80'; // Pharmacy
-    }
-    if (text.includes('വർക്ക്‌ഷോപ്പ്') || text.includes('garage')) {
-        return 'https://images.unsplash.com/photo-1486006920555-c77dce18193b?auto=format&fit=crop&w=600&q=80'; // Auto Workshop
-    }
-    if (text.includes('മൊബൈൽ') || text.includes('electronics')) {
-        return 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=600&q=80'; // Mobile / Gadgets
-    }
-
-    // ജനറൽ ഷോപ്പ്
-    return 'https://images.unsplash.com/photo-1604719312566-8912e9227c6a?auto=format&fit=crop&w=600&q=80'; // Supermarket Store
-}
-        
         function triggerPWAInstall() {
             if (!deferredPrompt) {
-                alert("ബ്രൗസർ മെനുവിൽ നിന്ന് (Three dots) 'Install app' അല്ലെങ്കിൽ 'Add to Home screen' ക്ലിക്ക് ചെയ്യുക.");
+                alert("ബ്രൗസർ മെനുവിൽ നിന്ന് 'Install app' അല്ലെങ്കിൽ 'Add to Home screen' ക്ലിക്ക് ചെയ്യുക.");
                 return;
             }
             deferredPrompt.prompt();
@@ -527,7 +530,7 @@ function getDefaultImage(cat, subCat, section) {
             document.getElementById('disclaimerModal').classList.add('hidden');
         }
 
-        // --- Live GPS Location Fetch ---
+        // --- Live GPS Fetch ---
         function fetchGPSLocation() {
             if (!navigator.geolocation) {
                 alert("നിങ്ങളുടെ ബ്രൗസറിൽ GPS സൗകര്യം ലഭ്യമല്ല.");
@@ -540,40 +543,24 @@ function getDefaultImage(cat, subCat, section) {
                 const lat = pos.coords.latitude;
                 const lon = pos.coords.longitude;
                 try {
-                    // OpenStreetMap സൗജന്യ റിവേഴ്സ് ജിയോകോഡിംഗ്
                     const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`);
                     const data = await res.json();
                     const addr = data.address;
                     const place = addr.suburb || addr.village || addr.town || addr.city || addr.county || "";
                     locInput.value = place || `${lat.toFixed(4)}, ${lon.toFixed(4)}`;
                     
-                    // മാപ്പ് ലിങ്ക് ഓട്ടോമാറ്റിക് ആയി ഫിൽ ചെയ്യുന്നു
                     const mapInput = document.getElementById('itemMapUrl');
                     if (!mapInput.value) {
                         mapInput.value = `https://www.google.com/maps?q=${lat},${lon}`;
                     }
                 } catch (e) {
                     locInput.value = "";
-                    alert("ലൊക്കേഷൻ പേര് ലഭിച്ചില്ല. ദയവായി സ്ഥലം നേരിട്ട് ടൈപ്പ് ചെയ്യുക.");
+                    alert("ലൊക്കേഷൻ നേരിട്ട് ടൈപ്പ് ചെയ്യുക.");
                 }
             }, (err) => {
                 locInput.value = "";
-                alert("GPS അനുമതി ലഭിച്ചില്ല. ദയവായി ലൊക്കേഷൻ പെർമിഷൻ നൽകുക അല്ലെങ്കിൽ നേരിട്ട് ടൈപ്പ് ചെയ്യുക.");
+                alert("GPS അനുമതി ലഭിച്ചില്ല. ദയവായി നേരിട്ട് സ്ഥലം ടൈപ്പ് ചെയ്യുക.");
             }, { enableHighAccuracy: true });
-        }
-
-        function handleDistrictChange() {
-            const dist = document.getElementById('itemDistrict').value;
-            const constSelect = document.getElementById('itemConstituency');
-            constSelect.innerHTML = '<option value="">-- മണ്ഡലം തിരഞ്ഞെടുക്കുക --</option>';
-
-            const list = constituenciesByDistrict[dist] || [];
-            list.forEach(c => {
-                const opt = document.createElement('option');
-                opt.value = c;
-                opt.textContent = c;
-                constSelect.appendChild(opt);
-            });
         }
 
         function previewSelectedImage(input) {
@@ -591,6 +578,7 @@ function getDefaultImage(cat, subCat, section) {
         // --- Data Loading & Setup ---
         function loadData() {
             checkDisclaimer();
+            updateAdminUI();
             handleCategoryChange();
             autoCleanExpiredItems();
 
@@ -697,8 +685,7 @@ function getDefaultImage(cat, subCat, section) {
                 const matchesSearch = (item.title && item.title.toLowerCase().includes(searchVal)) || 
                                       (item.desc && item.desc.toLowerCase().includes(searchVal)) ||
                                       (item.subCategory && item.subCategory.toLowerCase().includes(searchVal)) ||
-                                      (item.location && item.location.toLowerCase().includes(searchVal)) ||
-                                      (item.district && item.district.toLowerCase().includes(searchVal));
+                                      (item.location && item.location.toLowerCase().includes(searchVal));
                 
                 const matchesCat = (currentTab === 'marketplace' || currentCategory === 'All' || item.category === currentCategory);
                 const matchesArea = (selectedArea === 'All' || !item.location || item.location.toLowerCase() === selectedArea.toLowerCase());
@@ -742,12 +729,25 @@ function getDefaultImage(cat, subCat, section) {
                     `;
                 }
 
+                // അഡ്മിൻ മോഡിൽ എക്സ്ട്രാ വിവരങ്ങൾ (Audit Details)
+                const adminAuditInfo = isAdminLoggedIn ? `
+                    <div class="bg-amber-50 p-2 rounded text-[11px] text-amber-900 border border-amber-200 mt-2">
+                        <div><b>PIN:</b> ${item.pin || 'None'} | <b>Phone:</b> ${item.phone}</div>
+                        <div class="truncate text-[10px] text-slate-500" title="${item.userAgent || ''}"><b>Device:</b> ${item.userAgent || 'Unknown'}</div>
+                    </div>
+                ` : '';
+
                 const manageButtons = `
                     <div class="flex items-center justify-between pt-2 border-t border-slate-100 text-xs text-slate-400">
                         <button onclick="markAsSoldPrompt('${item.id}', ${isSold})" class="hover:text-amber-600 flex items-center gap-1 transition">
                             <i class="fa-solid ${isSold ? 'fa-rotate-left' : 'fa-check'}"></i>
                             <span>${isSold ? 'Mark Available' : 'Mark Sold'}</span>
                         </button>
+                        ${isAdminLoggedIn ? `
+                            <button onclick="editListingAdmin('${item.id}')" class="text-blue-600 hover:text-blue-800 flex items-center gap-1 transition font-bold">
+                                <i class="fa-solid fa-pen-to-square"></i> Edit
+                            </button>
+                        ` : ''}
                         <button onclick="deleteListingPrompt('${item.id}')" class="hover:text-red-600 flex items-center gap-1 transition">
                             <i class="fa-solid fa-trash-can"></i>
                             <span>Delete</span>
@@ -755,11 +755,13 @@ function getDefaultImage(cat, subCat, section) {
                     </div>
                 `;
 
+                const finalImage = item.image || getDefaultImage(item.category, item.subCategory, item.section);
+
                 return `
                     <div class="bg-white rounded-xl shadow-md overflow-hidden border border-slate-200 flex flex-col justify-between hover:shadow-lg transition relative ${soldClass}">
                         <div>
                             <div class="h-44 bg-slate-200 relative overflow-hidden">
-                                <img src="${item.image || getDefaultImage(item.category, item.subCategory, item.section)}" alt="${item.title}" class="w-full h-full object-cover">
+                                <img src="${finalImage}" alt="${item.title}" class="w-full h-full object-cover">
                                 ${soldBadge}
                                 <span class="absolute top-2 right-2 bg-slate-900/75 text-white text-xs px-2.5 py-1 rounded-full backdrop-blur-sm font-medium">
                                     ${item.subCategory || (item.section === 'directory' ? item.category : 'Marketplace')}
@@ -769,10 +771,11 @@ function getDefaultImage(cat, subCat, section) {
                             <div class="p-4">
                                 <div class="flex items-center gap-1.5 text-xs text-emerald-700 font-bold mb-1">
                                     <i class="fa-solid fa-location-dot"></i>
-                                    <span>${item.location || 'Local Area'} ${item.district ? '• ' + item.district : ''} ${item.landmark ? '(' + item.landmark + ')' : ''}</span>
+                                    <span>${item.location || 'Local Area'} ${item.landmark ? '(' + item.landmark + ')' : ''}</span>
                                 </div>
                                 <h3 class="font-bold text-slate-800 text-lg mb-1 leading-snug">${item.title}</h3>
                                 <p class="text-slate-600 text-sm line-clamp-3">${item.desc}</p>
+                                ${adminAuditInfo}
                             </div>
                         </div>
                         <div class="p-4 pt-0 space-y-3">
@@ -846,7 +849,7 @@ function getDefaultImage(cat, subCat, section) {
             });
         }
 
-        // --- Save Item with Anti-Fraud Checks & Strict 150KB Compressor ---
+        // --- Save Item ---
         async function saveItem(e) {
             e.preventDefault();
             const saveBtn = document.getElementById('saveBtn');
@@ -855,16 +858,18 @@ function getDefaultImage(cat, subCat, section) {
 
             const phone = document.getElementById('itemPhone').value.trim();
 
-            try {
-                const phoneCheckSnap = await db.collection("listings").where("phone", "==", phone).get();
-                if (phoneCheckSnap.size >= 3) {
-                    alert("ഈ ഫോൺ നമ്പർ ഉപയോഗിച്ച് ഇതിനകം 3 ലിസ്റ്റിംഗുകൾ ചേർത്തിട്ടുണ്ട്! പുതിയത് ചേർക്കാൻ പഴയവയിൽ ഒന്ന് ഡിലീറ്റ് ചെയ്യുക.");
-                    saveBtn.disabled = false;
-                    saveBtn.innerText = "Save Item";
-                    return;
+            if (!isAdminLoggedIn) {
+                try {
+                    const phoneCheckSnap = await db.collection("listings").where("phone", "==", phone).get();
+                    if (phoneCheckSnap.size >= 3) {
+                        alert("ഈ ഫോൺ നമ്പർ ഉപയോഗിച്ച് ഇതിനകം 3 ലിസ്റ്റിംഗുകൾ ചേർത്തിട്ടുണ്ട്! പുതിയത് ചേർക്കാൻ പഴയവയിൽ ഒന്ന് ഡിലീറ്റ് ചെയ്യുക.");
+                        saveBtn.disabled = false;
+                        saveBtn.innerText = "Save Item";
+                        return;
+                    }
+                } catch (err) {
+                    console.error("Check error", err);
                 }
-            } catch (err) {
-                console.error("Check error", err);
             }
 
             saveBtn.innerText = "Saving...";
@@ -878,8 +883,6 @@ function getDefaultImage(cat, subCat, section) {
             const category = section === 'directory' ? document.getElementById('itemCategory').value : 'Marketplace';
             const subCategory = section === 'directory' ? document.getElementById('itemSubCategory').value : '';
             const price = section === 'marketplace' ? document.getElementById('itemPrice').value.trim() : '';
-            const district = document.getElementById('itemDistrict').value;
-            const constituency = document.getElementById('itemConstituency').value;
             const location = document.getElementById('itemLocation').value.trim();
             const landmark = document.getElementById('itemLandmark').value.trim();
             const mapUrl = document.getElementById('itemMapUrl').value.trim();
@@ -892,12 +895,11 @@ function getDefaultImage(cat, subCat, section) {
 
             const basePayload = {
                 section, title, category, subCategory, price, phone,
-                district, constituency, location, landmark, mapUrl, desc, pin, expiresAt,
+                location, landmark, mapUrl, desc, pin, expiresAt,
                 sold: false,
                 userAgent: navigator.userAgent
             };
 
-            // ഫോട്ടോ ക്യാമറയിൽ നിന്നോ ഫയലിൽ നിന്നോ എടുത്തത് കംപ്രസ് ചെയ്യൽ
             const fileToProcess = selectedFileToUpload || 
                                   document.getElementById('itemCameraFile').files[0] || 
                                   document.getElementById('itemImageFile').files[0];
@@ -910,14 +912,12 @@ function getDefaultImage(cat, subCat, section) {
                         const canvas = document.createElement('canvas');
                         const ctx = canvas.getContext('2d');
                         
-                        // സൈസ് 150KB-ൽ താഴെയാക്കാൻ വീതി 450px ആക്കി കുറയ്ക്കുന്നു
                         const MAX_WIDTH = 450;
                         const scaleSize = MAX_WIDTH / img.width;
                         canvas.width = MAX_WIDTH;
                         canvas.height = img.height * scaleSize;
 
                         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                        // 60% ഗുണനിലവാരത്തിലേക്ക് കംപ്രസ് ചെയ്യുന്നു (100KB - 150KB Max)
                         const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.60);
 
                         uploadToFirebase({
@@ -929,11 +929,10 @@ function getDefaultImage(cat, subCat, section) {
                 }
                 reader.readAsDataURL(fileToProcess);
             } else {
-                // പുതിയ കോഡ്:
-            uploadToFirebase({
-                ...basePayload,
-                image: imageUrlInput || getDefaultImage(category, subCategory, section)
-            });
+                uploadToFirebase({
+                    ...basePayload,
+                    image: imageUrlInput || getDefaultImage(category, subCategory, section)
+                });
             }
         }
 
@@ -955,12 +954,12 @@ function getDefaultImage(cat, subCat, section) {
             });
         }
 
-        // --- PIN Protected Actions ---
+        // --- PIN Protected / Admin Direct Actions ---
         async function markAsSoldPrompt(docId, currentSoldState) {
-            const enteredPin = prompt("പരസ്യം ചേർക്കുമ്പോൾ നൽകിയ 4-അക്ക PIN നൽകുക:");
-            if (!enteredPin) return;
+            if (!isAdminLoggedIn) {
+                const enteredPin = prompt("പരസ്യം ചേർക്കുമ്പോൾ നൽകിയ 4-അക്ക PIN നൽകുക:");
+                if (!enteredPin) return;
 
-            try {
                 const docRef = db.collection("listings").doc(docId);
                 const docSnap = await docRef.get();
                 if (!docSnap.exists) return;
@@ -970,18 +969,20 @@ function getDefaultImage(cat, subCat, section) {
                     alert("തെറ്റായ PIN നമ്പർ! പരസ്യം ചേർത്ത വ്യക്തിക്ക് മാത്രമേ മാറ്റം വരുത്താൻ അനുവാദമുള്ളൂ.");
                     return;
                 }
+            }
 
-                await docRef.update({ sold: !currentSoldState });
+            try {
+                await db.collection("listings").doc(docId).update({ sold: !currentSoldState });
             } catch (err) {
                 alert("Action failed: " + err.message);
             }
         }
 
         async function deleteListingPrompt(docId) {
-            const enteredPin = prompt("ഡിലീറ്റ് ചെയ്യാൻ നിങ്ങളുടെ 4-അക്ക PIN നൽകുക:");
-            if (!enteredPin) return;
+            if (!isAdminLoggedIn) {
+                const enteredPin = prompt("ഡിലീറ്റ് ചെയ്യാൻ നിങ്ങളുടെ 4-അക്ക PIN നൽകുക:");
+                if (!enteredPin) return;
 
-            try {
                 const docRef = db.collection("listings").doc(docId);
                 const docSnap = await docRef.get();
                 if (!docSnap.exists) return;
@@ -991,12 +992,43 @@ function getDefaultImage(cat, subCat, section) {
                     alert("തെറ്റായ PIN നമ്പർ! ഇത് ചേർത്ത ഉടമസ്ഥന് മാത്രമേ ഡിലീറ്റ് ചെയ്യാൻ സാധിക്കൂ.");
                     return;
                 }
+            }
 
-                if (confirm("ഈ പരസ്യം പൂർണ്ണമായി നീക്കം ചെയ്യണമെന്ന് ഉറപ്പാണോ?")) {
-                    await docRef.delete();
+            if (confirm("ഈ പരസ്യം പൂർണ്ണമായി നീക്കം ചെയ്യണമെന്ന് ഉറപ്പാണോ?")) {
+                try {
+                    await db.collection("listings").doc(docId).delete();
+                } catch (err) {
+                    alert("Delete failed: " + err.message);
                 }
-            } catch (err) {
-                alert("Delete failed: " + err.message);
+            }
+        }
+
+        // Admin Edit Function
+        async function editListingAdmin(docId) {
+            if (!isAdminLoggedIn) return;
+            const docRef = db.collection("listings").doc(docId);
+            const docSnap = await docRef.get();
+            if (!docSnap.exists) return;
+
+            const item = docSnap.data();
+            const newTitle = prompt("പേര് / Title മാറ്റുക:", item.title);
+            if (newTitle === null) return;
+
+            const newPhone = prompt("ഫോൺ നമ്പർ മാറ്റുക:", item.phone);
+            if (newPhone === null) return;
+
+            const newLocation = prompt("സ്ഥലം മാറ്റുക:", item.location);
+            if (newLocation === null) return;
+
+            try {
+                await docRef.update({
+                    title: newTitle.trim(),
+                    phone: newPhone.trim(),
+                    location: newLocation.trim()
+                });
+                alert("വിവരങ്ങൾ അപ്ഡേറ്റ് ചെയ്തു!");
+            } catch (e) {
+                alert("Update failed: " + e.message);
             }
         }
 
