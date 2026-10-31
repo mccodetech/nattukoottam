@@ -1081,54 +1081,93 @@
         }
 
         // --- PIN / Admin Actions ---
-        async function markAsSoldPrompt(docId, currentSoldState) {
-            if (!isAdminLoggedIn) {
-                const enteredPin = prompt("4-അക്ക PIN നൽകുക:");
-                if (!enteredPin) return;
+let currentActionDocId = null;
+let currentActionType = null; // 'delete' or 'sold'
 
-                const docRef = db.collection("listings").doc(docId);
-                const docSnap = await docRef.get();
-                if (!docSnap.exists) return;
+function openCustomPinModal(docId, type) {
+    currentActionDocId = docId;
+    currentActionType = type;
+    document.getElementById('customPinInput').value = '';
 
-                const item = docSnap.data();
-                if (item.pin && item.pin !== enteredPin) {
-                    alert("തെറ്റായ PIN നമ്പർ!");
-                    return;
-                }
-            }
+    const modal = document.getElementById('pinActionModal');
+    const title = document.getElementById('pinModalTitle');
+    const icon = document.getElementById('pinModalIcon');
+    const confirmBtn = document.getElementById('pinModalConfirmBtn');
 
-            try {
-                await db.collection("listings").doc(docId).update({ sold: !currentSoldState });
-            } catch (err) {
-                alert("Action failed: " + err.message);
-            }
+    if (type === 'delete') {
+        title.innerText = "ലിസ്റ്റിംഗ് നീക്കം ചെയ്യുക";
+        icon.className = "w-12 h-12 bg-red-100 text-red-600 mx-auto rounded-full flex items-center justify-center text-xl mb-3";
+        icon.innerHTML = '<i class="fa-solid fa-trash-can"></i>';
+        confirmBtn.className = "flex-1 py-2 bg-red-600 hover:bg-red-700 text-white rounded-xl text-xs font-semibold shadow";
+        confirmBtn.innerText = "Delete Now";
+    } else {
+        title.innerText = "സ്റ്റാറ്റസ് മാറ്റുക";
+        icon.className = "w-12 h-12 bg-amber-100 text-amber-600 mx-auto rounded-full flex items-center justify-center text-xl mb-3";
+        icon.innerHTML = '<i class="fa-solid fa-tag"></i>';
+        confirmBtn.className = "flex-1 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-xl text-xs font-semibold shadow";
+        confirmBtn.innerText = "Update";
+    }
+
+    modal.classList.remove('hidden');
+    document.getElementById('customPinInput').focus();
+}
+
+function closePinModal() {
+    document.getElementById('pinActionModal').classList.add('hidden');
+    currentActionDocId = null;
+    currentActionType = null;
+}
+
+async function confirmPinAction() {
+    const enteredPin = document.getElementById('customPinInput').value.trim();
+
+    if (!isAdminLoggedIn && enteredPin.length !== 4) {
+        alert("ദയവായി 4-അക്ക PIN നൽകുക!");
+        return;
+    }
+
+    try {
+        const docRef = db.collection("listings").doc(currentActionDocId);
+        const docSnap = await docRef.get();
+        if (!docSnap.exists) return;
+
+        const item = docSnap.data();
+
+        if (!isAdminLoggedIn && item.pin && item.pin !== enteredPin) {
+            alert("തെറ്റായ PIN നമ്പർ! ദയവായി ശരിയായ PIN നൽകുക.");
+            return;
         }
 
-        async function deleteListingPrompt(docId) {
-            if (!isAdminLoggedIn) {
-                const enteredPin = prompt("ഡിലീറ്റ് ചെയ്യാൻ 4-അക്ക PIN നൽകുക:");
-                if (!enteredPin) return;
-
-                const docRef = db.collection("listings").doc(docId);
-                const docSnap = await docRef.get();
-                if (!docSnap.exists) return;
-
-                const item = docSnap.data();
-                if (item.pin && item.pin !== enteredPin) {
-                    alert("തെറ്റായ PIN നമ്പർ!");
-                    return;
-                }
-            }
-
-            if (confirm("ഈ ലിസ്റ്റിംഗ് നീക്കം ചെയ്യണമെന്ന് ഉറപ്പാണോ?")) {
-                try {
-                    await db.collection("listings").doc(docId).delete();
-                } catch (err) {
-                    alert("Delete failed: " + err.message);
-                }
-            }
+        if (currentActionType === 'delete') {
+            await docRef.delete();
+        } else if (currentActionType === 'sold') {
+            await docRef.update({ sold: !item.sold });
         }
 
+        closePinModal();
+    } catch (err) {
+        alert("പ്രവർത്തനം പരാജയപ്പെട്ടു: " + err.message);
+    }
+}
+
+function markAsSoldPrompt(docId, currentSoldState) {
+    if (isAdminLoggedIn) {
+        db.collection("listings").doc(docId).update({ sold: !currentSoldState });
+    } else {
+        openCustomPinModal(docId, 'sold');
+    }
+}
+
+function deleteListingPrompt(docId) {
+    if (isAdminLoggedIn) {
+        if (confirm("ഈ ലിസ്റ്റിംഗ് നീക്കം ചെയ്യണമെന്ന് ഉറപ്പാണോ?")) {
+            db.collection("listings").doc(docId).delete();
+        }
+    } else {
+        openCustomPinModal(docId, 'delete');
+    }
+}
+        
         async function editListingAdmin(docId) {
             if (!isAdminLoggedIn) return;
             const docRef = db.collection("listings").doc(docId);
@@ -1163,5 +1202,39 @@
 
         window.onload = loadData;
     </script>
+    <!-- Custom Action / PIN Modal -->
+<div id="pinActionModal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-xs sm:max-w-sm w-full p-5 shadow-2xl relative text-center">
+        <!-- Close Button -->
+        <button onclick="closePinModal()" class="absolute top-3 right-3 text-slate-400 hover:text-slate-600">
+            <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+
+        <!-- Icon -->
+        <div id="pinModalIcon" class="w-12 h-12 bg-red-100 text-red-600 mx-auto rounded-full flex items-center justify-center text-xl mb-3">
+            <i class="fa-solid fa-trash-can"></i>
+        </div>
+
+        <h3 id="pinModalTitle" class="text-base font-bold text-slate-800 mb-1">ലിസ്റ്റിംഗ് നീക്കം ചെയ്യുക</h3>
+        
+        <!-- നിർദ്ദേശം / Explanation -->
+        <p class="text-xs text-slate-500 mb-3 leading-relaxed">
+            ഈ പരസ്യം നൽകിയപ്പോൾ നിങ്ങൾ നൽകിയ <b>4-അക്ക സുരക്ഷാ PIN</b> ടൈപ്പ് ചെയ്യുക.<br>
+            <span class="text-[11px] text-amber-700 font-medium">(PIN മറന്നുപോയെങ്കിൽ അഡ്മിനുമായി ബന്ധപ്പെടുക).</span>
+        </p>
+
+        <!-- 4 Digit Input -->
+        <div class="mb-4">
+            <input type="password" id="customPinInput" maxlength="4" pattern="[0-9]{4}" placeholder="••••" 
+                   class="w-32 mx-auto text-center tracking-[0.5em] text-lg font-bold p-2 border-2 border-slate-300 rounded-xl focus:border-primary focus:outline-none focus:ring-2 focus:ring-blue-100">
+        </div>
+
+        <!-- Buttons -->
+        <div class="flex gap-2">
+            <button onclick="closePinModal()" class="flex-1 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-semibold">Cancel</button>
+            <button id="pinModalConfirmBtn" onclick="confirmPinAction()" class="flex-1 py-2 bg-red-600 hover:bg-red-700 text-white rounded-xl text-xs font-semibold shadow">Confirm</button>
+        </div>
+    </div>
+</div>
 </body>
 </html>
