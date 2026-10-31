@@ -31,36 +31,35 @@
         body { font-family: 'Noto Sans Malayalam', 'Inter', sans-serif; }
         .sold-card { opacity: 0.72; filter: grayscale(25%); }
         .uppercase-input { text-transform: uppercase; }
+        /* Scrollbar styles for horizontal category scroll */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
 
     <!-- Header -->
     <header class="bg-primary text-white shadow-md sticky top-0 z-40">
-        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center gap-2">
-            
-            <!-- Logo & Title -->
-            <div class="flex items-center space-x-3">
-                <!-- നിങ്ങളുടെ ലോഗോ ഇമേജ് ഇവിടെ നൽകാം. നിലവിൽ ഡിഫോൾട്ട് വെക്റ്റർ ലോഗോ നൽകിയിരിക്കുന്നു -->
-                <img id="appLogo" src="logo.png" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/3710/3710274.png';" alt="Naattukoottam Logo" class="w-10 h-10 object-contain rounded-lg bg-white/10 p-1">
-                <div>
-                    <h1 class="text-lg md:text-xl font-bold tracking-wide leading-tight">നാട്ടുകൂട്ടം (Naattukoottam)</h1>
-                    <p class="text-xs text-slate-300">Local Directory & Community Marketplace</p>
+        <div class="max-w-7xl mx-auto px-3 py-2.5 flex justify-between items-center gap-1.5">
+            <div class="flex items-center space-x-2 min-w-0">
+                <img id="appLogo" src="logo.png" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/3710/3710274.png';" alt="Logo" class="w-8 h-8 sm:w-10 sm:h-10 object-contain rounded-lg bg-white/10 p-0.5 shrink-0">
+                <div class="min-w-0">
+                    <h1 class="text-sm sm:text-lg font-bold tracking-tight truncate leading-tight">നാട്ടുകൂട്ടം</h1>
+                    <p class="text-[10px] sm:text-xs text-slate-300 truncate">Local Marketplace</p>
                 </div>
             </div>
             
-            <div class="flex items-center gap-2">
+            <div class="flex items-center gap-1.5 shrink-0">
                 <!-- PWA Install Button -->
-                <button id="pwa-install-btn" onclick="triggerPWAInstall()" class="hidden bg-amber-500 hover:bg-amber-600 text-white px-3 py-2 rounded-lg text-xs md:text-sm font-semibold shadow transition items-center space-x-1.5">
+                <button id="pwa-install-btn" onclick="triggerPWAInstall()" class="hidden bg-amber-500 hover:bg-amber-600 text-white px-2 py-1.5 sm:px-3 sm:py-2 rounded-lg text-xs font-semibold shadow transition items-center space-x-1">
                     <i class="fa-solid fa-mobile-screen-button"></i>
-                    <span class="hidden sm:inline">ആപ്പ് ഇൻസ്റ്റാൾ ചെയ്യുക</span>
-                    <span class="sm:hidden">Install</span>
+                    <span class="hidden sm:inline">Install</span>
                 </button>
 
                 <!-- Add Listing Button -->
-                <button onclick="openModal()" class="bg-secondary hover:bg-emerald-700 text-white px-3 md:px-4 py-2 rounded-lg text-xs md:text-sm font-medium shadow transition flex items-center space-x-1.5">
-                    <i class="fa-solid fa-plus"></i>
-                    <span>Add Listing</span>
+                <button onclick="openModal()" class="bg-secondary hover:bg-emerald-700 text-white px-2.5 py-1.5 sm:px-4 sm:py-2 rounded-lg text-xs sm:text-sm font-semibold shadow transition flex items-center space-x-1">
+                    <i class="fa-solid fa-plus text-xs"></i>
+                    <span class="text-xs sm:text-sm">Add</span>
                 </button>
             </div>
         </div>
@@ -68,202 +67,165 @@
 
     <!-- Navigation Tabs -->
     <nav class="bg-blue-900 text-white shadow-inner">
-        <div class="max-w-7xl mx-auto px-4 flex space-x-6">
-            <button onclick="switchTab('directory')" id="tab-directory" class="py-3 border-b-2 border-emerald-400 font-medium text-sm flex items-center space-x-2 transition">
-                <i class="fa-solid fa-address-book"></i>
-                <span>Local Directory</span>
+        <div class="max-w-7xl mx-auto px-3 flex space-x-4">
+            <button onclick="switchTab('directory')" id="tab-directory" class="py-2.5 border-b-2 border-emerald-400 font-semibold text-xs sm:text-sm flex items-center space-x-1.5 transition">
+                <i class="fa-solid fa-address-book text-xs"></i>
+                <span>Directory</span>
             </button>
-            <button onclick="switchTab('marketplace')" id="tab-marketplace" class="py-3 border-b-2 border-transparent text-slate-300 hover:text-white font-medium text-sm flex items-center space-x-2 transition">
-                <i class="fa-solid fa-basket-shopping"></i>
-                <span>Marketplace / Classifieds</span>
+            <button onclick="switchTab('marketplace')" id="tab-marketplace" class="py-2.5 border-b-2 border-transparent text-slate-300 hover:text-white font-semibold text-xs sm:text-sm flex items-center space-x-1.5 transition">
+                <i class="fa-solid fa-basket-shopping text-xs"></i>
+                <span>Marketplace</span>
             </button>
         </div>
     </nav>
 
     <!-- Main Content -->
-    <main class="flex-grow max-w-7xl w-full mx-auto px-4 py-6">
+    <main class="flex-grow max-w-7xl w-full mx-auto px-2 sm:px-4 py-4">
         
-        <!-- Search & Area Filter Bar -->
-        <div class="mb-6 flex flex-col md:flex-row gap-4 items-center justify-between">
-            <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto flex-1 max-w-2xl">
-                <!-- Search Box -->
+        <!-- Search & Filter Controls -->
+        <div class="mb-4 space-y-2.5">
+            <div class="flex flex-row gap-2">
+                <!-- Search Input -->
                 <div class="relative flex-1">
-                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-2.5 text-slate-400 text-xs">
                         <i class="fa-solid fa-magnifying-glass"></i>
                     </span>
-                    <input type="text" id="searchInput" oninput="filterItems()" placeholder="Search shops, services, places, items..." class="w-full pl-10 pr-4 py-2 bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-sm shadow-sm">
+                    <input type="text" id="searchInput" oninput="filterItems()" placeholder="തിരയുക (Search)..." class="w-full pl-8 pr-3 py-1.5 sm:py-2 bg-white border border-slate-300 rounded-lg text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-primary shadow-sm">
                 </div>
 
-                <!-- Locations Filter -->
-                <div class="relative min-w-[200px]">
-                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-emerald-600">
-                        <i class="fa-solid fa-location-dot"></i>
-                    </span>
-                    <select id="userAreaFilter" onchange="changeDefaultArea(this.value)" class="w-full pl-9 pr-8 py-2 bg-white border border-emerald-300 rounded-lg text-sm text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-secondary shadow-sm">
-                        <option value="All">എല്ലാ സ്ഥലങ്ങളും (All Areas)</option>
+                <!-- Locations Dropdown -->
+                <div class="relative w-40 sm:w-56 shrink-0">
+                    <select id="userAreaFilter" onchange="changeDefaultArea(this.value)" class="w-full px-2 py-1.5 sm:py-2 bg-white border border-emerald-300 rounded-lg text-xs sm:text-sm text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-secondary shadow-sm truncate">
+                        <option value="All">എല്ലാ സ്ഥലങ്ങളും</option>
                     </select>
                 </div>
             </div>
             
-            <div id="categoryFilters" class="flex flex-wrap gap-2 w-full md:w-auto">
-                <button onclick="filterCategory('All')" class="cat-btn bg-primary text-white px-3 py-1.5 rounded-full text-xs font-medium shadow transition">All</button>
-                <button onclick="filterCategory('Shops')" class="cat-btn bg-white text-slate-700 border border-slate-300 px-3 py-1.5 rounded-full text-xs font-medium hover:bg-slate-100 transition">Shops</button>
-                <button onclick="filterCategory('Services')" class="cat-btn bg-white text-slate-700 border border-slate-300 px-3 py-1.5 rounded-full text-xs font-medium hover:bg-slate-100 transition">Services</button>
-                <button onclick="filterCategory('Doctors')" class="cat-btn bg-white text-slate-700 border border-slate-300 px-3 py-1.5 rounded-full text-xs font-medium hover:bg-slate-100 transition">Doctors</button>
-                <button onclick="filterCategory('Hospitals')" class="cat-btn bg-white text-slate-700 border border-slate-300 px-3 py-1.5 rounded-full text-xs font-medium hover:bg-slate-100 transition">Hospitals</button>
+            <!-- Category Pills (Horizontal Scroll on Mobile) -->
+            <div id="categoryFilters" class="flex overflow-x-auto no-scrollbar gap-1.5 pb-1 text-xs">
+                <button onclick="filterCategory('All')" class="cat-btn bg-primary text-white px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap shadow transition">All</button>
+                <button onclick="filterCategory('Shops')" class="cat-btn bg-white text-slate-700 border border-slate-300 px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap hover:bg-slate-100 transition">Shops</button>
+                <button onclick="filterCategory('Services')" class="cat-btn bg-white text-slate-700 border border-slate-300 px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap hover:bg-slate-100 transition">Services</button>
+                <button onclick="filterCategory('Doctors')" class="cat-btn bg-white text-slate-700 border border-slate-300 px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap hover:bg-slate-100 transition">Doctors</button>
+                <button onclick="filterCategory('Hospitals')" class="cat-btn bg-white text-slate-700 border border-slate-300 px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap hover:bg-slate-100 transition">Hospitals</button>
             </div>
         </div>
 
-        <!-- Cards Grid Container -->
-        <div id="itemsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+        <!-- Cards Grid: Mobile 2 columns, Desktop 3/4 columns -->
+        <div id="itemsGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2.5 sm:gap-4"></div>
     </main>
+
+    <!-- Image Fullscreen Preview Modal (Lightbox) -->
+    <div id="imageLightboxModal" class="fixed inset-0 bg-black/90 z-50 hidden flex flex-col items-center justify-center p-3" onclick="closeImageLightbox()">
+        <button class="absolute top-4 right-4 text-white text-2xl hover:text-slate-300">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+        <img id="lightboxImage" src="" alt="Full view" class="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl">
+        <p id="lightboxCaption" class="text-white text-xs sm:text-sm mt-3 text-center px-4 font-medium"></p>
+    </div>
 
     <!-- Disclaimer / Terms Modal -->
     <div id="disclaimerModal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
-            <div class="text-center mb-4">
-                <div class="w-14 h-14 bg-emerald-100 text-secondary mx-auto rounded-full flex items-center justify-center text-2xl mb-2">
+        <div class="bg-white rounded-2xl max-w-sm sm:max-w-md w-full p-5 shadow-2xl relative max-h-[90vh] overflow-y-auto text-xs sm:text-sm">
+            <div class="text-center mb-3">
+                <div class="w-12 h-12 bg-emerald-100 text-secondary mx-auto rounded-full flex items-center justify-center text-xl mb-1.5">
                     <i class="fa-solid fa-handshake"></i>
                 </div>
-                <h3 class="text-xl font-bold text-primary">സ്വാഗതം! നാട്ടുകൂട്ടത്തിലേക്ക്</h3>
-                <p class="text-xs text-slate-500">Local Directory & Community Marketplace</p>
+                <h3 class="text-base sm:text-lg font-bold text-primary">സ്വാഗതം! നാട്ടുകൂട്ടത്തിലേക്ക്</h3>
             </div>
 
-            <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 text-xs md:text-sm text-slate-700 space-y-3 leading-relaxed">
-                <div class="flex items-start gap-2.5">
-                    <i class="fa-solid fa-circle-check text-secondary mt-0.5"></i>
-                    <div>
-                        <b class="text-slate-900">സൗജന്യ കൂട്ടായ്മ:</b> ഇത് പ്രദേശവാസികൾക്കായി വിവരങ്ങളും കടകളും സാധനങ്ങളും പങ്കുവെക്കാൻ സൗജന്യമായി തയ്യാറാക്കിയ പൊതുവേദിയാണ്.
-                    </div>
-                </div>
-                <div class="flex items-start gap-2.5">
-                    <i class="fa-solid fa-triangle-exclamation text-amber-500 mt-0.5"></i>
-                    <div>
-                        <b class="text-slate-900">ഇടപാടുകളുടെ ഉത്തരവാദിത്തം:</b> ഫോൺ നമ്പറുകൾ, സേവനങ്ങൾ, ഉൽപ്പന്നങ്ങൾ, പണമിടപാടുകൾ എന്നിവ പൂർണ്ണമായും ഉപയോക്താക്കൾ തമ്മിലുള്ള നേരിട്ടുള്ള ഉത്തരവാദിത്തമാണ്. തർക്കങ്ങളിലോ ഇടപാടുകളിലോ ആപ്പ് അഡ്മിൻമാർക്കോ ഡെവലപ്പർമാർക്കോ യാതൊരു പങ്കോ ബാധ്യതയോ ഉണ്ടായിരിക്കില്ല.
-                    </div>
-                </div>
-                <div class="flex items-start gap-2.5">
-                    <i class="fa-solid fa-clock-rotate-left text-blue-600 mt-0.5"></i>
-                    <div>
-                        <b class="text-slate-900">സ്വയം നീക്കം ചെയ്യപ്പെടൽ:</b> ഓരോ പരസ്യവും തിരഞ്ഞെടുത്ത കാലാവധി (പരമാവധി 15 ദിവസം) കഴിഞ്ഞാൽ ചിത്രങ്ങളടക്കം തനിയെ നീക്കം ചെയ്യപ്പെടും.
-                    </div>
-                </div>
+            <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 text-slate-700 space-y-2 leading-relaxed">
+                <p>• <b>സൗജന്യ കൂട്ടായ്മ:</b> വിവരങ്ങളും സേവനങ്ങളും പങ്കുവെക്കാനുള്ള പ്രാദേശിക പ്ലാറ്റ്‌ഫോം.</p>
+                <p>• <b>ഉത്തരവാദിത്തം:</b> ഇടപാടുകളും നമ്പറുകളും ഉപയോക്താക്കൾ തമ്മിലുള്ള നേരിട്ടുള്ളതാണ്. അഡ്മിന് യാതൊരു ബാധ്യതയും ഉണ്ടായിരിക്കില്ല.</p>
+                <p>• <b>ഓട്ടോ-എക്സ്പയറി:</b> പരസ്യങ്ങൾ കാലാവധിക്ക് ശേഷം തനിയെ നീക്കം ചെയ്യപ്പെടും.</p>
             </div>
 
-            <button onclick="acceptDisclaimer()" class="mt-5 w-full bg-secondary hover:bg-emerald-700 text-white font-bold py-3 rounded-xl text-sm transition shadow-md">
+            <button onclick="acceptDisclaimer()" class="mt-4 w-full bg-secondary hover:bg-emerald-700 text-white font-bold py-2.5 rounded-xl text-xs sm:text-sm transition shadow">
                 സമ്മതിക്കുന്നു & തുടരുക (I Agree)
             </button>
         </div>
     </div>
 
     <!-- Hidden / URL-Triggered Admin Modal (#admin) -->
-    <div id="adminModal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+    <div id="adminModal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-3">
+        <div class="bg-white rounded-2xl max-w-md w-full p-5 shadow-2xl relative max-h-[90vh] overflow-y-auto">
             <button onclick="closeAdminModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600">
-                <i class="fa-solid fa-xmark text-xl"></i>
+                <i class="fa-solid fa-xmark text-lg"></i>
             </button>
 
             <!-- Login Form -->
             <div id="adminLoginForm">
                 <div class="text-center mb-4">
-                    <div class="w-12 h-12 bg-blue-100 text-primary mx-auto rounded-full flex items-center justify-center text-xl mb-2">
-                        <i class="fa-solid fa-user-shield"></i>
-                    </div>
-                    <h3 class="text-lg font-bold text-primary">അഡ്മിൻ പോർട്ടൽ (Admin Portal)</h3>
+                    <h3 class="text-base font-bold text-primary">Admin Login</h3>
                 </div>
-
-                <div class="space-y-3">
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-600 mb-1">Username</label>
-                        <input type="text" id="adminUser" placeholder="admin" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-600 mb-1">Password</label>
-                        <input type="password" id="adminPass" placeholder="••••••••" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary">
-                    </div>
-                    <button onclick="handleAdminLogin()" class="w-full bg-primary hover:bg-blue-800 text-white font-bold py-2.5 rounded-lg text-sm shadow transition">
-                        Login to Admin
-                    </button>
+                <div class="space-y-2.5">
+                    <input type="text" id="adminUser" placeholder="Username" class="w-full p-2 border border-slate-300 rounded-lg text-xs">
+                    <input type="password" id="adminPass" placeholder="Password" class="w-full p-2 border border-slate-300 rounded-lg text-xs">
+                    <button onclick="handleAdminLogin()" class="w-full bg-primary hover:bg-blue-800 text-white font-bold py-2 rounded-lg text-xs shadow transition">Login</button>
                 </div>
             </div>
 
-            <!-- Logged Panel & Master Controls -->
-            <div id="adminLoggedPanel" class="hidden space-y-5">
-                <div class="flex items-center justify-between border-b pb-3">
-                    <div class="flex items-center gap-2 text-emerald-700 font-bold">
-                        <i class="fa-solid fa-circle-check"></i>
-                        <span>Admin Dashboard Active</span>
-                    </div>
-                    <button onclick="handleAdminLogout()" class="text-xs bg-red-100 text-red-700 px-3 py-1 rounded-md font-semibold hover:bg-red-200 transition">
-                        Logout
-                    </button>
+            <!-- Admin Master Controls -->
+            <div id="adminLoggedPanel" class="hidden space-y-4">
+                <div class="flex items-center justify-between border-b pb-2">
+                    <span class="text-xs font-bold text-emerald-700">Admin Mode Active</span>
+                    <button onclick="handleAdminLogout()" class="text-[11px] bg-red-100 text-red-700 px-2 py-1 rounded font-semibold">Logout</button>
                 </div>
 
-                <!-- Manage Locations -->
-                <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200">
-                    <h4 class="text-xs font-bold text-slate-700 uppercase mb-2 flex items-center gap-1.5">
-                        <i class="fa-solid fa-location-dot text-emerald-600"></i> സ്ഥലങ്ങൾ ക്രമീകരിക്കുക (Locations)
-                    </h4>
-                    <div class="flex gap-2 mb-2">
-                        <input type="text" id="newLocationInput" placeholder="പുതിയ സ്ഥലം (ഉദാ: ചെമ്പ്രശ്ശേരി)" class="flex-1 p-2 text-xs border border-slate-300 rounded-lg">
-                        <button onclick="addNewLocation()" class="bg-secondary text-white px-3 py-2 text-xs rounded-lg font-bold shadow hover:bg-emerald-700">Add</button>
+                <!-- Locations -->
+                <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-200">
+                    <h4 class="text-xs font-bold mb-1.5">സ്ഥലങ്ങൾ (Locations)</h4>
+                    <div class="flex gap-1.5 mb-2">
+                        <input type="text" id="newLocationInput" placeholder="സ്ഥലം" class="flex-1 p-1.5 text-xs border rounded">
+                        <button onclick="addNewLocation()" class="bg-secondary text-white px-2.5 py-1 text-xs rounded font-bold">Add</button>
                     </div>
-                    <div id="adminLocationList" class="flex flex-wrap gap-1.5 max-h-32 overflow-y-auto pt-1"></div>
+                    <div id="adminLocationList" class="flex flex-wrap gap-1 max-h-24 overflow-y-auto"></div>
                 </div>
 
-                <!-- Manage Shop Types -->
-                <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200">
-                    <h4 class="text-xs font-bold text-slate-700 uppercase mb-2 flex items-center gap-1.5">
-                        <i class="fa-solid fa-store text-blue-600"></i> കടകളുടെ ഇനം (Shop Types)
-                    </h4>
-                    <div class="flex gap-2 mb-2">
-                        <input type="text" id="newShopTypeInput" placeholder="ഉദാ: സ്റ്റേഷനറി, ഫാൻസി" class="flex-1 p-2 text-xs border border-slate-300 rounded-lg">
-                        <button onclick="addNewCategoryItem('Shops')" class="bg-primary text-white px-3 py-2 text-xs rounded-lg font-bold shadow hover:bg-blue-800">Add</button>
+                <!-- Shop Types -->
+                <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-200">
+                    <h4 class="text-xs font-bold mb-1.5">കടകളുടെ ഇനം (Shop Types)</h4>
+                    <div class="flex gap-1.5 mb-2">
+                        <input type="text" id="newShopTypeInput" placeholder="കടയുടെ ഇനം" class="flex-1 p-1.5 text-xs border rounded">
+                        <button onclick="addNewCategoryItem('Shops')" class="bg-primary text-white px-2.5 py-1 text-xs rounded font-bold">Add</button>
                     </div>
-                    <div id="adminShopList" class="flex flex-wrap gap-1.5 max-h-32 overflow-y-auto pt-1"></div>
+                    <div id="adminShopList" class="flex flex-wrap gap-1 max-h-24 overflow-y-auto"></div>
                 </div>
 
-                <!-- Manage Service Types -->
-                <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200">
-                    <h4 class="text-xs font-bold text-slate-700 uppercase mb-2 flex items-center gap-1.5">
-                        <i class="fa-solid fa-wrench text-amber-600"></i> തൊഴിലുകൾ / സേവനങ്ങൾ (Service Types)
-                    </h4>
-                    <div class="flex gap-2 mb-2">
-                        <input type="text" id="newServiceTypeInput" placeholder="ഉദാ: വാർക്കപ്പണി, ടൈൽസ് വർക്ക്" class="flex-1 p-2 text-xs border border-slate-300 rounded-lg">
-                        <button onclick="addNewCategoryItem('Services')" class="bg-amber-600 text-white px-3 py-2 text-xs rounded-lg font-bold shadow hover:bg-amber-700">Add</button>
+                <!-- Service Types -->
+                <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-200">
+                    <h4 class="text-xs font-bold mb-1.5">സേവനങ്ങൾ (Service Types)</h4>
+                    <div class="flex gap-1.5 mb-2">
+                        <input type="text" id="newServiceTypeInput" placeholder="സേവന ഇനം" class="flex-1 p-1.5 text-xs border rounded">
+                        <button onclick="addNewCategoryItem('Services')" class="bg-amber-600 text-white px-2.5 py-1 text-xs rounded font-bold">Add</button>
                     </div>
-                    <div id="adminServiceList" class="flex flex-wrap gap-1.5 max-h-32 overflow-y-auto pt-1"></div>
+                    <div id="adminServiceList" class="flex flex-wrap gap-1 max-h-24 overflow-y-auto"></div>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Add Item Modal -->
-    <div id="itemModal" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-xl max-w-lg w-full p-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
-            <button onclick="closeModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600">
-                <i class="fa-solid fa-xmark text-xl"></i>
+    <div id="itemModal" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center p-3">
+        <div class="bg-white rounded-xl max-w-lg w-full p-4 sm:p-5 shadow-2xl relative max-h-[92vh] overflow-y-auto text-xs sm:text-sm">
+            <button onclick="closeModal()" class="absolute top-3 right-3 text-slate-400 hover:text-slate-600">
+                <i class="fa-solid fa-xmark text-lg"></i>
             </button>
             
-            <div class="flex items-center justify-between mb-4">
-                <h2 class="text-xl font-bold text-primary">Add New Listing / Item</h2>
-                <button type="button" onclick="toggleHelp()" class="text-xs bg-amber-100 text-amber-800 px-2.5 py-1 rounded-full font-semibold hover:bg-amber-200 transition flex items-center gap-1">
-                    <i class="fa-solid fa-circle-info"></i> ഫോട്ടോ സഹായി
-                </button>
-            </div>
+            <h2 class="text-base sm:text-lg font-bold text-primary mb-3">Add New Listing</h2>
 
-            <form id="listingForm" onsubmit="saveItem(event)" class="space-y-4">
+            <form id="listingForm" onsubmit="saveItem(event)" class="space-y-3">
                 <div>
-                    <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Section</label>
-                    <select id="itemSection" onchange="toggleFormFields()" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-primary focus:outline-none">
+                    <label class="block font-semibold text-slate-600 mb-0.5">Section</label>
+                    <select id="itemSection" onchange="toggleFormFields()" class="w-full p-2 border border-slate-300 rounded-lg text-xs focus:ring-primary focus:outline-none">
                         <option value="directory">Local Directory (Shops, Services, Doctors)</option>
                         <option value="marketplace">Marketplace / Classifieds (Sell Items)</option>
                     </select>
                 </div>
 
                 <div id="categoryFieldContainer">
-                    <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Category</label>
-                    <select id="itemCategory" onchange="handleCategoryChange()" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-primary focus:outline-none">
+                    <label class="block font-semibold text-slate-600 mb-0.5">Category</label>
+                    <select id="itemCategory" onchange="handleCategoryChange()" class="w-full p-2 border border-slate-300 rounded-lg text-xs focus:ring-primary focus:outline-none">
                         <option value="Shops">Shops (കടകൾ)</option>
                         <option value="Services">Services (തൊഴിലുകൾ & സേവനങ്ങൾ)</option>
                         <option value="Doctors">Doctors (ഡോക്ടർമാർ)</option>
@@ -272,110 +234,91 @@
                 </div>
 
                 <div id="subCategoryContainer">
-                    <label class="block text-xs font-semibold uppercase text-slate-600 mb-1" id="subCategoryLabel">കടയുടെ ഇനം (Shop Type)</label>
-                    <select id="itemSubCategory" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-primary focus:outline-none">
+                    <label class="block font-semibold text-slate-600 mb-0.5" id="subCategoryLabel">വിഭാഗം</label>
+                    <select id="itemSubCategory" class="w-full p-2 border border-slate-300 rounded-lg text-xs focus:ring-primary focus:outline-none">
                     </select>
                 </div>
 
                 <div>
-                    <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Title / Name * (CAPITAL LETTERS / മലയാളം)</label>
-                    <input type="text" id="itemTitle" required placeholder="NAME / പേര്" class="uppercase-input w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-primary focus:outline-none">
+                    <label class="block font-semibold text-slate-600 mb-0.5">Title / Name *</label>
+                    <input type="text" id="itemTitle" required placeholder="NAME / പേര്" class="uppercase-input w-full p-2 border border-slate-300 rounded-lg text-xs focus:ring-primary focus:outline-none">
                 </div>
 
                 <div id="priceFieldContainer" class="hidden">
-                    <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Price (₹)</label>
-                    <input type="text" id="itemPrice" placeholder="ഉദാ: ₹35000" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-primary focus:outline-none">
+                    <label class="block font-semibold text-slate-600 mb-0.5">Price (₹)</label>
+                    <input type="text" id="itemPrice" placeholder="ഉദാ: ₹35000" class="w-full p-2 border border-slate-300 rounded-lg text-xs focus:ring-primary focus:outline-none">
                 </div>
 
                 <div>
-                    <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Phone Number * (10 Digits)</label>
-                    <input type="tel" id="itemPhone" required maxlength="10" pattern="[0-9]{10}" placeholder="ഉദാ: 9847790786" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-primary focus:outline-none">
-                    <span class="text-[10px] text-slate-500">ഒരു നമ്പറിൽ നിന്ന് പരമാവധി 3 ലിസ്റ്റിംഗുകൾ മാത്രമേ സാധ്യമാകൂ.</span>
+                    <label class="block font-semibold text-slate-600 mb-0.5">Phone Number *</label>
+                    <input type="tel" id="itemPhone" required maxlength="10" pattern="[0-9]{10}" placeholder="10 Digits (ഉദാ: 9847790786)" class="w-full p-2 border border-slate-300 rounded-lg text-xs focus:ring-primary focus:outline-none">
                 </div>
 
-                <!-- അഡ്മിൻ നൽകുന്ന ഡ്രോപ്പ്-ഡൗൺ സ്ഥലം മാത്രം -->
                 <div>
-                    <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">സ്ഥലം / പ്രദേശം (Location) *</label>
-                    <select id="itemLocation" required class="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-primary focus:outline-none">
-                        <!-- Populated by Admin Locations -->
+                    <label class="block font-semibold text-slate-600 mb-0.5">സ്ഥലം / പ്രദേശം (Location) *</label>
+                    <select id="itemLocation" required class="w-full p-2 border border-slate-300 rounded-lg text-xs focus:ring-primary focus:outline-none">
                     </select>
                 </div>
 
                 <div>
-                    <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">ലാൻഡ്മാർക്ക് (Landmark)</label>
-                    <input type="text" id="itemLandmark" placeholder="ഉദാ: പഴയ ജുമാ മസ്ജിദിന് സമീപം" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-primary focus:outline-none">
+                    <label class="block font-semibold text-slate-600 mb-0.5">ലാൻഡ്മാർക്ക് (Landmark)</label>
+                    <input type="text" id="itemLandmark" placeholder="ഉദാ: പഴയ ജുമാ മസ്ജിദിന് സമീപം" class="w-full p-2 border border-slate-300 rounded-lg text-xs focus:ring-primary focus:outline-none">
                 </div>
 
                 <div>
-                    <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Google Maps Location Link (Optional)</label>
-                    <input type="url" id="itemMapUrl" placeholder="https://maps.app.goo.gl/..." class="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-primary focus:outline-none">
+                    <label class="block font-semibold text-slate-600 mb-0.5">Google Maps Link (Optional)</label>
+                    <input type="url" id="itemMapUrl" placeholder="https://maps.app.goo.gl/..." class="w-full p-2 border border-slate-300 rounded-lg text-xs focus:ring-primary focus:outline-none">
                 </div>
 
                 <div>
-                    <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Description / വിവരങ്ങൾ *</label>
-                    <textarea id="itemDesc" rows="3" required placeholder="വിവരങ്ങൾ ഇവിടെ എഴുതുക..." class="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-primary focus:outline-none"></textarea>
+                    <label class="block font-semibold text-slate-600 mb-0.5">Description *</label>
+                    <textarea id="itemDesc" rows="2" required placeholder="വിവരങ്ങൾ..." class="w-full p-2 border border-slate-300 rounded-lg text-xs focus:ring-primary focus:outline-none"></textarea>
                 </div>
 
-                <!-- Expiry & PIN Controls -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 p-3 bg-emerald-50/60 border border-emerald-200 rounded-lg">
+                <div class="grid grid-cols-2 gap-2 p-2.5 bg-emerald-50/60 border border-emerald-200 rounded-lg">
                     <div>
-                        <label class="block text-xs font-bold text-emerald-900 mb-1">കാലാവധി (Expiry)</label>
-                        <select id="itemDuration" class="w-full p-2 border border-slate-300 rounded-lg text-xs bg-white focus:outline-none">
-                            <option value="5">5 ദിവസങ്ങൾ</option>
-                            <option value="10" selected>10 ദിവസങ്ങൾ</option>
-                            <option value="15">15 ദിവസങ്ങൾ (പരമാവധി)</option>
+                        <label class="block font-bold text-emerald-900 mb-0.5">കാലാവധി</label>
+                        <select id="itemDuration" class="w-full p-1.5 border border-slate-300 rounded text-xs bg-white">
+                            <option value="5">5 ദിവസം</option>
+                            <option value="10" selected>10 ദിവസം</option>
+                            <option value="15">15 ദിവസം</option>
                         </select>
-                        <span class="text-[10px] text-slate-500">ഇതിന് ശേഷം പരസ്യം തനിയെ ഡിലീറ്റ് ആകും.</span>
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-emerald-900 mb-1">4-അക്ക സെക്യൂരിറ്റി പിൻ (PIN) *</label>
-                        <input type="password" id="itemPin" required maxlength="4" pattern="[0-9]{4}" placeholder="ഉദാ: 1234" class="w-full p-2 border border-slate-300 rounded-lg text-xs bg-white tracking-widest focus:outline-none">
-                        <span class="text-[10px] text-slate-500">ഡിലീറ്റ് ചെയ്യാനോ Sold ആക്കാനോ ആവശ്യം.</span>
+                        <label class="block font-bold text-emerald-900 mb-0.5">4-അക്ക PIN *</label>
+                        <input type="password" id="itemPin" required maxlength="4" pattern="[0-9]{4}" placeholder="1234" class="w-full p-1.5 border border-slate-300 rounded text-xs bg-white tracking-widest">
                     </div>
                 </div>
 
                 <!-- ഫോട്ടോ ഓപ്ഷനുകൾ -->
-                <div class="space-y-3 p-3 bg-slate-50 border border-slate-200 rounded-lg">
-                    <label class="block text-xs font-semibold uppercase text-slate-700">Photo Option (150KB-ലേക്ക് ഓട്ടോ-കംപ്രസ് ആകും)</label>
-                    
+                <div class="space-y-2 p-2.5 bg-slate-50 border border-slate-200 rounded-lg text-xs">
                     <div>
-                        <label class="block text-xs text-slate-600 mb-1 font-medium">📸 നേരിട്ട് ക്യാമറ ഓൺ ചെയ്ത് ഫോട്ടോ എടുക്കാൻ:</label>
-                        <input type="file" id="itemCameraFile" accept="image/*" capture="environment" onchange="previewSelectedImage(this)" class="w-full text-xs text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-emerald-600 file:text-white hover:file:bg-emerald-700 cursor-pointer">
+                        <label class="block text-slate-600 mb-1 font-medium">📸 ക്യാമറ ഓൺ ചെയ്ത് ഫോട്ടോ എടുക്കാൻ:</label>
+                        <input type="file" id="itemCameraFile" accept="image/*" capture="environment" onchange="previewSelectedImage(this)" class="w-full text-xs text-slate-500 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-[11px] file:bg-emerald-600 file:text-white">
                     </div>
 
-                    <div class="text-center text-xs text-slate-400 font-medium">- OR -</div>
-
                     <div>
-                        <label class="block text-xs text-slate-600 mb-1 font-medium">📁 ഗാലറിയിൽ നിന്ന് തിരഞ്ഞെടുക്കാൻ:</label>
-                        <input type="file" id="itemImageFile" accept="image/*" onchange="previewSelectedImage(this)" class="w-full text-xs text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-primary file:text-white hover:file:bg-blue-800 cursor-pointer">
+                        <label class="block text-slate-600 mb-1 font-medium">📁 ഗാലറിയിൽ നിന്ന് തിരഞ്ഞെടുക്കാൻ:</label>
+                        <input type="file" id="itemImageFile" accept="image/*" onchange="previewSelectedImage(this)" class="w-full text-xs text-slate-500 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-[11px] file:bg-primary file:text-white">
                     </div>
 
-                    <div class="text-center text-xs text-slate-400 font-medium">- OR -</div>
-
-                    <div>
-                        <label class="block text-xs text-slate-600 mb-1 font-medium">🔗 ഇന്റർനെറ്റ് ഇമേജ് ലിങ്ക് (Image URL):</label>
-                        <input type="url" id="itemImage" placeholder="https://..." class="w-full p-2 border border-slate-300 rounded-lg text-sm bg-white focus:outline-none">
-                    </div>
-
-                    <div id="imagePreviewContainer" class="hidden flex items-center gap-3 p-2 bg-emerald-50 rounded-lg border border-emerald-200">
-                        <img id="imagePreview" src="" alt="Preview" class="w-12 h-12 rounded object-cover border">
-                        <div class="text-xs text-emerald-800 font-medium">
-                            <span>ഫോട്ടോ തിരഞ്ഞെടുക്കപ്പെട്ടു. സൈസ് 150KB-ൽ താഴെയായി കംപ്രസ് ചെയ്യപ്പെടും.</span>
-                        </div>
+                    <div id="imagePreviewContainer" class="hidden flex items-center gap-2 p-1.5 bg-emerald-50 rounded border border-emerald-200">
+                        <img id="imagePreview" src="" alt="Preview" class="w-10 h-10 rounded object-cover border">
+                        <span class="text-[11px] text-emerald-800 font-medium">ഫോട്ടോ തിരഞ്ഞെടുക്കപ്പെട്ടു (Auto Compressed).</span>
                     </div>
                 </div>
 
-                <div class="flex justify-end space-x-3 pt-2">
-                    <button type="button" onclick="closeModal()" class="px-4 py-2 border border-slate-300 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-100">Cancel</button>
-                    <button type="submit" id="saveBtn" class="px-5 py-2 bg-secondary text-white rounded-lg text-sm font-medium hover:bg-emerald-700 shadow">Save Item</button>
+                <div class="flex justify-end space-x-2 pt-1">
+                    <button type="button" onclick="closeModal()" class="px-3 py-1.5 border border-slate-300 rounded-lg text-xs text-slate-700">Cancel</button>
+                    <button type="submit" id="saveBtn" class="px-4 py-1.5 bg-secondary text-white rounded-lg text-xs font-semibold hover:bg-emerald-700 shadow">Save Item</button>
                 </div>
             </form>
         </div>
     </div>
 
     <!-- Footer -->
-    <footer class="bg-primary text-white py-4 mt-auto text-center text-xs text-slate-300">
-        <p>നാട്ടുകൂട്ടം (Naattukoottam) • Powered by Firebase Firestore</p>
+    <footer class="bg-primary text-white py-3 mt-auto text-center text-[11px] text-slate-300">
+        <p>നാട്ടുകൂട്ടം (Naattukoottam) • Powered by Firebase</p>
     </footer>
 
     <!-- Firebase SDKs -->
@@ -402,7 +345,6 @@
         let deferredPrompt = null;
         let selectedFileToUpload = null;
 
-        // Admin & Area Preferences
         let isAdminLoggedIn = localStorage.getItem('naattukoottam_admin_logged') === 'true';
         let userDefaultArea = localStorage.getItem('naattukoottam_saved_area') || 'All';
 
@@ -449,7 +391,6 @@
             ]
         };
 
-        // സ്മാർട്ട് ഡിഫോൾട്ട് ചിത്രങ്ങൾ
         function getDefaultImage(cat, subCat, section) {
             if (section === 'marketplace') {
                 return 'https://images.unsplash.com/photo-1526738549149-8e07eca6c147?auto=format&fit=crop&w=600&q=80';
@@ -472,6 +413,20 @@
             if (text.includes('വർക്ക്‌ഷോപ്പ്') || text.includes('garage')) return 'https://images.unsplash.com/photo-1486006920555-c77dce18193b?auto=format&fit=crop&w=600&q=80';
             if (text.includes('മൊബൈൽ') || text.includes('electronics')) return 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=600&q=80';
             return 'https://images.unsplash.com/photo-1604719312566-8912e9227c6a?auto=format&fit=crop&w=600&q=80';
+        }
+
+        // --- Lightbox / Fullscreen Image Viewer ---
+        function openImageLightbox(imgSrc, title) {
+            const modal = document.getElementById('imageLightboxModal');
+            const img = document.getElementById('lightboxImage');
+            const caption = document.getElementById('lightboxCaption');
+            img.src = imgSrc;
+            caption.innerText = title;
+            modal.classList.remove('hidden');
+        }
+
+        function closeImageLightbox() {
+            document.getElementById('imageLightboxModal').classList.add('hidden');
         }
 
         // --- Master Settings Sync ---
@@ -498,8 +453,8 @@
             const itemLocSelect = document.getElementById('itemLocation');
 
             const currentSelected = topFilter.value || userDefaultArea;
-            topFilter.innerHTML = `<option value="All">എല്ലാ സ്ഥലങ്ങളും (All Areas)</option>`;
-            itemLocSelect.innerHTML = `<option value="">-- സ്ഥലം തിരഞ്ഞെടുക്കുക --</option>`;
+            topFilter.innerHTML = `<option value="All">എല്ലാ സ്ഥലങ്ങളും</option>`;
+            itemLocSelect.innerHTML = `<option value="">-- സ്ഥലം --</option>`;
 
             appLocations.sort().forEach(loc => {
                 const topOpt = document.createElement('option');
@@ -523,25 +478,24 @@
             const locList = document.getElementById('adminLocationList');
             const shopList = document.getElementById('adminShopList');
             const srvList = document.getElementById('adminServiceList');
-
             if (!locList) return;
 
             locList.innerHTML = appLocations.map(loc => `
-                <span class="inline-flex items-center gap-1 bg-white border border-slate-300 px-2 py-1 rounded text-xs">
+                <span class="inline-flex items-center gap-1 bg-white border px-1.5 py-0.5 rounded text-[11px]">
                     ${loc}
                     <i class="fa-solid fa-xmark text-red-500 cursor-pointer ml-1" onclick="removeLocation('${loc}')"></i>
                 </span>
             `).join('');
 
             shopList.innerHTML = (appSubCategories.Shops || []).map(sh => `
-                <span class="inline-flex items-center gap-1 bg-white border border-slate-300 px-2 py-1 rounded text-[11px]">
+                <span class="inline-flex items-center gap-1 bg-white border px-1.5 py-0.5 rounded text-[10px]">
                     ${sh}
                     <i class="fa-solid fa-xmark text-red-500 cursor-pointer ml-1" onclick="removeCategoryItem('Shops', '${sh}')"></i>
                 </span>
             `).join('');
 
             srvList.innerHTML = (appSubCategories.Services || []).map(sv => `
-                <span class="inline-flex items-center gap-1 bg-white border border-slate-300 px-2 py-1 rounded text-[11px]">
+                <span class="inline-flex items-center gap-1 bg-white border px-1.5 py-0.5 rounded text-[10px]">
                     ${sv}
                     <i class="fa-solid fa-xmark text-red-500 cursor-pointer ml-1" onclick="removeCategoryItem('Services', '${sv}')"></i>
                 </span>
@@ -560,7 +514,7 @@
         }
 
         async function removeLocation(loc) {
-            if (confirm(`'${loc}' എന്ന സ്ഥലം ലിസ്റ്റിൽ നിന്ന് നീക്കം ചെയ്യണോ?`)) {
+            if (confirm(`'${loc}' നീക്കം ചെയ്യണോ?`)) {
                 appLocations = appLocations.filter(l => l !== loc);
                 await db.collection("app_settings").doc("masters").update({ locations: appLocations });
             }
@@ -578,13 +532,13 @@
         }
 
         async function removeCategoryItem(cat, item) {
-            if (confirm(`'${item}' ലിസ്റ്റിൽ നിന്ന് നീക്കം ചെയ്യണോ?`)) {
+            if (confirm(`'${item}' നീക്കം ചെയ്യണോ?`)) {
                 appSubCategories[cat] = appSubCategories[cat].filter(i => i !== item);
                 await db.collection("app_settings").doc("masters").update({ subCategories: appSubCategories });
             }
         }
 
-        // --- Hidden URL-Triggered Admin Controls ---
+        // --- Hidden URL-Triggered Admin Controls (#admin) ---
         function checkAdminHash() {
             if (window.location.hash === '#admin') {
                 openAdminModal();
@@ -633,11 +587,10 @@
             localStorage.removeItem('naattukoottam_admin_logged');
             updateAdminUI();
             renderItems();
-            alert("അഡ്മിൻ ലോഗ്ഔട്ട് ആയി.");
             closeAdminModal();
         }
 
-        // --- PWA Installation Logic ---
+        // --- PWA Installation ---
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
@@ -734,12 +687,12 @@
             const catFilters = document.getElementById('categoryFilters');
 
             if(tab === 'directory') {
-                dirBtn.className = "py-3 border-b-2 border-emerald-400 font-medium text-sm flex items-center space-x-2 transition";
-                mktBtn.className = "py-3 border-b-2 border-transparent text-slate-300 hover:text-white font-medium text-sm flex items-center space-x-2 transition";
+                dirBtn.className = "py-2.5 border-b-2 border-emerald-400 font-semibold text-xs sm:text-sm flex items-center space-x-1.5 transition";
+                mktBtn.className = "py-2.5 border-b-2 border-transparent text-slate-300 hover:text-white font-semibold text-xs sm:text-sm flex items-center space-x-1.5 transition";
                 catFilters.style.display = 'flex';
             } else {
-                mktBtn.className = "py-3 border-b-2 border-emerald-400 font-medium text-sm flex items-center space-x-2 transition";
-                dirBtn.className = "py-3 border-b-2 border-transparent text-slate-300 hover:text-white font-medium text-sm flex items-center space-x-2 transition";
+                mktBtn.className = "py-2.5 border-b-2 border-emerald-400 font-semibold text-xs sm:text-sm flex items-center space-x-1.5 transition";
+                dirBtn.className = "py-2.5 border-b-2 border-transparent text-slate-300 hover:text-white font-semibold text-xs sm:text-sm flex items-center space-x-1.5 transition";
                 catFilters.style.display = 'none';
             }
             renderItems();
@@ -749,14 +702,15 @@
             currentCategory = cat;
             document.querySelectorAll('.cat-btn').forEach(btn => {
                 if(btn.innerText.includes(cat)) {
-                    btn.className = "cat-btn bg-primary text-white px-3 py-1.5 rounded-full text-xs font-medium shadow transition";
+                    btn.className = "cat-btn bg-primary text-white px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap shadow transition";
                 } else {
-                    btn.className = "cat-btn bg-white text-slate-700 border border-slate-300 px-3 py-1.5 rounded-full text-xs font-medium hover:bg-slate-100 transition";
+                    btn.className = "cat-btn bg-white text-slate-700 border border-slate-300 px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap hover:bg-slate-100 transition";
                 }
             });
             renderItems();
         }
 
+        // --- 2-Column Responsive Card Rendering with Click-to-Zoom ---
         function renderItems() {
             const grid = document.getElementById('itemsGrid');
             const searchVal = document.getElementById('searchInput').value.toLowerCase();
@@ -776,17 +730,17 @@
             });
 
             if(filtered.length === 0) {
-                grid.innerHTML = `<div class="col-span-full text-center py-12 text-slate-400"><i class="fa-solid fa-box-open text-4xl mb-2"></i><p>തിരഞ്ഞെടുത്ത സ്ഥലത്ത് വിവരങ്ങളൊന്നും ലഭ്യമായില്ല.</p></div>`;
+                grid.innerHTML = `<div class="col-span-full text-center py-12 text-slate-400"><i class="fa-solid fa-box-open text-3xl mb-1.5"></i><p class="text-xs">വിവരങ്ങളൊന്നും ലഭ്യമായില്ല.</p></div>`;
                 return;
             }
 
             grid.innerHTML = filtered.map(item => {
                 const isSold = item.sold === true;
                 const soldClass = isSold ? 'sold-card' : '';
-                const soldBadge = isSold ? `<span class="absolute top-2 left-2 bg-red-600 text-white text-xs px-3 py-1 rounded-md font-extrabold shadow-md tracking-wider">SOLD OUT</span>` : '';
+                const soldBadge = isSold ? `<span class="absolute top-1.5 left-1.5 bg-red-600 text-white text-[9px] px-1.5 py-0.5 rounded font-extrabold shadow tracking-wider">SOLD</span>` : '';
 
                 const mapBtn = item.mapUrl ? `
-                    <a href="${item.mapUrl}" target="_blank" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-lg text-sm transition flex items-center justify-center shadow-sm" title="Location on Map">
+                    <a href="${item.mapUrl}" target="_blank" class="bg-blue-600 hover:bg-blue-700 text-white px-2 py-1.5 rounded text-xs transition flex items-center justify-center shadow-sm" title="Map">
                         <i class="fa-solid fa-location-dot"></i>
                     </a>
                 ` : '';
@@ -794,45 +748,41 @@
                 let contactButtons = '';
                 if(isSold) {
                     contactButtons = `
-                        <div class="flex-1 bg-slate-200 text-slate-500 text-center py-2 rounded-lg text-xs font-semibold">
-                            ഇനം വിറ്റുപോയി (Sold)
+                        <div class="flex-1 bg-slate-200 text-slate-500 text-center py-1.5 rounded text-[10px] font-semibold">
+                            Sold Out
                         </div>
                     `;
                 } else {
                     contactButtons = `
-                        <a href="tel:${item.phone}" class="flex-1 bg-secondary hover:bg-emerald-700 text-white text-center py-2 rounded-lg text-sm font-medium transition flex items-center justify-center space-x-1.5 shadow-sm">
-                            <i class="fa-solid fa-phone"></i>
+                        <a href="tel:${item.phone}" class="flex-1 bg-secondary hover:bg-emerald-700 text-white text-center py-1.5 rounded text-xs font-semibold transition flex items-center justify-center space-x-1 shadow-sm">
+                            <i class="fa-solid fa-phone text-[10px]"></i>
                             <span>Call</span>
                         </a>
-                        <a href="https://wa.me/91${item.phone}?text=Hello,%20I%20saw%20your%20listing%20on%20Naattukoottam:%20${encodeURIComponent(item.title)}" target="_blank" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-2 rounded-lg text-sm transition flex items-center justify-center shadow-sm">
-                            <i class="fa-brands fa-whatsapp text-lg"></i>
+                        <a href="https://wa.me/91${item.phone}?text=Hello,%20I%20saw%20your%20listing%20on%20Naattukoottam:%20${encodeURIComponent(item.title)}" target="_blank" class="bg-emerald-600 hover:bg-emerald-700 text-white px-2 py-1.5 rounded text-xs transition flex items-center justify-center shadow-sm">
+                            <i class="fa-brands fa-whatsapp text-sm"></i>
                         </a>
                         ${mapBtn}
                     `;
                 }
 
-                // അഡ്മിൻ മോഡ് വിവരങ്ങൾ
                 const adminAuditInfo = isAdminLoggedIn ? `
-                    <div class="bg-amber-50 p-2 rounded text-[11px] text-amber-900 border border-amber-200 mt-2">
-                        <div><b>PIN:</b> ${item.pin || 'None'} | <b>Phone:</b> ${item.phone}</div>
-                        <div class="truncate text-[10px] text-slate-500" title="${item.userAgent || ''}"><b>Device:</b> ${item.userAgent || 'Unknown'}</div>
+                    <div class="bg-amber-50 p-1.5 rounded text-[10px] text-amber-900 border border-amber-200 mt-1">
+                        <div><b>PIN:</b> ${item.pin || 'None'}</div>
+                        <div class="truncate text-[9px] text-slate-500"><b>Dev:</b> ${item.userAgent || 'Unknown'}</div>
                     </div>
                 ` : '';
 
                 const manageButtons = `
-                    <div class="flex items-center justify-between pt-2 border-t border-slate-100 text-xs text-slate-400">
-                        <button onclick="markAsSoldPrompt('${item.id}', ${isSold})" class="hover:text-amber-600 flex items-center gap-1 transition">
+                    <div class="flex items-center justify-between pt-1.5 border-t border-slate-100 text-[10px] text-slate-400">
+                        <button onclick="markAsSoldPrompt('${item.id}', ${isSold})" class="hover:text-amber-600 flex items-center gap-0.5">
                             <i class="fa-solid ${isSold ? 'fa-rotate-left' : 'fa-check'}"></i>
-                            <span>${isSold ? 'Mark Available' : 'Mark Sold'}</span>
+                            <span>${isSold ? 'Avail' : 'Sold'}</span>
                         </button>
                         ${isAdminLoggedIn ? `
-                            <button onclick="editListingAdmin('${item.id}')" class="text-blue-600 hover:text-blue-800 flex items-center gap-1 transition font-bold">
-                                <i class="fa-solid fa-pen-to-square"></i> Edit
-                            </button>
+                            <button onclick="editListingAdmin('${item.id}')" class="text-blue-600 font-bold">Edit</button>
                         ` : ''}
-                        <button onclick="deleteListingPrompt('${item.id}')" class="hover:text-red-600 flex items-center gap-1 transition">
+                        <button onclick="deleteListingPrompt('${item.id}')" class="hover:text-red-600">
                             <i class="fa-solid fa-trash-can"></i>
-                            <span>Delete</span>
                         </button>
                     </div>
                 `;
@@ -840,28 +790,32 @@
                 const finalImage = item.image || getDefaultImage(item.category, item.subCategory, item.section);
 
                 return `
-                    <div class="bg-white rounded-xl shadow-md overflow-hidden border border-slate-200 flex flex-col justify-between hover:shadow-lg transition relative ${soldClass}">
+                    <div class="bg-white rounded-xl shadow-sm border border-slate-200 flex flex-col justify-between hover:shadow-md transition overflow-hidden relative ${soldClass}">
                         <div>
-                            <div class="h-44 bg-slate-200 relative overflow-hidden">
-                                <img src="${finalImage}" alt="${item.title}" class="w-full h-full object-cover">
+                            <!-- Click Image to Zoom -->
+                            <div class="h-28 sm:h-36 bg-slate-200 relative overflow-hidden cursor-pointer group" onclick="openImageLightbox('${finalImage}', '${item.title.replace(/'/g, "\\'")}')">
+                                <img src="${finalImage}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
                                 ${soldBadge}
-                                <span class="absolute top-2 right-2 bg-slate-900/75 text-white text-xs px-2.5 py-1 rounded-full backdrop-blur-sm font-medium">
+                                <span class="absolute top-1 right-1 bg-slate-900/80 text-white text-[9px] sm:text-[10px] px-1.5 py-0.5 rounded backdrop-blur-sm truncate max-w-[80%]">
                                     ${item.subCategory || (item.section === 'directory' ? item.category : 'Marketplace')}
                                 </span>
-                                ${item.price ? `<span class="absolute bottom-2 left-2 bg-secondary text-white text-xs px-2.5 py-1 rounded-md font-bold shadow">${item.price}</span>` : ''}
+                                ${item.price ? `<span class="absolute bottom-1 left-1 bg-secondary text-white text-[10px] px-1.5 py-0.5 rounded font-bold shadow">${item.price}</span>` : ''}
+                                <span class="absolute bottom-1 right-1 bg-black/60 text-white text-[9px] px-1 rounded opacity-0 group-hover:opacity-100 transition"><i class="fa-solid fa-expand"></i></span>
                             </div>
-                            <div class="p-4">
-                                <div class="flex items-center gap-1.5 text-xs text-emerald-700 font-bold mb-1">
-                                    <i class="fa-solid fa-location-dot"></i>
-                                    <span>${item.location || 'Local Area'} ${item.landmark ? '(' + item.landmark + ')' : ''}</span>
+                            
+                            <div class="p-2 sm:p-3">
+                                <div class="flex items-center gap-1 text-[10px] text-emerald-700 font-bold mb-0.5 truncate">
+                                    <i class="fa-solid fa-location-dot shrink-0"></i>
+                                    <span class="truncate">${item.location || 'Local'}${item.landmark ? ' (' + item.landmark + ')' : ''}</span>
                                 </div>
-                                <h3 class="font-bold text-slate-800 text-lg mb-1 leading-snug">${item.title}</h3>
-                                <p class="text-slate-600 text-sm line-clamp-3">${item.desc}</p>
+                                <h3 class="font-bold text-slate-800 text-xs sm:text-sm mb-0.5 truncate leading-tight">${item.title}</h3>
+                                <p class="text-slate-500 text-[10px] sm:text-xs line-clamp-2 leading-tight">${item.desc}</p>
                                 ${adminAuditInfo}
                             </div>
                         </div>
-                        <div class="p-4 pt-0 space-y-3">
-                            <div class="flex gap-2">
+                        
+                        <div class="p-2 pt-0 space-y-1.5">
+                            <div class="flex gap-1">
                                 ${contactButtons}
                             </div>
                             ${manageButtons}
@@ -871,9 +825,7 @@
             }).join('');
         }
 
-        function filterItems() {
-            renderItems();
-        }
+        function filterItems() { renderItems(); }
 
         function openModal() {
             document.getElementById('itemModal').classList.remove('hidden');
@@ -931,7 +883,7 @@
             });
         }
 
-        // --- Save Item ---
+        // --- Save Item with Compression ---
         async function saveItem(e) {
             e.preventDefault();
             const saveBtn = document.getElementById('saveBtn');
@@ -944,7 +896,7 @@
                 try {
                     const phoneCheckSnap = await db.collection("listings").where("phone", "==", phone).get();
                     if (phoneCheckSnap.size >= 3) {
-                        alert("ഈ ഫോൺ നമ്പർ ഉപയോഗിച്ച് ഇതിനകം 3 ലിസ്റ്റിംഗുകൾ ചേർത്തിട്ടുണ്ട്! പുതിയത് ചേർക്കാൻ പഴയവയിൽ ഒന്ന് ഡിലീറ്റ് ചെയ്യുക.");
+                        alert("ഈ ഫോൺ നമ്പർ ഉപയോഗിച്ച് ഇതിനകം 3 ലിസ്റ്റിംഗുകൾ ചേർത്തിട്ടുണ്ട്!");
                         saveBtn.disabled = false;
                         saveBtn.innerText = "Save Item";
                         return;
@@ -972,8 +924,6 @@
             const pin = document.getElementById('itemPin').value.trim();
             const durationDays = parseInt(document.getElementById('itemDuration').value) || 10;
             const expiresAt = Date.now() + (durationDays * 24 * 60 * 60 * 1000);
-
-            const imageUrlInput = document.getElementById('itemImage').value.trim();
 
             const basePayload = {
                 section, title, category, subCategory, price, phone,
@@ -1013,7 +963,7 @@
             } else {
                 uploadToFirebase({
                     ...basePayload,
-                    image: imageUrlInput || getDefaultImage(category, subCategory, section)
+                    image: getDefaultImage(category, subCategory, section)
                 });
             }
         }
@@ -1036,10 +986,10 @@
             });
         }
 
-        // --- Actions ---
+        // --- PIN / Admin Actions ---
         async function markAsSoldPrompt(docId, currentSoldState) {
             if (!isAdminLoggedIn) {
-                const enteredPin = prompt("പരസ്യം ചേർക്കുമ്പോൾ നൽകിയ 4-അക്ക PIN നൽകുക:");
+                const enteredPin = prompt("4-അക്ക PIN നൽകുക:");
                 if (!enteredPin) return;
 
                 const docRef = db.collection("listings").doc(docId);
@@ -1048,7 +998,7 @@
 
                 const item = docSnap.data();
                 if (item.pin && item.pin !== enteredPin) {
-                    alert("തെറ്റായ PIN നമ്പർ! പരസ്യം ചേർത്ത വ്യക്തിക്ക് മാത്രമേ മാറ്റം വരുത്താൻ അനുവാദമുള്ളൂ.");
+                    alert("തെറ്റായ PIN നമ്പർ!");
                     return;
                 }
             }
@@ -1062,7 +1012,7 @@
 
         async function deleteListingPrompt(docId) {
             if (!isAdminLoggedIn) {
-                const enteredPin = prompt("ഡിലീറ്റ് ചെയ്യാൻ നിങ്ങളുടെ 4-അക്ക PIN നൽകുക:");
+                const enteredPin = prompt("ഡിലീറ്റ് ചെയ്യാൻ 4-അക്ക PIN നൽകുക:");
                 if (!enteredPin) return;
 
                 const docRef = db.collection("listings").doc(docId);
@@ -1071,12 +1021,12 @@
 
                 const item = docSnap.data();
                 if (item.pin && item.pin !== enteredPin) {
-                    alert("തെറ്റായ PIN നമ്പർ! ഇത് ചേർത്ത ഉടമസ്ഥന് മാത്രമേ ഡിലീറ്റ് ചെയ്യാൻ സാധിക്കൂ.");
+                    alert("തെറ്റായ PIN നമ്പർ!");
                     return;
                 }
             }
 
-            if (confirm("ഈ പരസ്യം പൂർണ്ണമായി നീക്കം ചെയ്യണമെന്ന് ഉറപ്പാണോ?")) {
+            if (confirm("ഈ ലിസ്റ്റിംഗ് നീക്കം ചെയ്യണമെന്ന് ഉറപ്പാണോ?")) {
                 try {
                     await db.collection("listings").doc(docId).delete();
                 } catch (err) {
@@ -1085,7 +1035,6 @@
             }
         }
 
-        // Admin Edit Function
         async function editListingAdmin(docId) {
             if (!isAdminLoggedIn) return;
             const docRef = db.collection("listings").doc(docId);
@@ -1093,17 +1042,17 @@
             if (!docSnap.exists) return;
 
             const item = docSnap.data();
-            const newTitle = prompt("പേര് / Title മാറ്റുക:", item.title);
+            const newTitle = prompt("Title മാറ്റുക:", item.title);
             if (newTitle === null) return;
 
-            const newPhone = prompt("ഫോൺ നമ്പർ മാറ്റുക:", item.phone);
+            const newPhone = prompt("Phone മാറ്റുക:", item.phone);
             if (newPhone === null) return;
 
-            const newLandmark = prompt("ലാൻഡ്മാർക്ക് മാറ്റുക:", item.landmark || '');
+            const newLandmark = prompt("Landmark മാറ്റുക:", item.landmark || '');
             if (newLandmark === null) return;
 
             try {
-                await db.collection("listings").doc(docId).update({
+                await docRef.update({
                     title: newTitle.trim(),
                     phone: newPhone.trim(),
                     landmark: newLandmark.trim()
