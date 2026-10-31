@@ -7,7 +7,7 @@
     
     <!-- PWA Manifest & Service Worker Registration -->
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#1e293b">
+    <meta name="theme-color" content="#0f172a">
     <script>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
@@ -30,9 +30,9 @@
             theme: {
                 extend: {
                     colors: {
-                        primary: '#0f172a',    /* Sleek Navy Slate */
-                        secondary: '#2563eb',  /* Royal Blue for Call */
-                        accent: '#f97316'      /* Warm Vibrant Orange */
+                        primary: '#0f172a',
+                        secondary: '#2563eb',
+                        accent: '#f97316'
                     },
                     fontFamily: {
                         sans: ['"Noto Sans Malayalam"', 'Inter', 'sans-serif']
@@ -125,7 +125,7 @@
             </div>
         </div>
 
-        <!-- Cards Grid: Mobile 2 columns, Desktop 3/4 columns -->
+        <!-- Cards Grid -->
         <div id="itemsGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2.5 sm:gap-4"></div>
     </main>
 
@@ -160,70 +160,130 @@
         </div>
     </div>
 
-    <!-- Hidden URL-Triggered Admin Modal (#admin) -->
-    <div id="adminModal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-3">
-        <div class="bg-white rounded-2xl max-w-md w-full p-5 shadow-2xl relative max-h-[90vh] overflow-y-auto">
-            <button onclick="closeAdminModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600">
-                <i class="fa-solid fa-xmark text-lg"></i>
+    <!-- Modern Wide Admin Dashboard Modal (#admin) -->
+    <div id="adminModal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-3 sm:p-6">
+        <div class="bg-white rounded-2xl max-w-5xl w-full p-5 sm:p-6 shadow-2xl relative max-h-[92vh] flex flex-col">
+            <button onclick="closeAdminModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 p-1">
+                <i class="fa-solid fa-xmark text-xl"></i>
             </button>
 
-            <!-- Login Form -->
-            <div id="adminLoginForm">
-                <div class="text-center mb-4">
-                    <h3 class="text-base font-bold text-slate-900">Admin Login</h3>
+            <!-- Login View -->
+            <div id="adminLoginForm" class="max-w-xs mx-auto py-8 w-full">
+                <div class="text-center mb-5">
+                    <div class="w-12 h-12 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center mx-auto mb-2 text-xl">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-900">Admin Login</h3>
+                    <p class="text-xs text-slate-500">നാട്ടുകൂട്ടം കൺട്രോൾ പാനൽ</p>
                 </div>
-                <div class="space-y-2.5">
-                    <input type="text" id="adminUser" placeholder="Username" class="w-full p-2 border border-slate-300 rounded-lg text-xs">
-                    <input type="password" id="adminPass" placeholder="Password" class="w-full p-2 border border-slate-300 rounded-lg text-xs">
-                    <button onclick="handleAdminLogin()" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-2 rounded-lg text-xs shadow transition">Login</button>
+                <div class="space-y-3">
+                    <input type="text" id="adminUser" placeholder="Username" class="w-full p-2.5 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-orange-500">
+                    <input type="password" id="adminPass" placeholder="Password" class="w-full p-2.5 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-orange-500">
+                    <button onclick="handleAdminLogin()" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-2.5 rounded-xl text-xs shadow transition">Login to Dashboard</button>
                 </div>
             </div>
 
-            <!-- Admin Master Controls -->
-            <div id="adminLoggedPanel" class="hidden space-y-4">
-                <div class="flex items-center justify-between border-b pb-2">
-                    <span class="text-xs font-bold text-emerald-700">Admin Mode Active</span>
-                    <button onclick="handleAdminLogout()" class="text-[11px] bg-red-100 text-red-700 px-2 py-1 rounded font-semibold">Logout</button>
+            <!-- Dashboard View -->
+            <div id="adminLoggedPanel" class="hidden flex flex-col flex-grow overflow-hidden">
+                <div class="flex items-center justify-between pb-3 border-b border-slate-100 shrink-0">
+                    <div class="flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                        <h3 class="text-base font-bold text-slate-800">Admin Management Panel</h3>
+                    </div>
+                    <div class="flex items-center gap-2 mr-8">
+                        <button id="admTabSettings" onclick="switchAdminTab('settings')" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-900 text-white transition">മാസ്റ്റർ വിവരങ്ങൾ</button>
+                        <button id="admTabLogs" onclick="switchAdminTab('logs')" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition">Deleted History Log</button>
+                        <button onclick="handleAdminLogout()" class="text-xs bg-red-50 text-red-600 hover:bg-red-100 px-3 py-1.5 rounded-lg font-semibold transition ml-2">Logout</button>
+                    </div>
                 </div>
 
-                <!-- Locations -->
-                <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-200">
-                    <h4 class="text-xs font-bold mb-1.5">സ്ഥലങ്ങൾ (Locations)</h4>
-                    <div class="flex gap-1.5 mb-2">
-                        <input type="text" id="newLocationInput" placeholder="സ്ഥലം" class="flex-1 p-1.5 text-xs border rounded">
-                        <button onclick="addNewLocation()" class="bg-orange-600 text-white px-2.5 py-1 text-xs rounded font-bold">Add</button>
+                <!-- TAB 1: Masters Settings (2-Column Grid Layout) -->
+                <div id="adminTabContentSettings" class="overflow-y-auto py-4 flex-grow pr-1">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Locations -->
+                        <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-200/80">
+                            <div class="flex items-center justify-between mb-2">
+                                <h4 class="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+                                    <i class="fa-solid fa-location-dot text-orange-500"></i> സ്ഥലങ്ങൾ (Locations)
+                                </h4>
+                            </div>
+                            <div class="flex gap-1.5 mb-3">
+                                <input type="text" id="newLocationInput" placeholder="പുതിയ സ്ഥലം ടൈപ്പ് ചെയ്യുക" class="flex-1 p-2 text-xs border border-slate-200 rounded-xl bg-white focus:outline-none focus:border-orange-500">
+                                <button onclick="addNewLocation()" class="bg-orange-500 hover:bg-orange-600 text-white px-3 py-1.5 text-xs rounded-xl font-bold transition">Add</button>
+                            </div>
+                            <div id="adminLocationList" class="flex flex-wrap gap-1.5 max-h-48 overflow-y-auto p-1"></div>
+                        </div>
+
+                        <!-- Shop Types -->
+                        <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-200/80">
+                            <div class="flex items-center justify-between mb-2">
+                                <h4 class="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+                                    <i class="fa-solid fa-store text-purple-600"></i> കടകളുടെ ഇനം (Shop Types)
+                                </h4>
+                            </div>
+                            <div class="flex gap-1.5 mb-3">
+                                <input type="text" id="newShopTypeInput" placeholder="കടയുടെ ഇനം" class="flex-1 p-2 text-xs border border-slate-200 rounded-xl bg-white focus:outline-none focus:border-orange-500">
+                                <button onclick="addNewCategoryItem('Shops')" class="bg-purple-600 hover:bg-purple-700 text-white px-3 py-1.5 text-xs rounded-xl font-bold transition">Add</button>
+                            </div>
+                            <div id="adminShopList" class="flex flex-wrap gap-1.5 max-h-48 overflow-y-auto p-1"></div>
+                        </div>
+
+                        <!-- Service Types -->
+                        <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-200/80">
+                            <div class="flex items-center justify-between mb-2">
+                                <h4 class="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+                                    <i class="fa-solid fa-screwdriver-wrench text-teal-600"></i> സേവനങ്ങൾ (Service Types)
+                                </h4>
+                            </div>
+                            <div class="flex gap-1.5 mb-3">
+                                <input type="text" id="newServiceTypeInput" placeholder="സേവന ഇനം" class="flex-1 p-2 text-xs border border-slate-200 rounded-xl bg-white focus:outline-none focus:border-orange-500">
+                                <button onclick="addNewCategoryItem('Services')" class="bg-teal-600 hover:bg-teal-700 text-white px-3 py-1.5 text-xs rounded-xl font-bold transition">Add</button>
+                            </div>
+                            <div id="adminServiceList" class="flex flex-wrap gap-1.5 max-h-48 overflow-y-auto p-1"></div>
+                        </div>
+
+                        <!-- Marketplace Item Types -->
+                        <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-200/80">
+                            <div class="flex items-center justify-between mb-2">
+                                <h4 class="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+                                    <i class="fa-solid fa-tags text-amber-600"></i> മാർക്കറ്റ്പ്ലേസ് വിഭാഗങ്ങൾ
+                                </h4>
+                            </div>
+                            <div class="flex gap-1.5 mb-3">
+                                <input type="text" id="newMarketplaceTypeInput" placeholder="ഉദാ: വാഹനങ്ങൾ, ഫർണിച്ചർ" class="flex-1 p-2 text-xs border border-slate-200 rounded-xl bg-white focus:outline-none focus:border-orange-500">
+                                <button onclick="addNewCategoryItem('Marketplace')" class="bg-amber-600 hover:bg-amber-700 text-white px-3 py-1.5 text-xs rounded-xl font-bold transition">Add</button>
+                            </div>
+                            <div id="adminMarketplaceList" class="flex flex-wrap gap-1.5 max-h-48 overflow-y-auto p-1"></div>
+                        </div>
                     </div>
-                    <div id="adminLocationList" class="flex flex-wrap gap-1 max-h-24 overflow-y-auto"></div>
                 </div>
 
-                <!-- Shop Types -->
-                <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-200">
-                    <h4 class="text-xs font-bold mb-1.5">കടകളുടെ ഇനം (Shop Types)</h4>
-                    <div class="flex gap-1.5 mb-2">
-                        <input type="text" id="newShopTypeInput" placeholder="കടയുടെ ഇനം" class="flex-1 p-1.5 text-xs border rounded">
-                        <button onclick="addNewCategoryItem('Shops')" class="bg-purple-700 text-white px-2.5 py-1 text-xs rounded font-bold">Add</button>
+                <!-- TAB 2: History & Removed Ads Table -->
+                <div id="adminTabContentLogs" class="hidden overflow-y-auto py-3 flex-grow">
+                    <div class="flex items-center justify-between mb-3 text-xs">
+                        <span class="text-slate-500">കാലാവധി കഴിഞ്ഞതും ഡിലീറ്റ് ചെയ്തതുമായ പരസ്യങ്ങളുടെ റെക്കോർഡ്:</span>
+                        <button onclick="loadHistoryLogs()" class="text-blue-600 hover:underline font-bold flex items-center gap-1">
+                            <i class="fa-solid fa-arrows-rotate"></i> Refresh List
+                        </button>
                     </div>
-                    <div id="adminShopList" class="flex flex-wrap gap-1 max-h-24 overflow-y-auto"></div>
-                </div>
-
-                <!-- Service Types -->
-                <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-200">
-                    <h4 class="text-xs font-bold mb-1.5">സേവനങ്ങൾ (Service Types)</h4>
-                    <div class="flex gap-1.5 mb-2">
-                        <input type="text" id="newServiceTypeInput" placeholder="സേവന ഇനം" class="flex-1 p-1.5 text-xs border rounded">
-                        <button onclick="addNewCategoryItem('Services')" class="bg-teal-700 text-white px-2.5 py-1 text-xs rounded font-bold">Add</button>
+                    <div class="border border-slate-200 rounded-xl overflow-hidden shadow-sm">
+                        <table class="w-full text-left text-xs text-slate-600">
+                            <thead class="bg-slate-100 text-slate-700 font-bold border-b border-slate-200">
+                                <tr>
+                                    <th class="p-2.5">സ്ഥാപനം / Title</th>
+                                    <th class="p-2.5">ആള് & Phone</th>
+                                    <th class="p-2.5">സ്ഥലം</th>
+                                    <th class="p-2.5">ചേർത്ത തിയതി</th>
+                                    <th class="p-2.5">ഡിലീറ്റ് ചെയ്ത വിവരം</th>
+                                </tr>
+                            </thead>
+                            <tbody id="historyTableBody" class="divide-y divide-slate-100">
+                                <tr>
+                                    <td colspan="5" class="p-4 text-center text-slate-400">വിവരങ്ങൾ ലോഡ് ചെയ്യുന്നു...</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
-                    <div id="adminServiceList" class="flex flex-wrap gap-1 max-h-24 overflow-y-auto"></div>
-                </div>
-
-                <!-- Marketplace Item Categories -->
-                <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-200">
-                    <h4 class="text-xs font-bold mb-1.5">മാർക്കറ്റ്പ്ലേസ് ഇനങ്ങൾ (Marketplace Types)</h4>
-                    <div class="flex gap-1.5 mb-2">
-                        <input type="text" id="newMarketplaceTypeInput" placeholder="ഉദാ: വാഹനങ്ങൾ, ഫർണിച്ചർ" class="flex-1 p-1.5 text-xs border rounded">
-                        <button onclick="addNewCategoryItem('Marketplace')" class="bg-orange-600 text-white px-2.5 py-1 text-xs rounded font-bold">Add</button>
-                    </div>
-                    <div id="adminMarketplaceList" class="flex flex-wrap gap-1 max-h-24 overflow-y-auto"></div>
                 </div>
             </div>
         </div>
@@ -357,15 +417,56 @@
         </div>
     </div>
 
+    <!-- Custom Admin Single Edit Modal -->
+    <div id="adminEditModal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-3">
+        <div class="bg-white rounded-2xl max-w-sm w-full p-5 shadow-2xl relative">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-3">
+                <h3 class="text-sm font-bold text-slate-800 flex items-center gap-1.5">
+                    <i class="fa-solid fa-pen-to-square text-orange-500"></i> വിവരങ്ങൾ തിരുത്തുക (Edit)
+                </h3>
+                <button onclick="closeAdminEditModal()" class="text-slate-400 hover:text-slate-600">
+                    <i class="fa-solid fa-xmark text-base"></i>
+                </button>
+            </div>
+
+            <form id="adminEditForm" onsubmit="handleAdminEditSubmit(event)" class="space-y-2.5 text-xs">
+                <input type="hidden" id="editDocId">
+
+                <div>
+                    <label class="block font-semibold text-slate-700 mb-0.5">Title / സ്ഥാപനം *</label>
+                    <input type="text" id="editTitle" required class="w-full p-2 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-orange-500 font-medium">
+                </div>
+
+                <div>
+                    <label class="block font-semibold text-slate-700 mb-0.5">പേര് (Contact Person) *</label>
+                    <input type="text" id="editContactPerson" required class="w-full p-2 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-orange-500">
+                </div>
+
+                <div>
+                    <label class="block font-semibold text-slate-700 mb-0.5">Phone Number *</label>
+                    <input type="tel" id="editPhone" required maxlength="10" class="w-full p-2 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-orange-500">
+                </div>
+
+                <div>
+                    <label class="block font-semibold text-slate-700 mb-0.5">ലാൻഡ്മാർക്ക് (Landmark)</label>
+                    <input type="text" id="editLandmark" class="w-full p-2 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-orange-500">
+                </div>
+
+                <div class="flex gap-2 pt-2">
+                    <button type="button" onclick="closeAdminEditModal()" class="flex-1 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-semibold">Cancel</button>
+                    <button type="submit" id="editSaveBtn" class="flex-1 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-xl text-xs font-bold shadow">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- Custom PIN Action Modal -->
     <div id="pinActionModal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl max-w-xs sm:max-w-sm w-full p-5 shadow-2xl relative text-center">
-            <!-- Close Button -->
             <button onclick="closePinModal()" class="absolute top-3 right-3 text-slate-400 hover:text-slate-600">
                 <i class="fa-solid fa-xmark text-lg"></i>
             </button>
 
-            <!-- Icon -->
             <div id="pinModalIcon" class="w-12 h-12 bg-red-100 text-red-600 mx-auto rounded-full flex items-center justify-center text-xl mb-3">
                 <i class="fa-solid fa-trash-can"></i>
             </div>
@@ -377,13 +478,11 @@
                 <span class="text-[11px] text-amber-700 font-medium">(PIN മറന്നുപോയെങ്കിൽ അഡ്മിനുമായി ബന്ധപ്പെടുക).</span>
             </p>
 
-            <!-- 4 Digit Input -->
             <div class="mb-4">
                 <input type="password" id="customPinInput" maxlength="4" pattern="[0-9]{4}" placeholder="••••" 
                        class="w-32 mx-auto text-center tracking-[0.5em] text-lg font-bold p-2 border-2 border-slate-300 rounded-xl focus:border-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-100">
             </div>
 
-            <!-- Buttons -->
             <div class="flex gap-2">
                 <button onclick="closePinModal()" class="flex-1 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-semibold">Cancel</button>
                 <button id="pinModalConfirmBtn" onclick="confirmPinAction()" class="flex-1 py-2 bg-red-600 hover:bg-red-700 text-white rounded-xl text-xs font-semibold shadow">Confirm</button>
@@ -414,7 +513,7 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        // 1. ഒപ്റ്റിമൈസേഷൻ: ഓഫ്‌ലൈൻ കാഷിംഗ് പ്രവർത്തനക്ഷമമാക്കുന്നു (Reads വൻതോതിൽ ലാഭിക്കാൻ)
+        // 1. ഒപ്റ്റിമൈസേഷൻ: ഓഫ്‌ലൈൻ കാഷിംഗ് പ്രവർത്തനക്ഷമമാക്കുന്നു (Reads ലാഭിക്കാൻ)
         db.enablePersistence({ synchronizeTabs: true }).catch((err) => {
             console.log("Persistence status:", err.code);
         });
@@ -428,7 +527,6 @@
         let isAdminLoggedIn = localStorage.getItem('naattukoottam_admin_logged') === 'true';
         let userDefaultArea = localStorage.getItem('naattukoottam_saved_area') || 'All';
 
-        // ലോക്കൽ കാഷ് ചെയ്ത മാസ്റ്റേഴ്സ് ലോഡ് ചെയ്യുന്നു
         let appLocations = JSON.parse(localStorage.getItem('nk_cache_locations')) || ["Chembrasseri", "Idiyangara", "Pandikkad"];
         let appSubCategories = JSON.parse(localStorage.getItem('nk_cache_subcategories')) || {
             Shops: [
@@ -578,31 +676,31 @@
             if (!locList) return;
 
             locList.innerHTML = appLocations.map(loc => `
-                <span class="inline-flex items-center gap-1 bg-white border px-1.5 py-0.5 rounded text-[11px]">
+                <span class="inline-flex items-center gap-1 bg-white border border-slate-200 px-2 py-1 rounded-lg text-xs font-medium shadow-sm">
                     ${loc}
-                    <i class="fa-solid fa-xmark text-red-500 cursor-pointer ml-1" onclick="removeLocation('${loc}')"></i>
+                    <i class="fa-solid fa-xmark text-red-500 hover:text-red-700 cursor-pointer ml-1" onclick="removeLocation('${loc}')"></i>
                 </span>
             `).join('');
 
             shopList.innerHTML = (appSubCategories.Shops || []).map(sh => `
-                <span class="inline-flex items-center gap-1 bg-white border px-1.5 py-0.5 rounded text-[10px]">
+                <span class="inline-flex items-center gap-1 bg-white border border-slate-200 px-2 py-1 rounded-lg text-[11px] font-medium shadow-sm">
                     ${sh}
-                    <i class="fa-solid fa-xmark text-red-500 cursor-pointer ml-1" onclick="removeCategoryItem('Shops', '${sh}')"></i>
+                    <i class="fa-solid fa-xmark text-red-500 hover:text-red-700 cursor-pointer ml-1" onclick="removeCategoryItem('Shops', '${sh}')"></i>
                 </span>
             `).join('');
 
             srvList.innerHTML = (appSubCategories.Services || []).map(sv => `
-                <span class="inline-flex items-center gap-1 bg-white border px-1.5 py-0.5 rounded text-[10px]">
+                <span class="inline-flex items-center gap-1 bg-white border border-slate-200 px-2 py-1 rounded-lg text-[11px] font-medium shadow-sm">
                     ${sv}
-                    <i class="fa-solid fa-xmark text-red-500 cursor-pointer ml-1" onclick="removeCategoryItem('Services', '${sv}')"></i>
+                    <i class="fa-solid fa-xmark text-red-500 hover:text-red-700 cursor-pointer ml-1" onclick="removeCategoryItem('Services', '${sv}')"></i>
                 </span>
             `).join('');
 
             if (mktList) {
                 mktList.innerHTML = (appSubCategories.Marketplace || []).map(mk => `
-                    <span class="inline-flex items-center gap-1 bg-white border px-1.5 py-0.5 rounded text-[10px]">
+                    <span class="inline-flex items-center gap-1 bg-white border border-slate-200 px-2 py-1 rounded-lg text-[11px] font-medium shadow-sm">
                         ${mk}
-                        <i class="fa-solid fa-xmark text-red-500 cursor-pointer ml-1" onclick="removeCategoryItem('Marketplace', '${mk}')"></i>
+                        <i class="fa-solid fa-xmark text-red-500 hover:text-red-700 cursor-pointer ml-1" onclick="removeCategoryItem('Marketplace', '${mk}')"></i>
                     </span>
                 `).join('');
             }
@@ -704,6 +802,81 @@
             closeAdminModal();
         }
 
+        function switchAdminTab(tab) {
+            const setTabBtn = document.getElementById('admTabSettings');
+            const logTabBtn = document.getElementById('admTabLogs');
+            const setContent = document.getElementById('adminTabContentSettings');
+            const logContent = document.getElementById('adminTabContentLogs');
+
+            if (tab === 'settings') {
+                setTabBtn.className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-900 text-white transition";
+                logTabBtn.className = "px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition";
+                setContent.classList.remove('hidden');
+                logContent.classList.add('hidden');
+            } else {
+                logTabBtn.className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-900 text-white transition";
+                setTabBtn.className = "px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition";
+                logContent.classList.remove('hidden');
+                setContent.classList.add('hidden');
+                loadHistoryLogs();
+            }
+        }
+
+        // Deleted Ads Archive Function
+        async function archiveItemBeforeDelete(docId, reason) {
+            try {
+                const docRef = db.collection("listings").doc(docId);
+                const snap = await docRef.get();
+                if (snap.exists) {
+                    const data = snap.data();
+                    await db.collection("deleted_history").add({
+                        ...data,
+                        deletedAt: Date.now(),
+                        deleteReason: reason || 'User Deleted'
+                    });
+                }
+            } catch (e) {
+                console.error("Archive error:", e);
+            }
+        }
+
+        async function loadHistoryLogs() {
+            const tbody = document.getElementById('historyTableBody');
+            if (!tbody) return;
+            tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-400">ഡാറ്റ പരിശോധിക്കുന്നു...</td></tr>`;
+
+            try {
+                const snap = await db.collection("deleted_history").orderBy("deletedAt", "desc").limit(40).get();
+                if (snap.empty) {
+                    tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-400">രേഖപ്പെടുത്തിയ ഹിസ്റ്ററികൾ ഒന്നും ലഭ്യമല്ല.</td></tr>`;
+                    return;
+                }
+
+                tbody.innerHTML = snap.docs.map(doc => {
+                    const d = doc.data();
+                    const created = d.createdAt ? (d.createdAt.toDate ? d.createdAt.toDate().toLocaleDateString('en-IN') : new Date(d.createdAt).toLocaleDateString('en-IN')) : 'N/A';
+                    const deleted = d.deletedAt ? new Date(d.deletedAt).toLocaleString('en-IN', { dateStyle: 'short', timeStyle: 'short' }) : 'N/A';
+
+                    return `
+                        <tr class="hover:bg-slate-50 transition border-b border-slate-100">
+                            <td class="p-2.5 font-bold text-slate-800">${d.title || 'Untitled'}</td>
+                            <td class="p-2.5">${d.contactPerson || '-'}<br><span class="text-[10px] text-blue-600 font-mono">${d.phone || ''}</span></td>
+                            <td class="p-2.5">${d.location || d.place || '-'}</td>
+                            <td class="p-2.5 text-slate-500">${created}</td>
+                            <td class="p-2.5">
+                                <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${d.deleteReason === 'Auto Expired' ? 'bg-amber-100 text-amber-800' : 'bg-red-100 text-red-800'}">
+                                    ${d.deleteReason || 'Deleted'}
+                                </span>
+                                <div class="text-[9px] text-slate-400 mt-0.5">${deleted}</div>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+            } catch (e) {
+                tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-red-500">Error: ${e.message}</td></tr>`;
+            }
+        }
+
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
@@ -753,7 +926,7 @@
             }
         }
 
-        // 2. ഒപ്റ്റിമൈസേഷൻ: ലിമിറ്റും (30) ടൈം ഫിൽട്ടറും വെച്ചുള്ള ഡാറ്റാ ലോഡിംഗ്
+        // 2. ഒപ്റ്റിമൈസേഷൻ: ലിമിറ്റും (30) കാഷിംഗും
         function loadData() {
             checkDisclaimer();
             checkAdminHash();
@@ -779,7 +952,7 @@
             renderItems();
         }
 
-        // 3. ഒപ്റ്റിമൈസേഷൻ: അഡ്മിൻ ലോഗിൻ ചെയ്യുമ്പോൾ മാത്രം എക്സ്പയറി ഡിലീഷൻ റൺ ചെയ്യുന്നു
+        // 3. ഒപ്റ്റിമൈസേഷൻ: ഓട്ടോ-ക്ലീനിംഗ് വിത്ത് ആർക്കൈവിംഗ്
         async function autoCleanExpiredItems() {
             try {
                 const now = Date.now();
@@ -787,6 +960,7 @@
                 snap.forEach(async (docSnap) => {
                     const data = docSnap.data();
                     if (data.expiresAt && now > data.expiresAt) {
+                        await archiveItemBeforeDelete(docSnap.id, "Auto Expired");
                         await db.collection("listings").doc(docSnap.id).delete();
                     }
                 });
@@ -854,7 +1028,6 @@
                 const soldClass = isSold ? 'sold-card' : '';
                 const soldBadge = isSold ? `<span class="absolute top-1.5 left-1.5 bg-red-600 text-white text-[9px] px-1.5 py-0.5 rounded font-extrabold shadow tracking-wider">SOLD</span>` : '';
 
-                // Dynamic Category Color Tag
                 let badgeColor = 'bg-slate-900/80';
                 if (item.category === 'Shops') badgeColor = 'bg-purple-700';
                 else if (item.category === 'Services') badgeColor = 'bg-teal-700';
@@ -1025,7 +1198,6 @@
             });
         }
 
-        // --- Save Item with Anti-Fraud, Compression & Poster Name ---
         async function saveItem(e) {
             e.preventDefault();
             const saveBtn = document.getElementById('saveBtn');
@@ -1133,7 +1305,7 @@
 
         // --- Custom PIN Actions ---
         let currentActionDocId = null;
-        let currentActionType = null; // 'delete' or 'sold'
+        let currentActionType = null;
 
         function openCustomPinModal(docId, type) {
             currentActionDocId = docId;
@@ -1190,6 +1362,7 @@
                 }
 
                 if (currentActionType === 'delete') {
+                    await archiveItemBeforeDelete(currentActionDocId, isAdminLoggedIn ? "Admin Deleted" : "User PIN Deleted");
                     await docRef.delete();
                 } else if (currentActionType === 'sold') {
                     await docRef.update({ sold: !item.sold });
@@ -1212,42 +1385,66 @@
         function deleteListingPrompt(docId) {
             if (isAdminLoggedIn) {
                 if (confirm("ഈ ലിസ്റ്റിംഗ് നീക്കം ചെയ്യണമെന്ന് ഉറപ്പാണോ?")) {
-                    db.collection("listings").doc(docId).delete();
+                    archiveItemBeforeDelete(docId, "Admin Deleted").then(() => {
+                        db.collection("listings").doc(docId).delete();
+                    });
                 }
             } else {
                 openCustomPinModal(docId, 'delete');
             }
         }
         
+        // --- Admin Single Edit Modal Logic ---
         async function editListingAdmin(docId) {
             if (!isAdminLoggedIn) return;
-            const docRef = db.collection("listings").doc(docId);
-            const docSnap = await docRef.get();
-            if (!docSnap.exists) return;
+            try {
+                const docRef = db.collection("listings").doc(docId);
+                const docSnap = await docRef.get();
+                if (!docSnap.exists) return;
 
-            const item = docSnap.data();
-            const newTitle = prompt("Title മാറ്റുക:", item.title);
-            if (newTitle === null) return;
+                const item = docSnap.data();
 
-            const newContact = prompt("പരസ്യം നൽകിയ ആളുടെ പേര് മാറ്റുക:", item.contactPerson || '');
-            if (newContact === null) return;
+                document.getElementById('editDocId').value = docId;
+                document.getElementById('editTitle').value = item.title || '';
+                document.getElementById('editContactPerson').value = item.contactPerson || '';
+                document.getElementById('editPhone').value = item.phone || '';
+                document.getElementById('editLandmark').value = item.landmark || '';
 
-            const newPhone = prompt("Phone മാറ്റുക:", item.phone);
-            if (newPhone === null) return;
+                document.getElementById('adminEditModal').classList.remove('hidden');
+            } catch (e) {
+                alert("Data load failure: " + e.message);
+            }
+        }
 
-            const newLandmark = prompt("Landmark മാറ്റുക:", item.landmark || '');
-            if (newLandmark === null) return;
+        function closeAdminEditModal() {
+            document.getElementById('adminEditModal').classList.add('hidden');
+            document.getElementById('adminEditForm').reset();
+        }
+
+        async function handleAdminEditSubmit(e) {
+            e.preventDefault();
+            const docId = document.getElementById('editDocId').value;
+            const saveBtn = document.getElementById('editSaveBtn');
+
+            saveBtn.disabled = true;
+            saveBtn.innerText = "Updating...";
+
+            const updatedData = {
+                title: document.getElementById('editTitle').value.trim(),
+                contactPerson: document.getElementById('editContactPerson').value.trim(),
+                phone: document.getElementById('editPhone').value.trim(),
+                landmark: document.getElementById('editLandmark').value.trim()
+            };
 
             try {
-                await db.collection("listings").doc(docId).update({
-                    title: newTitle.trim(),
-                    contactPerson: newContact.trim(),
-                    phone: newPhone.trim(),
-                    landmark: newLandmark.trim()
-                });
-                alert("വിവരങ്ങൾ അപ്ഡേറ്റ് ചെയ്തു!");
-            } catch (e) {
-                alert("Update failed: " + e.message);
+                await db.collection("listings").doc(docId).update(updatedData);
+                closeAdminEditModal();
+                alert("വിവരങ്ങൾ വിജയകരമായി അപ്‌ഡേറ്റ് ചെയ്തു!");
+            } catch (err) {
+                alert("Update failed: " + err.message);
+            } finally {
+                saveBtn.disabled = false;
+                saveBtn.innerText = "Save Changes";
             }
         }
 
