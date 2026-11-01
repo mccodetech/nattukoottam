@@ -191,7 +191,6 @@
                     <div class="flex items-center gap-2">
                         <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
                         <h3 class="text-base font-bold text-slate-800">Admin Management Panel</h3>
-                        <!-- Live Unique Visitors Counter -->
                         <span class="text-[11px] bg-slate-100 text-slate-700 px-2.5 py-1 rounded-full font-bold border border-slate-200 ml-2">
                             <i class="fa-solid fa-users text-blue-600 mr-1"></i> ആകെ വിസിറ്റേഴ്സ്: <span id="adminTotalVisitorsCount" class="text-orange-600 font-extrabold">0</span>
                         </span>
@@ -1224,13 +1223,16 @@
             }
         }
 
-        function handleCallAction(phone, startTime, endTime, title) {
-            if (!isBusinessOpenNow(startTime, endTime)) {
-                document.getElementById('timeClosedNoticeText').innerText = `'${title}' ഇപ്പോൾ പ്രവർത്തന സമയത്തിന് പുറത്താണ് (${startTime || '08:00'} - ${endTime || '20:00'}). ദയവായി രാവിലെ ബന്ധപ്പെടുക.`;
+        function handleCallAction(docId) {
+            const item = allItems.find(i => i.id === docId);
+            if (!item) return;
+
+            if (!isBusinessOpenNow(item.startTime, item.endTime)) {
+                document.getElementById('timeClosedNoticeText').innerText = `'${item.title}' ഇപ്പോൾ പ്രവർത്തന സമയത്തിന് പുറത്താണ് (${item.startTime || '08:00'} - ${item.endTime || '20:00'}). ദയവായി രാവിലെ ബന്ധപ്പെടുക.`;
                 document.getElementById('timeClosedModal').classList.remove('hidden');
                 return;
             }
-            window.location.href = `tel:${phone}`;
+            window.location.href = `tel:${item.phone}`;
         }
 
         function closeTimeModal() {
@@ -1300,7 +1302,7 @@
                     `;
                 } else {
                     contactButtons = `
-                        <button onclick="handleCallAction('${item.phone}', '${item.startTime}', '${item.endTime}', '${item.title.replace(/'/g, "\\'")}')" class="flex-1 bg-blue-600 hover:bg-blue-700 active:scale-95 text-white py-1.5 rounded-lg text-xs font-semibold transition flex items-center justify-center space-x-1 shadow-sm">
+                        <button onclick="handleCallAction('${item.id}')" class="flex-1 bg-blue-600 hover:bg-blue-700 active:scale-95 text-white py-1.5 rounded-lg text-xs font-semibold transition flex items-center justify-center space-x-1 shadow-sm">
                             <i class="fa-solid fa-phone text-[10px]"></i>
                             <span>Call</span>
                         </button>
@@ -1355,7 +1357,7 @@
                 return `
                     <div class="bg-white rounded-xl shadow-sm border border-slate-200 flex flex-col justify-between hover:shadow-md transition overflow-hidden relative ${soldClass}">
                         <div>
-                            <div class="h-28 sm:h-36 bg-slate-200 relative overflow-hidden cursor-pointer group" onclick="openImageLightbox('${finalImage}', '${item.title.replace(/'/g, "\\'")}')">
+                            <div class="h-28 sm:h-36 bg-slate-200 relative overflow-hidden cursor-pointer group" onclick="openImageLightbox('${finalImage}', '${item.id}')">
                                 <img src="${finalImage}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
                                 ${soldBadge}
                                 <span class="absolute top-1 right-1 ${badgeColor} text-white text-[9px] sm:text-[10px] px-1.5 py-0.5 rounded backdrop-blur-sm truncate max-w-[80%] font-semibold shadow">
