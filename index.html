@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="ml">
+<html lang="ml" translate="no" class="notranslate">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google" content="notranslate">
     <title>നാട്ടുകൂട്ടം (Naattukoottam) - Local Directory & Marketplace</title>
     
     <!-- PWA Manifest & Service Worker Registration -->
@@ -50,19 +51,19 @@
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col antialiased selection:bg-orange-500 selection:text-white">
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col antialiased selection:bg-orange-500 selection:text-white notranslate" translate="no">
 
     <!-- Header -->
-    <header class="bg-slate-900 text-white shadow-md sticky top-0 z-40">
+    <header class="bg-slate-900 text-white shadow-md sticky top-0 z-40 notranslate" translate="no">
         <div class="max-w-7xl mx-auto px-3 py-2.5 flex justify-between items-center gap-1.5">
             <div class="flex items-center space-x-2 min-w-0 cursor-pointer" onclick="switchTab('directory')">
                 <img id="appLogo" src="logo.png" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/3710/3710274.png';" alt="Logo" class="w-8 h-8 sm:w-10 sm:h-10 object-contain rounded-lg bg-white/10 p-0.5 shrink-0 border border-white/10 shadow-sm">
                 <div class="min-w-0">
-                    <h1 class="text-sm sm:text-lg font-bold tracking-tight truncate leading-tight text-white flex items-center gap-1.5">
+                    <h1 class="text-sm sm:text-lg font-bold tracking-tight truncate leading-tight text-white flex items-center gap-1.5 notranslate" translate="no">
                         നാട്ടുകൂട്ടം
                         <span id="adminHeaderBadge" class="hidden text-[9px] bg-amber-500 text-slate-900 px-1 py-0.5 rounded font-bold uppercase tracking-wider">Admin</span>
                     </h1>
-                    <p class="text-[10px] sm:text-xs text-slate-300 truncate">Local Directory & Marketplace</p>
+                    <p class="text-[10px] sm:text-xs text-slate-300 truncate notranslate" translate="no">Local Directory & Marketplace</p>
                 </div>
             </div>
             
@@ -83,15 +84,15 @@
     </header>
 
     <!-- Navigation Tabs -->
-    <nav class="bg-slate-950 text-white shadow-inner border-t border-slate-800">
+    <nav class="bg-slate-950 text-white shadow-inner border-t border-slate-800 notranslate" translate="no">
         <div class="max-w-7xl mx-auto px-3 flex space-x-4">
             <button onclick="switchTab('directory')" id="tab-directory" class="py-2.5 border-b-2 border-orange-500 text-orange-400 font-semibold text-xs sm:text-sm flex items-center space-x-1.5 transition">
                 <i class="fa-solid fa-address-book text-xs"></i>
-                <span>Directory</span>
+                <span>ഡയറക്ടറി (Directory)</span>
             </button>
             <button onclick="switchTab('marketplace')" id="tab-marketplace" class="py-2.5 border-b-2 border-transparent text-slate-400 hover:text-white font-semibold text-xs sm:text-sm flex items-center space-x-1.5 transition">
                 <i class="fa-solid fa-basket-shopping text-xs"></i>
-                <span>Marketplace</span>
+                <span>മാർക്കറ്റ്പ്ലേസ് (Marketplace)</span>
             </button>
         </div>
     </nav>
@@ -106,17 +107,17 @@
                     <span class="absolute inset-y-0 left-0 flex items-center pl-2.5 text-slate-400 text-xs">
                         <i class="fa-solid fa-magnifying-glass"></i>
                     </span>
-                    <input type="text" id="searchInput" oninput="filterItems()" placeholder="തിരയുക (Search)..." class="w-full pl-8 pr-3 py-1.5 sm:py-2 bg-white border border-slate-300 rounded-lg text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 shadow-sm">
+                    <input type="text" id="searchInput" oninput="filterItems()" placeholder="തിരയുക (Search)..." class="w-full pl-8 pr-3 py-1.5 sm:py-2 bg-white border border-slate-300 rounded-lg text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 shadow-sm notranslate" translate="no">
                 </div>
 
                 <div class="relative w-40 sm:w-56 shrink-0">
-                    <select id="userAreaFilter" onchange="changeDefaultArea(this.value)" class="w-full px-2 py-1.5 sm:py-2 bg-white border border-slate-300 rounded-lg text-xs sm:text-sm text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-orange-500 shadow-sm truncate">
+                    <select id="userAreaFilter" onchange="changeDefaultArea(this.value)" class="w-full px-2 py-1.5 sm:py-2 bg-white border border-slate-300 rounded-lg text-xs sm:text-sm text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-orange-500 shadow-sm truncate notranslate" translate="no">
                         <option value="All">എല്ലാ സ്ഥലങ്ങളും</option>
                     </select>
                 </div>
             </div>
             
-            <div id="categoryFilters" class="flex overflow-x-auto no-scrollbar gap-1.5 pb-1 text-xs">
+            <div id="categoryFilters" class="flex overflow-x-auto no-scrollbar gap-1.5 pb-1 text-xs notranslate" translate="no">
                 <button onclick="filterCategory('All')" class="cat-btn bg-slate-900 text-white px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap shadow transition">All</button>
                 <button onclick="filterCategory('Shops')" class="cat-btn bg-white text-slate-700 border border-slate-300 px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap hover:bg-slate-100 transition">Shops</button>
                 <button onclick="filterCategory('Services')" class="cat-btn bg-white text-slate-700 border border-slate-300 px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap hover:bg-slate-100 transition">Services</button>
@@ -126,7 +127,7 @@
         </div>
 
         <!-- Cards Grid -->
-        <div id="itemsGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2.5 sm:gap-4"></div>
+        <div id="itemsGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2.5 sm:gap-4 notranslate" translate="no"></div>
     </main>
 
     <!-- Image Fullscreen Preview Modal (Lightbox) -->
@@ -135,7 +136,7 @@
             <i class="fa-solid fa-xmark"></i>
         </button>
         <img id="lightboxImage" src="" alt="Full view" class="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl">
-        <p id="lightboxCaption" class="text-white text-xs sm:text-sm mt-3 text-center px-4 font-medium"></p>
+        <p id="lightboxCaption" class="text-white text-xs sm:text-sm mt-3 text-center px-4 font-medium notranslate" translate="no"></p>
     </div>
 
     <!-- Disclaimer / Terms Modal -->
@@ -150,8 +151,9 @@
 
             <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 text-slate-700 space-y-2 leading-relaxed">
                 <p>• <b>സൗജന്യ കൂട്ടായ്മ:</b> വിവരങ്ങളും സേവനങ്ങളും പങ്കുവെക്കാനുള്ള പ്രാദേശിക പ്ലാറ്റ്‌ഫോം.</p>
-                <p>• <b>ഉത്തരവാദിത്തം:</b> ഇടപാടുകളും നമ്പറുകളും ഉപയോക്താക്കൾ തമ്മിലുള്ള നേരിട്ടുള്ളതാണ്. അഡ്മിന് യാതൊരു ബാധ്യതയും ഉണ്ടായിരിക്കില്ല.</p>
-                <p>• <b>ഓട്ടോ-എക്സ്പയറി:</b> പരസ്യങ്ങൾ കാലാവധിക്ക് ശേഷം തനിയെ നീക്കം ചെയ്യപ്പെടും.</p>
+                <p>• <b>ഉത്തരവാദിത്തം:</b> ഇടപാടുകളും നമ്പറുകളും ഉപയോക്താക്കൾ തമ്മിലുള്ള നേരിട്ടുള്ളതാണ്. അഡ്മിനോ ഡെവലപ്പർമാർക്കോ യാതൊരു ബാധ്യതയും ഉണ്ടായിരിക്കില്ല.</p>
+                <p>• <b>ഓട്ടോ-എക്സ്പയറി:</b> പരസ്യങ്ങൾ നിശ്ചിത കാലാവധിക്ക് ശേഷം തനിയെ നീക്കം ചെയ്യപ്പെടും.</p>
+                <p>• <b>സുരക്ഷ:</b> വ്യാജ നമ്പറുകൾ നൽകുന്നത് തടയാൻ IP-യും ഉപകരണ വിവരങ്ങളും രേഖപ്പെടുത്തുന്നുണ്ട്.</p>
             </div>
 
             <button onclick="acceptDisclaimer()" class="mt-4 w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-2.5 rounded-xl text-xs sm:text-sm transition shadow">
@@ -161,7 +163,7 @@
     </div>
 
     <!-- Modern Wide Admin Dashboard Modal (#admin) -->
-    <div id="adminModal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-3 sm:p-6">
+    <div id="adminModal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-3 sm:p-6 notranslate" translate="no">
         <div class="bg-white rounded-2xl max-w-5xl w-full p-5 sm:p-6 shadow-2xl relative max-h-[92vh] flex flex-col">
             <button onclick="closeAdminModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 p-1">
                 <i class="fa-solid fa-xmark text-xl"></i>
@@ -189,6 +191,10 @@
                     <div class="flex items-center gap-2">
                         <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
                         <h3 class="text-base font-bold text-slate-800">Admin Management Panel</h3>
+                        <!-- Live Unique Visitors Counter -->
+                        <span class="text-[11px] bg-slate-100 text-slate-700 px-2.5 py-1 rounded-full font-bold border border-slate-200 ml-2">
+                            <i class="fa-solid fa-users text-blue-600 mr-1"></i> ആകെ വിസിറ്റേഴ്സ്: <span id="adminTotalVisitorsCount" class="text-orange-600 font-extrabold">0</span>
+                        </span>
                     </div>
                     <div class="flex items-center gap-1.5 mr-8">
                         <button id="admTabSettings" onclick="switchAdminTab('settings')" class="px-2.5 py-1.5 rounded-lg text-xs font-bold bg-slate-900 text-white transition">മാസ്റ്റർ വിവരങ്ങൾ</button>
@@ -198,7 +204,7 @@
                     </div>
                 </div>
 
-                <!-- TAB 1: Masters Settings (2-Column Grid Layout) -->
+                <!-- TAB 1: Masters Settings -->
                 <div id="adminTabContentSettings" class="overflow-y-auto py-4 flex-grow pr-1">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <!-- Locations -->
@@ -273,13 +279,14 @@
                                 <tr>
                                     <th class="p-2.5">Title & Section</th>
                                     <th class="p-2.5">പേര് & Phone</th>
-                                    <th class="p-2.5">സ്ഥലം</th>
-                                    <th class="p-2.5">PIN & Device/IP</th>
+                                    <th class="p-2.5">തിരഞ്ഞെടുത്ത സ്ഥലം</th>
+                                    <th class="p-2.5">യഥാർത്ഥ GPS / IP വിവരം</th>
+                                    <th class="p-2.5">സമയം & PIN</th>
                                     <th class="p-2.5">Actions</th>
                                 </tr>
                             </thead>
                             <tbody id="activeAuditTableBody" class="divide-y divide-slate-100">
-                                <tr><td colspan="5" class="p-4 text-center text-slate-400">ലോഡ് ചെയ്യുന്നു...</td></tr>
+                                <tr><td colspan="6" class="p-4 text-center text-slate-400">ലോഡ് ചെയ്യുന്നു...</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -317,7 +324,7 @@
     </div>
 
     <!-- Add Item Modal -->
-    <div id="itemModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-3">
+    <div id="itemModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-3 notranslate" translate="no">
         <div class="bg-white rounded-2xl max-w-lg w-full p-4 sm:p-5 shadow-2xl relative max-h-[92vh] overflow-y-auto text-xs sm:text-sm">
             <button onclick="closeModal()" class="absolute top-3 right-3 text-slate-400 hover:text-slate-600">
                 <i class="fa-solid fa-xmark text-lg"></i>
@@ -370,10 +377,24 @@
                     <input type="tel" id="itemPhone" required maxlength="10" pattern="[0-9]{10}" placeholder="ഉദാ: 9847790786" class="w-full p-2 border border-slate-300 rounded-lg text-xs focus:ring-2 focus:ring-orange-500 focus:outline-none">
                 </div>
 
+                <!-- Controlled Locations Dropdown -->
                 <div>
                     <label class="block font-semibold text-slate-600 mb-0.5">സ്ഥലം / പ്രദേശം (Location) *</label>
                     <select id="itemLocation" required class="w-full p-2 border border-slate-300 rounded-lg text-xs focus:ring-2 focus:ring-orange-500 focus:outline-none">
                     </select>
+                    <p class="text-[10px] text-slate-400 mt-0.5">ലിസ്റ്റിൽ സ്ഥലമില്ലെങ്കിൽ 'Other Location' തിരഞ്ഞെടുക്കുക.</p>
+                </div>
+
+                <!-- Business / Available Hours -->
+                <div class="grid grid-cols-2 gap-2 p-2.5 bg-slate-50 border border-slate-200 rounded-xl">
+                    <div>
+                        <label class="block font-bold text-slate-800 mb-0.5">സേവനം തുടങ്ങുന്ന സമയം</label>
+                        <input type="time" id="itemStartTime" value="08:00" class="w-full p-1.5 border border-slate-300 rounded text-xs bg-white">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-800 mb-0.5">അവസാനിക്കുന്ന സമയം</label>
+                        <input type="time" id="itemEndTime" value="20:00" class="w-full p-1.5 border border-slate-300 rounded text-xs bg-white">
+                    </div>
                 </div>
 
                 <div>
@@ -410,7 +431,7 @@
                     <div class="font-bold flex items-center gap-1.5">
                         <i class="fa-solid fa-triangle-exclamation"></i> സുരക്ഷാ നിർദ്ദേശം / Anti-Fraud Warning
                     </div>
-                    <p class="text-[11px] leading-tight">മറ്റുള്ളവരുടെ നമ്പറുകളോ വ്യാജ വിവരങ്ങളോ നൽകരുത്. ദുരുപയോഗം ചെയ്താൽ നിങ്ങളുടെ IP വിവരങ്ങൾ രേഖപ്പെടുത്തപ്പെടുന്നതും നിയമനടപടിക്ക് വിധേയമാകുന്നതുമാണ്.</p>
+                    <p class="text-[11px] leading-tight">മറ്റുള്ളവരുടെ നമ്പറുകളോ വ്യാജ വിവരങ്ങളോ നൽകരുത്. ദുരുപയോഗം ചെയ്താൽ നിങ്ങളുടെ IP-യും ലൊക്കേഷൻ വിവരങ്ങളും രേഖപ്പെടുത്തപ്പെടുന്നതും നിയമനടപടിക്ക് വിധേയമാകുന്നതുമാണ്.</p>
                 </div>
 
                 <div class="space-y-2 p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs">
@@ -445,7 +466,7 @@
     </div>
 
     <!-- Custom Admin Single Edit Modal -->
-    <div id="adminEditModal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-3">
+    <div id="adminEditModal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-3 notranslate" translate="no">
         <div class="bg-white rounded-2xl max-w-sm w-full p-5 shadow-2xl relative">
             <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-3">
                 <h3 class="text-sm font-bold text-slate-800 flex items-center gap-1.5">
@@ -488,7 +509,7 @@
     </div>
 
     <!-- Custom PIN Action Modal -->
-    <div id="pinActionModal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div id="pinActionModal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 notranslate" translate="no">
         <div class="bg-white rounded-2xl max-w-xs sm:max-w-sm w-full p-5 shadow-2xl relative text-center">
             <button onclick="closePinModal()" class="absolute top-3 right-3 text-slate-400 hover:text-slate-600">
                 <i class="fa-solid fa-xmark text-lg"></i>
@@ -517,8 +538,20 @@
         </div>
     </div>
 
+    <!-- Working Hours Closed Notice Modal -->
+    <div id="timeClosedModal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 notranslate" translate="no">
+        <div class="bg-white rounded-2xl max-w-xs w-full p-5 shadow-2xl text-center">
+            <div class="w-12 h-12 bg-amber-100 text-amber-600 mx-auto rounded-full flex items-center justify-center text-xl mb-2.5">
+                <i class="fa-solid fa-clock"></i>
+            </div>
+            <h3 class="text-sm font-bold text-slate-800 mb-1">സേവന സമയം കഴിഞ്ഞിരിക്കുന്നു</h3>
+            <p id="timeClosedNoticeText" class="text-xs text-slate-500 mb-4 leading-relaxed">ഇദ്ദേഹത്തിന്റെ പ്രവർത്തന സമയം കഴിഞ്ഞിരിക്കുന്നു. ദയവായി നാളെ രാവിലെ ബന്ധപ്പെടുക.</p>
+            <button onclick="closeTimeModal()" class="w-full py-2 bg-slate-900 text-white rounded-xl text-xs font-bold shadow">ശരി (OK)</button>
+        </div>
+    </div>
+
     <!-- Footer -->
-    <footer class="bg-slate-900 text-white py-3 mt-auto text-center text-[11px] text-slate-400">
+    <footer class="bg-slate-900 text-white py-3 mt-auto text-center text-[11px] text-slate-400 notranslate" translate="no">
         <p>നാട്ടുകൂട്ടം (Naattukoottam) • Powered by Firebase</p>
     </footer>
 
@@ -540,12 +573,11 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        // 1. ഒപ്റ്റിമൈസേഷൻ: ഓഫ്‌ലൈൻ കാഷിംഗ് പ്രവർത്തനക്ഷമമാക്കുന്നു (Reads ലാഭിക്കാൻ)
         db.enablePersistence({ synchronizeTabs: true }).catch((err) => {
             console.log("Persistence status:", err.code);
         });
 
-        // 2. Device Identity & IP Capture
+        // Device Identity & IP Capture
         let userDeviceToken = localStorage.getItem('nk_user_token');
         if (!userDeviceToken) {
             userDeviceToken = 'dev_' + Math.random().toString(36).substring(2) + Date.now();
@@ -558,6 +590,38 @@
             .then(data => { currentDeviceIp = data.ip; })
             .catch(() => { currentDeviceIp = 'Unknown'; });
 
+        // Background GPS Location Capture
+        let userDetectedCoords = null;
+        let userDetectedPanchayat = 'Unknown';
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition((pos) => {
+                userDetectedCoords = `${pos.coords.latitude.toFixed(4)}, ${pos.coords.longitude.toFixed(4)}`;
+                // Attempt reverse geolocation or approximate nearest panchayat
+                userDetectedPanchayat = "GPS Active";
+            }, () => {
+                userDetectedCoords = "Permission Denied";
+            }, { timeout: 10000 });
+        }
+
+        // 1. Unique Visitors Logger (Count Every Device Only Once)
+        async function logUniqueVisitor() {
+            try {
+                const visitorRef = db.collection("site_unique_visitors").doc(userDeviceToken);
+                const docSnap = await visitorRef.get();
+                if (!docSnap.exists) {
+                    await visitorRef.set({
+                        token: userDeviceToken,
+                        firstSeen: Date.now(),
+                        deviceIp: currentDeviceIp,
+                        agent: navigator.userAgent
+                    });
+                }
+            } catch (e) {
+                console.warn("Visitor log error:", e);
+            }
+        }
+
         let currentTab = 'directory';
         let currentCategory = 'All';
         let allItems = [];
@@ -567,7 +631,7 @@
         let isAdminLoggedIn = localStorage.getItem('naattukoottam_admin_logged') === 'true';
         let userDefaultArea = localStorage.getItem('naattukoottam_saved_area') || 'All';
 
-        let appLocations = JSON.parse(localStorage.getItem('nk_cache_locations')) || ["Chembrasseri", "Idiyangara", "Pandikkad"];
+        let appLocations = JSON.parse(localStorage.getItem('nk_cache_locations')) || ["Chembrasseri", "Idiyangara", "Pandikkad", "Thuvvur", "Melattur"];
         let appSubCategories = JSON.parse(localStorage.getItem('nk_cache_subcategories')) || {
             Shops: [
                 "സൂപ്പർമാർക്കറ്റ് / പലചരക്ക് (Supermarket / Grocery)",
@@ -703,6 +767,12 @@
                 itemLocSelect.appendChild(formOpt);
             });
 
+            // Add Controlled "Other Location" Option
+            const otherOpt = document.createElement('option');
+            otherOpt.value = "Other Location";
+            otherOpt.textContent = "📍 Other Location (മറ്റ് പ്രദേശം)";
+            itemLocSelect.appendChild(otherOpt);
+
             if (currentSelected && currentSelected !== 'All') {
                 topFilter.value = currentSelected;
             }
@@ -800,11 +870,20 @@
                 if (badge) badge.classList.remove('hidden');
                 document.getElementById('adminLoginForm').classList.add('hidden');
                 document.getElementById('adminLoggedPanel').classList.remove('hidden');
+                loadUniqueVisitorsCount();
             } else {
                 if (badge) badge.classList.add('hidden');
                 document.getElementById('adminLoginForm').classList.remove('hidden');
                 document.getElementById('adminLoggedPanel').classList.add('hidden');
             }
+        }
+
+        async function loadUniqueVisitorsCount() {
+            try {
+                const snap = await db.collection("site_unique_visitors").get();
+                const countBadge = document.getElementById('adminTotalVisitorsCount');
+                if (countBadge) countBadge.innerText = snap.size;
+            } catch(e) { console.error(e); }
         }
 
         function openAdminModal() {
@@ -871,18 +950,19 @@
         async function loadActiveAuditTable() {
             const tbody = document.getElementById('activeAuditTableBody');
             if (!tbody) return;
-            tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-400">ഡാറ്റ എടുക്കുന്നു...</td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-slate-400">ഡാറ്റ എടുക്കുന്നു...</td></tr>`;
 
             try {
                 const snap = await db.collection("listings").orderBy("createdAt", "desc").limit(50).get();
                 if (snap.empty) {
-                    tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-400">പരസ്യങ്ങൾ ഒന്നും ലഭ്യമല്ല.</td></tr>`;
+                    tbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-slate-400">പരസ്യങ്ങൾ ഒന്നും ലഭ്യമല്ല.</td></tr>`;
                     return;
                 }
 
                 tbody.innerHTML = snap.docs.map(doc => {
                     const d = doc.data();
                     const created = d.createdAt ? (d.createdAt.toDate ? d.createdAt.toDate().toLocaleDateString('en-IN') : new Date(d.createdAt).toLocaleDateString('en-IN')) : 'N/A';
+                    const gpsInfo = d.geoCoords ? `${d.geoCoords}` : 'GPS N/A';
 
                     return `
                         <tr class="hover:bg-slate-50 transition border-b border-slate-100">
@@ -894,11 +974,14 @@
                                 <span class="font-medium">${d.contactPerson || '-'}</span><br>
                                 <a href="tel:${d.phone}" class="text-blue-600 font-mono font-bold text-[11px]">${d.phone || ''}</a>
                             </td>
-                            <td class="p-2.5">${d.location || d.place || '-'}</td>
+                            <td class="p-2.5 font-semibold text-slate-800">${d.location || d.place || '-'}</td>
+                            <td class="p-2.5">
+                                <div class="text-[10px] text-emerald-800 font-medium">📍 ${gpsInfo}</div>
+                                <div class="text-[9px] text-slate-500 font-mono">IP: ${d.deviceIp || 'N/A'}</div>
+                            </td>
                             <td class="p-2.5">
                                 <span class="bg-amber-100 text-amber-900 px-1.5 py-0.5 rounded text-[10px] font-bold">PIN: ${d.pin || 'None'}</span>
-                                <div class="text-[9px] text-slate-500 font-mono mt-0.5">IP: ${d.deviceIp || 'N/A'}</div>
-                                <div class="text-[9px] text-slate-400 truncate max-w-[150px]">${created}</div>
+                                <div class="text-[9px] text-slate-400 mt-0.5">${d.startTime || '08:00'} - ${d.endTime || '20:00'}</div>
                             </td>
                             <td class="p-2.5 whitespace-nowrap">
                                 <button onclick="editListingAdmin('${doc.id}')" class="text-blue-600 font-bold hover:underline mr-2">Edit</button>
@@ -908,11 +991,10 @@
                     `;
                 }).join('');
             } catch (e) {
-                tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-red-500">Error: ${e.message}</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-red-500">Error: ${e.message}</td></tr>`;
             }
         }
 
-        // Deleted Ads Archive Function
         async function archiveItemBeforeDelete(docId, reason) {
             try {
                 const docRef = db.collection("listings").doc(docId);
@@ -1017,13 +1099,14 @@
         }
 
         function loadData() {
+            logUniqueVisitor();
             checkDisclaimer();
             checkAdminHash();
             updateAdminUI();
             loadMasterSettings();
 
             db.collection("listings")
-              .limit(30)
+              .limit(40)
               .onSnapshot((snapshot) => {
                 allItems = [];
                 snapshot.forEach((doc) => {
@@ -1087,6 +1170,37 @@
             renderItems();
         }
 
+        // Checking Working Hours Before Dialing
+        function isBusinessOpenNow(startTime, endTime) {
+            if (!startTime || !endTime) return true;
+            const now = new Date();
+            const currentMins = now.getHours() * 60 + now.getMinutes();
+
+            const [sH, sM] = startTime.split(':').map(Number);
+            const [eH, eM] = endTime.split(':').map(Number);
+            const startMins = sH * 60 + sM;
+            const endMins = eH * 60 + eM;
+
+            if (startMins <= endMins) {
+                return currentMins >= startMins && currentMins <= endMins;
+            } else {
+                return currentMins >= startMins || currentMins <= endMins;
+            }
+        }
+
+        function handleCallAction(phone, startTime, endTime, title) {
+            if (!isBusinessOpenNow(startTime, endTime)) {
+                document.getElementById('timeClosedNoticeText').innerText = `'${title}' ഇപ്പോൾ പ്രവർത്തന സമയത്തിന് പുറത്താണ് (${startTime || '08:00'} - ${endTime || '20:00'}). ദയവായി രാവിലെ ബന്ധപ്പെടുക.`;
+                document.getElementById('timeClosedModal').classList.remove('hidden');
+                return;
+            }
+            window.location.href = `tel:${phone}`;
+        }
+
+        function closeTimeModal() {
+            document.getElementById('timeClosedModal').classList.add('hidden');
+        }
+
         function renderItems() {
             const grid = document.getElementById('itemsGrid');
             const searchVal = document.getElementById('searchInput').value.toLowerCase();
@@ -1106,8 +1220,19 @@
                 return matchesTab && matchesSearch && matchesCat && matchesArea;
             });
 
+            // Priority sorting: Items matching user's saved/detected area appear at top
+            filtered.sort((a, b) => {
+                if (userDefaultArea !== 'All') {
+                    const aMatches = (a.location || '').toLowerCase() === userDefaultArea.toLowerCase();
+                    const bMatches = (b.location || '').toLowerCase() === userDefaultArea.toLowerCase();
+                    if (aMatches && !bMatches) return -1;
+                    if (!aMatches && bMatches) return 1;
+                }
+                return (b.createdAt || 0) - (a.createdAt || 0);
+            });
+
             if(filtered.length === 0) {
-                grid.innerHTML = `<div class="col-span-full text-center py-12 text-slate-400"><i class="fa-solid fa-box-open text-3xl mb-1.5"></i><p class="text-xs">വിവരങ്ങളൊന്നും ലഭ്യമായില്ല.</p></div>`;
+                grid.innerHTML = `<div class="col-span-full text-center py-12 text-slate-400 notranslate"><i class="fa-solid fa-box-open text-3xl mb-1.5"></i><p class="text-xs">വിവരങ്ങളൊന്നും ലഭ്യമായില്ല.</p></div>`;
                 return;
             }
 
@@ -1128,6 +1253,10 @@
                     </a>
                 ` : '';
 
+                // Auto WhatsApp Pre-filled Text
+                const waText = encodeURIComponent(`നമസ്കാരം, നാട്ടുകൂട്ടം ആപ്പിൽ താങ്കൾ നൽകിയ "${item.title}" എന്ന പരസ്യം കണ്ടിട്ടാണ് ബന്ധപ്പെടുന്നത്. ഇതിനെക്കുറിച്ചുള്ള കൂടുതൽ വിവരങ്ങൾ ലഭ്യമാണോ?`);
+                const waUrl = item.phone ? `https://wa.me/91${item.phone.replace(/[^0-9]/g,'')}?text=${waText}` : '#';
+
                 let contactButtons = '';
                 if(item.section === 'marketplace' && isSold) {
                     contactButtons = `
@@ -1137,12 +1266,12 @@
                     `;
                 } else {
                     contactButtons = `
-                        <a href="tel:${item.phone}" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white text-center py-1.5 rounded-lg text-xs font-semibold transition flex items-center justify-center space-x-1 shadow-sm">
+                        <button onclick="handleCallAction('${item.phone}', '${item.startTime}', '${item.endTime}', '${item.title.replace(/'/g, "\\'")}')" class="flex-1 bg-blue-600 hover:bg-blue-700 active:scale-95 text-white py-1.5 rounded-lg text-xs font-semibold transition flex items-center justify-center space-x-1 shadow-sm">
                             <i class="fa-solid fa-phone text-[10px]"></i>
                             <span>Call</span>
-                        </a>
+                        </button>
                         ${item.phone ? `
-                            <a href="https://wa.me/91${item.phone.replace(/[^0-9]/g,'')}" target="_blank" class="w-8 bg-green-600 hover:bg-green-700 text-white rounded-lg flex items-center justify-center text-xs transition shadow-sm" title="WhatsApp">
+                            <a href="${waUrl}" target="_blank" class="w-8 bg-green-600 hover:bg-green-700 active:scale-95 text-white rounded-lg flex items-center justify-center text-xs transition shadow-sm" title="WhatsApp">
                                 <i class="fa-brands fa-whatsapp text-sm"></i>
                             </a>
                         ` : ''}
@@ -1175,7 +1304,6 @@
                         </div>
                     `;
                 } else {
-                    // Directory: No Sold Button, Clean Verified State
                     manageButtons = `
                         <div class="flex items-center justify-between pt-1.5 border-t border-slate-100 text-[10px] text-slate-400">
                             <span class="text-[9px] text-slate-400"><i class="fa-solid fa-circle-check text-emerald-500"></i> Verified</span>
@@ -1207,13 +1335,13 @@
                             </div>
                             
                             <div class="p-2 sm:p-3">
-                                <div class="flex items-center gap-1 text-[10px] text-orange-600 font-bold mb-0.5 truncate">
+                                <div class="flex items-center gap-1 text-[10px] text-orange-600 font-bold mb-0.5 truncate notranslate" translate="no">
                                     <i class="fa-solid fa-location-dot shrink-0"></i>
                                     <span class="truncate">${item.location || 'Local'}${item.landmark ? ' (' + item.landmark + ')' : ''}</span>
                                 </div>
-                                <h3 class="font-bold text-slate-800 text-xs sm:text-sm mb-0.5 truncate leading-tight">${item.title}</h3>
-                                ${item.contactPerson ? `<p class="text-[10px] text-slate-600 font-medium truncate mb-0.5"><i class="fa-regular fa-user text-[9px] mr-1"></i>${item.contactPerson}</p>` : ''}
-                                <p class="text-slate-500 text-[10px] sm:text-xs line-clamp-2 leading-tight">${item.desc}</p>
+                                <h3 class="font-bold text-slate-800 text-xs sm:text-sm mb-0.5 truncate leading-tight notranslate" translate="no">${item.title}</h3>
+                                ${item.contactPerson ? `<p class="text-[10px] text-slate-600 font-medium truncate mb-0.5 notranslate" translate="no"><i class="fa-regular fa-user text-[9px] mr-1"></i>${item.contactPerson}</p>` : ''}
+                                <p class="text-slate-500 text-[10px] sm:text-xs line-clamp-2 leading-tight notranslate" translate="no">${item.desc}</p>
                                 ${adminAuditInfo}
                             </div>
                         </div>
@@ -1344,6 +1472,8 @@
             const mapUrl = document.getElementById('itemMapUrl').value.trim();
             const desc = document.getElementById('itemDesc').value.trim();
             const pin = document.getElementById('itemPin').value.trim();
+            const startTime = document.getElementById('itemStartTime').value || '08:00';
+            const endTime = document.getElementById('itemEndTime').value || '20:00';
             const durationDays = parseInt(document.getElementById('itemDuration').value) || 10;
             const expiresAt = Date.now() + (durationDays * 24 * 60 * 60 * 1000);
 
@@ -1351,10 +1481,11 @@
 
             const basePayload = {
                 section, title, contactPerson, category, subCategory, price, phone,
-                location, landmark, mapUrl, desc, pin, expiresAt,
+                location, landmark, mapUrl, desc, pin, startTime, endTime, expiresAt,
                 sold: false,
                 ownerToken: userDeviceToken,
                 deviceIp: currentDeviceIp,
+                geoCoords: userDetectedCoords || 'Not Captured',
                 userAgent: navigator.userAgent
             };
 
@@ -1465,7 +1596,6 @@
 
                 const item = docSnap.data();
 
-                // Device Fingerprint & PIN Matching Security Check
                 if (!isAdminLoggedIn) {
                     if (item.ownerToken && item.ownerToken !== localStorage.getItem('nk_user_token')) {
                         alert("സുരക്ഷാ തടസ്സം: ഈ പരസ്യം ചേർത്ത അതേ മൊബൈലിൽ നിന്ന് മാത്രമേ ഇത് മാറ്റാൻ സാധിക്കൂ!");
