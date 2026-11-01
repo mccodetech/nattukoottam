@@ -465,10 +465,10 @@
         </div>
     </div>
 
-    <!-- Custom Admin Single Edit Modal -->
+    <!-- Single Edit Modal with Photo Upload -->
     <div id="adminEditModal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-3 notranslate" translate="no">
-        <div class="bg-white rounded-2xl max-w-sm w-full p-5 shadow-2xl relative">
-            <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-3">
+        <div class="bg-white rounded-2xl max-w-sm w-full p-4 sm:p-5 shadow-2xl relative max-h-[92vh] overflow-y-auto text-xs">
+            <div class="flex items-center justify-between pb-2.5 border-b border-slate-100 mb-3">
                 <h3 class="text-sm font-bold text-slate-800 flex items-center gap-1.5">
                     <i class="fa-solid fa-pen-to-square text-orange-500"></i> വിവരങ്ങൾ തിരുത്തുക (Edit)
                 </h3>
@@ -477,7 +477,7 @@
                 </button>
             </div>
 
-            <form id="adminEditForm" onsubmit="handleAdminEditSubmit(event)" class="space-y-2.5 text-xs">
+            <form id="adminEditForm" onsubmit="handleAdminEditSubmit(event)" class="space-y-2.5">
                 <input type="hidden" id="editDocId">
 
                 <div>
@@ -500,9 +500,24 @@
                     <input type="text" id="editLandmark" class="w-full p-2 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-orange-500">
                 </div>
 
+                <div>
+                    <label class="block font-semibold text-slate-700 mb-0.5">വിവരണം (Description)</label>
+                    <textarea id="editDesc" rows="2" class="w-full p-2 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-orange-500"></textarea>
+                </div>
+
+                <!-- New Photo Change Option -->
+                <div class="p-2.5 bg-slate-50 border border-slate-200 rounded-xl">
+                    <label class="block font-semibold text-slate-700 mb-1">ഫോട്ടോ മാറ്റണോ? (Optional):</label>
+                    <input type="file" id="editImageFile" accept="image/*" onchange="previewEditImage(this)" class="w-full text-[11px] text-slate-500 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-[10px] file:bg-slate-700 file:text-white">
+                    <div id="editImagePreviewContainer" class="hidden mt-2 flex items-center gap-2">
+                        <img id="editImagePreview" src="" alt="Preview" class="w-10 h-10 rounded object-cover border">
+                        <span class="text-[10px] text-emerald-700 font-medium">പുതിയ ഫോട്ടോ തിരഞ്ഞെടുത്തു.</span>
+                    </div>
+                </div>
+
                 <div class="flex gap-2 pt-2">
-                    <button type="button" onclick="closeAdminEditModal()" class="flex-1 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-semibold">Cancel</button>
-                    <button type="submit" id="editSaveBtn" class="flex-1 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-xl text-xs font-bold shadow">Save Changes</button>
+                    <button type="button" onclick="closeAdminEditModal()" class="flex-1 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-semibold">Cancel</button>
+                    <button type="submit" id="editSaveBtn" class="flex-1 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-xl font-bold shadow">Save Changes</button>
                 </div>
             </form>
         </div>
@@ -1286,24 +1301,37 @@
                     </div>
                 ` : '';
 
-                // Smart Buttons: Directory vs Marketplace Logic
-                let manageButtons = '';
-                if (item.section === 'marketplace') {
-                    manageButtons = `
-                        <div class="flex items-center justify-between pt-1.5 border-t border-slate-100 text-[10px] text-slate-400">
-                            <button onclick="markAsSoldPrompt('${item.id}', ${isSold})" class="hover:text-amber-600 flex items-center gap-0.5 transition">
-                                <i class="fa-solid ${isSold ? 'fa-rotate-left' : 'fa-check'}"></i>
-                                <span>${isSold ? 'Avail' : 'Sold'}</span>
-                            </button>
-                            ${isAdminLoggedIn ? `
-                                <button onclick="editListingAdmin('${item.id}')" class="text-blue-600 font-bold hover:underline">Edit</button>
-                            ` : ''}
-                            <button onclick="deleteListingPrompt('${item.id}')" class="hover:text-red-600 p-1 transition" title="Delete">
-                                <i class="fa-solid fa-trash-can"></i>
-                            </button>
-                        </div>
-                    `;
-                } else {
+                // Smart Buttons: Directory & Marketplace (Edit Option Added)
+let manageButtons = '';
+if (item.section === 'marketplace') {
+    manageButtons = `
+        <div class="flex items-center justify-between pt-1.5 border-t border-slate-100 text-[10px] text-slate-400">
+            <button onclick="markAsSoldPrompt('${item.id}', ${isSold})" class="hover:text-amber-600 flex items-center gap-0.5 transition">
+                <i class="fa-solid ${isSold ? 'fa-rotate-left' : 'fa-check'}"></i>
+                <span>${isSold ? 'Avail' : 'Sold'}</span>
+            </button>
+            <button onclick="userEditPrompt('${item.id}', '${item.ownerToken}')" class="text-blue-600 font-bold hover:underline flex items-center gap-1">
+                <i class="fa-solid fa-pen-to-square text-[9px]"></i> Edit
+            </button>
+            <button onclick="deleteListingPrompt('${item.id}')" class="hover:text-red-600 p-1 transition" title="Delete">
+                <i class="fa-solid fa-trash-can"></i>
+            </button>
+        </div>
+    `;
+} else {
+    // Directory: Verified badge, Edit button, Delete button
+    manageButtons = `
+        <div class="flex items-center justify-between pt-1.5 border-t border-slate-100 text-[10px] text-slate-400">
+            <span class="text-[9px] text-slate-400"><i class="fa-solid fa-circle-check text-emerald-500"></i> Verified</span>
+            <button onclick="userEditPrompt('${item.id}', '${item.ownerToken}')" class="text-blue-600 font-bold hover:underline flex items-center gap-1">
+                <i class="fa-solid fa-pen-to-square text-[9px]"></i> Edit
+            </button>
+            <button onclick="deleteListingPrompt('${item.id}')" class="hover:text-red-600 p-1 transition" title="Delete">
+                <i class="fa-solid fa-trash-can"></i>
+            </button>
+        </div>
+    `;
+}
                     manageButtons = `
                         <div class="flex items-center justify-between pt-1.5 border-t border-slate-100 text-[10px] text-slate-400">
                             <span class="text-[9px] text-slate-400"><i class="fa-solid fa-circle-check text-emerald-500"></i> Verified</span>
@@ -1695,6 +1723,140 @@
         }
 
         window.onload = loadData;
+        let editSelectedImageBase64 = null;
+
+// User 'Edit' ക്ലിക്ക് ചെയ്യുമ്പോൾ PIN ചോദിക്കുന്നു
+function userEditPrompt(docId, ownerToken) {
+    if (isAdminLoggedIn) {
+        openEditWindow(docId);
+        return;
+    }
+    // PIN Modal Edit മോഡിലേക്ക് തുറക്കുന്നു
+    openCustomPinModal(docId, 'edit');
+}
+
+// PIN Modal-ൽ സ്ഥിരീകരിക്കുമ്പോൾ
+async function confirmPinAction() {
+    const enteredPin = document.getElementById('customPinInput').value.trim();
+
+    if (!isAdminLoggedIn && enteredPin.length !== 4) {
+        alert("ദയവായി 4-അക്ക PIN നൽകുക!");
+        return;
+    }
+
+    try {
+        const docRef = db.collection("listings").doc(currentActionDocId);
+        const docSnap = await docRef.get();
+        if (!docSnap.exists) return;
+
+        const item = docSnap.data();
+
+        // സെക്യൂരിറ്റി പരിശോധന
+        if (!isAdminLoggedIn) {
+            if (item.ownerToken && item.ownerToken !== localStorage.getItem('nk_user_token')) {
+                alert("സുരക്ഷാ തടസ്സം: ഈ പരസ്യം ചേർത്ത അതേ മൊബൈലിൽ നിന്ന് മാത്രമേ ഇത് മാറ്റാൻ സാധിക്കൂ!");
+                return;
+            }
+            if (item.pin && item.pin !== enteredPin) {
+                alert("തെറ്റായ PIN നമ്പർ! ദയവായി ശരിയായ PIN നൽകുക.");
+                return;
+            }
+        }
+
+        if (currentActionType === 'delete') {
+            await archiveItemBeforeDelete(currentActionDocId, isAdminLoggedIn ? "Admin Deleted" : "Owner PIN Deleted");
+            await docRef.delete();
+            closePinModal();
+        } else if (currentActionType === 'sold') {
+            await docRef.update({ sold: !item.sold });
+            closePinModal();
+        } else if (currentActionType === 'edit') {
+            closePinModal();
+            openEditWindow(currentActionDocId);
+        }
+    } catch (err) {
+        alert("പ്രവർത്തനം പരാജയപ്പെട്ടു: " + err.message);
+    }
+}
+
+// എഡിറ്റ് വിൻഡോ തുറന്ന് വിവരങ്ങൾ നൽകുന്നു
+async function openEditWindow(docId) {
+    try {
+        const docSnap = await db.collection("listings").doc(docId).get();
+        if (!docSnap.exists) return;
+
+        const item = docSnap.data();
+        document.getElementById('editDocId').value = docId;
+        document.getElementById('editTitle').value = item.title || '';
+        document.getElementById('editContactPerson').value = item.contactPerson || '';
+        document.getElementById('editPhone').value = item.phone || '';
+        document.getElementById('editLandmark').value = item.landmark || '';
+        document.getElementById('editDesc').value = item.desc || '';
+        
+        editSelectedImageBase64 = null;
+        document.getElementById('editImagePreviewContainer').classList.add('hidden');
+        document.getElementById('adminEditModal').classList.remove('hidden');
+    } catch (e) {
+        alert("Data load error: " + e.message);
+    }
+}
+
+function previewEditImage(input) {
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            const img = new Image();
+            img.onload = function() {
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                const MAX_WIDTH = 450;
+                const scaleSize = MAX_WIDTH / img.width;
+                canvas.width = MAX_WIDTH;
+                canvas.height = img.height * scaleSize;
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                editSelectedImageBase64 = canvas.toDataURL('image/jpeg', 0.60);
+                
+                document.getElementById('editImagePreview').src = editSelectedImageBase64;
+                document.getElementById('editImagePreviewContainer').classList.remove('hidden');
+            }
+            img.src = event.target.result;
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+async function handleAdminEditSubmit(e) {
+    e.preventDefault();
+    const docId = document.getElementById('editDocId').value;
+    const saveBtn = document.getElementById('editSaveBtn');
+
+    saveBtn.disabled = true;
+    saveBtn.innerText = "Updating...";
+
+    const updatedData = {
+        title: document.getElementById('editTitle').value.trim(),
+        contactPerson: document.getElementById('editContactPerson').value.trim(),
+        phone: document.getElementById('editPhone').value.trim(),
+        landmark: document.getElementById('editLandmark').value.trim(),
+        desc: document.getElementById('editDesc').value.trim()
+    };
+
+    if (editSelectedImageBase64) {
+        updatedData.image = editSelectedImageBase64;
+    }
+
+    try {
+        await db.collection("listings").doc(docId).update(updatedData);
+        closeAdminEditModal();
+        alert("വിവരങ്ങൾ വിജയകരമായി അപ്‌ഡേറ്റ് ചെയ്തു!");
+    } catch (err) {
+        alert("Update failed: " + err.message);
+    } finally {
+        saveBtn.disabled = false;
+        saveBtn.innerText = "Save Changes";
+    }
+}
+        
     </script>
 </body>
 </html>
