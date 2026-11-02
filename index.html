@@ -1642,6 +1642,14 @@
             saveBtn.disabled = true;
             saveBtn.innerText = "Checking...";
 
+            if (!isAdminLoggedIn && !verifiedUserPhone) {
+                alert("ദയവായി നിങ്ങളുടെ മൊബൈൽ നമ്പർ OTP വഴി ഉറപ്പുവരുത്തുക!");
+                saveBtn.disabled = false;
+                saveBtn.innerText = "Save Item";
+                openUserLoginModal();
+                return;
+            }
+
             const phone = document.getElementById('itemPhone').value.trim();
             const contactPerson = document.getElementById('itemContactPerson').value.trim();
 
@@ -1978,10 +1986,9 @@
 let loginConfirmationResult = null;
         let verifiedUserPhone = localStorage.getItem('nk_verified_phone') || null;
 
-        // '+ Add' ക്ലിക്ക് ചെയ്യുമ്പോൾ വിളിക്കുന്ന ഫങ്ഷൻ
+        // '+ Add' click cheyyumbol call cheyyunnadhu
         function openModal() {
             if (isAdminLoggedIn) {
-                // അഡ്മിൻ ആണെങ്കിൽ ഫോൺ നമ്പർ സ്വന്തമായി ടൈപ്പ് ചെയ്യാം
                 const phoneInput = document.getElementById('itemPhone');
                 phoneInput.readOnly = false;
                 phoneInput.classList.remove('bg-slate-100', 'cursor-not-allowed');
@@ -1990,11 +1997,11 @@ let loginConfirmationResult = null;
                 return;
             }
 
-            // സാധാരണ ഉപയോക്താവ് ലോഗിൻ ചെയ്തിട്ടുണ്ടോ എന്ന് പരിശോധിക്കുന്നു
+            // User login cheythittillel login modal kaanikkum
             if (!verifiedUserPhone) {
                 openUserLoginModal();
             } else {
-                // ലോഗിൻ ചെയ്ത നമ്പർ ഓട്ടോ-ഫിൽ ചെയ്ത് ഫോം തുറക്കുന്നു
+                // Verify cheytha number auto-fill aayi lock aavum
                 const phoneInput = document.getElementById('itemPhone');
                 phoneInput.value = verifiedUserPhone;
                 phoneInput.readOnly = true;
@@ -2030,13 +2037,13 @@ let loginConfirmationResult = null;
         async function sendLoginOtp() {
             const rawPhone = document.getElementById('loginMobileInput').value.trim();
             if (rawPhone.length !== 10 || isNaN(rawPhone)) {
-                alert("ദയവായി സാധുവായ 10-അക്ക മൊബൈൽ നമ്പർ നൽകുക!");
+                alert("Dayavaayi valid aaya 10-digit mobile number nalkuka!");
                 return;
             }
 
             const sendBtn = document.getElementById('sendOtpSubmitBtn');
             sendBtn.disabled = true;
-            sendBtn.innerText = "OTP അയക്കുന്നു...";
+            sendBtn.innerText = "OTP ayakkunnu...";
 
             initLoginRecaptcha();
             const formattedPhone = "+91" + rawPhone;
@@ -2047,25 +2054,25 @@ let loginConfirmationResult = null;
                     document.getElementById('loginStepPhone').classList.add('hidden');
                     document.getElementById('loginStepOtp').classList.remove('hidden');
                     sendBtn.disabled = false;
-                    sendBtn.innerText = "Send OTP (എസ്.എം.എസ് അയക്കുക)";
+                    sendBtn.innerText = "Send OTP (SMS Ayakkuka)";
                 })
                 .catch((error) => {
                     sendBtn.disabled = false;
-                    sendBtn.innerText = "Send OTP (എസ്.എം.എസ് അയക്കുക)";
-                    alert("SMS അയക്കാൻ കഴിഞ്ഞില്ല: " + error.message);
+                    sendBtn.innerText = "Send OTP (SMS Ayakkuka)";
+                    alert("SMS ayakkan kazhinjilla: " + error.message);
                 });
         }
 
         async function verifyLoginOtp() {
             const code = document.getElementById('loginOtpCode').value.trim();
             if (code.length !== 6) {
-                alert("ദയവായി 6-അക്ക OTP ടൈപ്പ് ചെയ്യുക!");
+                alert("Dayavaayi 6-digit OTP type cheyyuka!");
                 return;
             }
 
             const verifyBtn = document.getElementById('verifyOtpSubmitBtn');
             verifyBtn.disabled = true;
-            verifyBtn.innerText = "പരിശോധിക്കുന്നു...";
+            verifyBtn.innerText = "Parishodhikkunnu...";
 
             loginConfirmationResult.confirm(code)
                 .then((result) => {
@@ -2074,15 +2081,13 @@ let loginConfirmationResult = null;
                     localStorage.setItem('nk_verified_phone', rawPhone);
 
                     closeUserLoginModal();
-                    alert("മൊബൈൽ നമ്പർ വിജയകരമായി ഉറപ്പുവരുത്തി!");
-                    
-                    // നേരെ പരസ്യ ഫോം തുറക്കുന്നു
+                    alert("Mobile number vijayamaayi urappuvaruthi!");
                     openModal();
                 })
                 .catch((err) => {
                     verifyBtn.disabled = false;
                     verifyBtn.innerText = "Verify & Continue";
-                    alert("തെറ്റായ OTP! ദയവായി പരിശോധിക്കുക.");
+                    alert("Thettaaya OTP! Dayavaayi parishodhikkuka.");
                 });
         }
         
