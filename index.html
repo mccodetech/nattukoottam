@@ -464,7 +464,7 @@
         </div>
     </div>
 
-    <!-- Edit Modal with Wide Layout & Photo Upload -->
+<!-- Complete Edit Modal with Security Locks -->
     <div id="adminEditModal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-3 sm:p-4 notranslate" translate="no">
         <div class="bg-white rounded-2xl max-w-lg w-full p-5 sm:p-6 shadow-2xl relative max-h-[92vh] overflow-y-auto text-xs sm:text-sm">
             <!-- Header -->
@@ -483,39 +483,83 @@
                 </button>
             </div>
 
-            <!-- Form -->
             <form id="adminEditForm" onsubmit="handleAdminEditSubmit(event)" class="space-y-3.5">
                 <input type="hidden" id="editDocId">
 
+                <!-- Title -->
                 <div>
                     <label class="block font-semibold text-slate-700 mb-1">Title / സ്ഥാപനം / സാധനത്തിന്റെ പേര് *</label>
-                    <input type="text" id="editTitle" required class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 font-medium">
+                    <input type="text" id="editTitle" required class="uppercase-input w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 font-medium">
                 </div>
 
+                <!-- SubCategory & Location -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1" id="editSubCategoryLabel">വിഭാഗം</label>
+                        <select id="editSubCategory" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-orange-500">
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">സ്ഥലം / പ്രദേശം (Location) *</label>
+                        <select id="editLocation" required class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-orange-500">
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Person & Phone (Locked) -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
                         <label class="block font-semibold text-slate-700 mb-1">പേര് (Contact Person) *</label>
                         <input type="text" id="editContactPerson" required class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-orange-500">
                     </div>
                     <div>
-                        <label class="block font-semibold text-slate-700 mb-1">Phone Number *</label>
-                        <input type="tel" id="editPhone" required maxlength="10" pattern="[0-9]{10}" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 font-mono">
+                        <label class="block font-semibold text-slate-700 mb-1">Phone Number (മാറ്റാൻ സാധിക്കില്ല)</label>
+                        <div class="relative">
+                            <input type="tel" id="editPhone" readonly class="w-full p-2.5 bg-slate-200 border border-slate-300 rounded-xl text-xs sm:text-sm text-slate-600 font-mono cursor-not-allowed select-none">
+                            <i class="fa-solid fa-lock absolute right-3 top-3 text-slate-400 text-xs"></i>
+                        </div>
                     </div>
                 </div>
 
-                <div>
-                    <label class="block font-semibold text-slate-700 mb-1">ലാൻഡ്മാർക്ക് (Landmark)</label>
-                    <input type="text" id="editLandmark" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-orange-500">
+                <!-- Price (Marketplace only) -->
+                <div id="editPriceContainer" class="hidden">
+                    <label class="block font-semibold text-slate-700 mb-1">Price (₹)</label>
+                    <input type="text" id="editPrice" placeholder="ഉദാ: ₹35000" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-orange-500">
                 </div>
 
+                <!-- Working Hours -->
+                <div class="grid grid-cols-2 gap-3 p-2.5 bg-slate-50 border border-slate-200 rounded-xl">
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1 text-[11px]">തുടങ്ങുന്ന സമയം</label>
+                        <input type="time" id="editStartTime" class="w-full p-2 bg-white border border-slate-300 rounded-lg text-xs">
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1 text-[11px]">അവസാനിക്കുന്ന സമയം</label>
+                        <input type="time" id="editEndTime" class="w-full p-2 bg-white border border-slate-300 rounded-lg text-xs">
+                    </div>
+                </div>
+
+                <!-- Landmark & Google Maps -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">ലാൻഡ്മാർക്ക് (Landmark)</label>
+                        <input type="text" id="editLandmark" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-orange-500">
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">Google Maps Link (Optional)</label>
+                        <input type="url" id="editMapUrl" placeholder="https://maps.app.goo.gl/..." class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-orange-500">
+                    </div>
+                </div>
+
+                <!-- Description -->
                 <div>
-                    <label class="block font-semibold text-slate-700 mb-1">വിവരണം (Description)</label>
-                    <textarea id="editDesc" rows="3" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"></textarea>
+                    <label class="block font-semibold text-slate-700 mb-1">വിവരണം (Description) *</label>
+                    <textarea id="editDesc" rows="2" required class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"></textarea>
                 </div>
 
                 <!-- Photo Change Option -->
                 <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl">
-                    <label class="block font-semibold text-slate-700 mb-1.5">ഫോട്ടോ മാറ്റണോ? (Optional):</label>
+                    <label class="block font-semibold text-slate-700 mb-1">ഫോട്ടോ മാറ്റണോ? (Optional):</label>
                     <input type="file" id="editImageFile" accept="image/*" onchange="previewEditImage(this)" class="w-full text-xs text-slate-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:bg-slate-800 file:text-white file:cursor-pointer">
                     <div id="editImagePreviewContainer" class="hidden mt-2.5 flex items-center gap-2 p-1.5 bg-emerald-50 rounded-lg border border-emerald-200">
                         <img id="editImagePreview" src="" alt="Preview" class="w-12 h-12 rounded object-cover border">
@@ -531,6 +575,7 @@
             </form>
         </div>
     </div>
+    
     <!-- Custom PIN Action Modal -->
     <div id="pinActionModal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 notranslate" translate="no">
         <div class="bg-white rounded-2xl max-w-xs sm:max-w-sm w-full p-5 shadow-2xl relative text-center">
@@ -1709,10 +1754,50 @@
                 document.getElementById('editDocId').value = docId;
                 document.getElementById('editTitle').value = item.title || '';
                 document.getElementById('editContactPerson').value = item.contactPerson || '';
-                document.getElementById('editPhone').value = item.phone || '';
+                document.getElementById('editPhone').value = item.phone || ''; // ലോക്ക് ചെയ്ത നമ്പർ
                 document.getElementById('editLandmark').value = item.landmark || '';
+                document.getElementById('editMapUrl').value = item.mapUrl || '';
                 document.getElementById('editDesc').value = item.desc || '';
-                
+                document.getElementById('editStartTime').value = item.startTime || '08:00';
+                document.getElementById('editEndTime').value = item.endTime || '20:00';
+
+                // Marketplace Price Visibility
+                const priceContainer = document.getElementById('editPriceContainer');
+                if (item.section === 'marketplace') {
+                    priceContainer.classList.remove('hidden');
+                    document.getElementById('editPrice').value = item.price || '';
+                } else {
+                    priceContainer.classList.add('hidden');
+                }
+
+                // Populate SubCategories based on Section & Category
+                const subCatSelect = document.getElementById('editSubCategory');
+                subCatSelect.innerHTML = '';
+                const list = item.section === 'marketplace' ? (appSubCategories.Marketplace || []) : (appSubCategories[item.category] || []);
+                list.forEach(val => {
+                    const opt = document.createElement('option');
+                    opt.value = val;
+                    opt.textContent = val;
+                    if (val === item.subCategory) opt.selected = true;
+                    subCatSelect.appendChild(opt);
+                });
+
+                // Populate Locations Dropdown
+                const locSelect = document.getElementById('editLocation');
+                locSelect.innerHTML = '';
+                appLocations.forEach(loc => {
+                    const opt = document.createElement('option');
+                    opt.value = loc;
+                    opt.textContent = `📍 ${loc}`;
+                    if (loc === item.location) opt.selected = true;
+                    locSelect.appendChild(opt);
+                });
+                const otherOpt = document.createElement('option');
+                otherOpt.value = "Other Location";
+                otherOpt.textContent = "📍 Other Location (മറ്റ് പ്രദേശം)";
+                if (item.location === "Other Location") otherOpt.selected = true;
+                locSelect.appendChild(otherOpt);
+
                 editSelectedImageBase64 = null;
                 document.getElementById('editImagePreviewContainer').classList.add('hidden');
                 document.getElementById('adminEditModal').classList.remove('hidden');
@@ -1739,11 +1824,21 @@
             saveBtn.disabled = true;
             saveBtn.innerText = "Saving Changes...";
 
+            let titleVal = document.getElementById('editTitle').value.trim();
+            if (/^[a-zA-Z0-9\s.,'-]+$/.test(titleVal)) {
+                titleVal = titleVal.toUpperCase();
+            }
+
             const updatedData = {
-                title: document.getElementById('editTitle').value.trim(),
+                title: titleVal,
                 contactPerson: document.getElementById('editContactPerson').value.trim(),
-                phone: document.getElementById('editPhone').value.trim(),
+                location: document.getElementById('editLocation').value,
+                subCategory: document.getElementById('editSubCategory').value || '',
+                price: document.getElementById('editPrice').value.trim(),
+                startTime: document.getElementById('editStartTime').value || '08:00',
+                endTime: document.getElementById('editEndTime').value || '20:00',
                 landmark: document.getElementById('editLandmark').value.trim(),
+                mapUrl: document.getElementById('editMapUrl').value.trim(),
                 desc: document.getElementById('editDesc').value.trim()
             };
 
@@ -1753,7 +1848,7 @@
 
             try {
                 await db.collection("listings").doc(docId).update(updatedData);
-                closeAdminEditModal(); // ഫോം സേവായ ഉടൻ വിൻഡോ തനിയെ ക്ലോസ് ആവുന്നു
+                closeAdminEditModal();
                 alert("വിവരങ്ങൾ വിജയകരമായി അപ്‌ഡേറ്റ് ചെയ്തു!");
             } catch (err) {
                 alert("Update failed: " + err.message);
