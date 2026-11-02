@@ -464,64 +464,73 @@
         </div>
     </div>
 
-    <!-- Edit Modal with Photo Upload -->
-    <div id="adminEditModal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-3 notranslate" translate="no">
-        <div class="bg-white rounded-2xl max-w-sm w-full p-4 sm:p-5 shadow-2xl relative max-h-[92vh] overflow-y-auto text-xs">
-            <div class="flex items-center justify-between pb-2.5 border-b border-slate-100 mb-3">
-                <h3 class="text-sm font-bold text-slate-800 flex items-center gap-1.5">
-                    <i class="fa-solid fa-pen-to-square text-orange-500"></i> വിവരങ്ങൾ തിരുത്തുക (Edit)
-                </h3>
-                <button onclick="closeAdminEditModal()" class="text-slate-400 hover:text-slate-600">
-                    <i class="fa-solid fa-xmark text-base"></i>
+    <!-- Edit Modal with Wide Layout & Photo Upload -->
+    <div id="adminEditModal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-3 sm:p-4 notranslate" translate="no">
+        <div class="bg-white rounded-2xl max-w-lg w-full p-5 sm:p-6 shadow-2xl relative max-h-[92vh] overflow-y-auto text-xs sm:text-sm">
+            <!-- Header -->
+            <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-lg bg-orange-100 text-orange-600 flex items-center justify-center text-sm">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-sm sm:text-base font-bold text-slate-900">വിവരങ്ങൾ തിരുത്തുക (Edit)</h3>
+                        <p class="text-[10px] sm:text-xs text-slate-400">ആവശ്യമായ മാറ്റങ്ങൾ വരുത്തി സേവ് ചെയ്യുക</p>
+                    </div>
+                </div>
+                <button onclick="closeAdminEditModal()" class="text-slate-400 hover:text-slate-600 p-1 rounded-lg">
+                    <i class="fa-solid fa-xmark text-lg"></i>
                 </button>
             </div>
 
-            <form id="adminEditForm" onsubmit="handleAdminEditSubmit(event)" class="space-y-2.5">
+            <!-- Form -->
+            <form id="adminEditForm" onsubmit="handleAdminEditSubmit(event)" class="space-y-3.5">
                 <input type="hidden" id="editDocId">
 
                 <div>
-                    <label class="block font-semibold text-slate-700 mb-0.5">Title / സ്ഥാപനം *</label>
-                    <input type="text" id="editTitle" required class="w-full p-2 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-orange-500 font-medium">
+                    <label class="block font-semibold text-slate-700 mb-1">Title / സ്ഥാപനം / സാധനത്തിന്റെ പേര് *</label>
+                    <input type="text" id="editTitle" required class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 font-medium">
                 </div>
 
-                <div>
-                    <label class="block font-semibold text-slate-700 mb-0.5">പേര് (Contact Person) *</label>
-                    <input type="text" id="editContactPerson" required class="w-full p-2 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-orange-500">
-                </div>
-
-                <div>
-                    <label class="block font-semibold text-slate-700 mb-0.5">Phone Number *</label>
-                    <input type="tel" id="editPhone" required maxlength="10" class="w-full p-2 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-orange-500">
-                </div>
-
-                <div>
-                    <label class="block font-semibold text-slate-700 mb-0.5">ലാൻഡ്മാർക്ക് (Landmark)</label>
-                    <input type="text" id="editLandmark" class="w-full p-2 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-orange-500">
-                </div>
-
-                <div>
-                    <label class="block font-semibold text-slate-700 mb-0.5">വിവരണം (Description)</label>
-                    <textarea id="editDesc" rows="2" class="w-full p-2 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-orange-500"></textarea>
-                </div>
-
-                <!-- Photo Change Option -->
-                <div class="p-2.5 bg-slate-50 border border-slate-200 rounded-xl">
-                    <label class="block font-semibold text-slate-700 mb-1">ഫോട്ടോ മാറ്റണോ? (Optional):</label>
-                    <input type="file" id="editImageFile" accept="image/*" onchange="previewEditImage(this)" class="w-full text-[11px] text-slate-500 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-[10px] file:bg-slate-700 file:text-white">
-                    <div id="editImagePreviewContainer" class="hidden mt-2 flex items-center gap-2">
-                        <img id="editImagePreview" src="" alt="Preview" class="w-10 h-10 rounded object-cover border">
-                        <span class="text-[10px] text-emerald-700 font-medium">പുതിയ ഫോട്ടോ തിരഞ്ഞെടുത്തു.</span>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">പേര് (Contact Person) *</label>
+                        <input type="text" id="editContactPerson" required class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-orange-500">
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">Phone Number *</label>
+                        <input type="tel" id="editPhone" required maxlength="10" pattern="[0-9]{10}" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 font-mono">
                     </div>
                 </div>
 
-                <div class="flex gap-2 pt-2">
-                    <button type="button" onclick="closeAdminEditModal()" class="flex-1 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-semibold">Cancel</button>
-                    <button type="submit" id="editSaveBtn" class="flex-1 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-xl font-bold shadow">Save Changes</button>
+                <div>
+                    <label class="block font-semibold text-slate-700 mb-1">ലാൻഡ്മാർക്ക് (Landmark)</label>
+                    <input type="text" id="editLandmark" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-orange-500">
+                </div>
+
+                <div>
+                    <label class="block font-semibold text-slate-700 mb-1">വിവരണം (Description)</label>
+                    <textarea id="editDesc" rows="3" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"></textarea>
+                </div>
+
+                <!-- Photo Change Option -->
+                <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl">
+                    <label class="block font-semibold text-slate-700 mb-1.5">ഫോട്ടോ മാറ്റണോ? (Optional):</label>
+                    <input type="file" id="editImageFile" accept="image/*" onchange="previewEditImage(this)" class="w-full text-xs text-slate-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:bg-slate-800 file:text-white file:cursor-pointer">
+                    <div id="editImagePreviewContainer" class="hidden mt-2.5 flex items-center gap-2 p-1.5 bg-emerald-50 rounded-lg border border-emerald-200">
+                        <img id="editImagePreview" src="" alt="Preview" class="w-12 h-12 rounded object-cover border">
+                        <span class="text-xs text-emerald-800 font-medium">പുതിയ ഫോട്ടോ തിരഞ്ഞെടുത്തു.</span>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex gap-2.5 pt-2">
+                    <button type="button" onclick="closeAdminEditModal()" class="flex-1 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs sm:text-sm font-semibold transition">Cancel</button>
+                    <button type="submit" id="editSaveBtn" class="flex-1 py-2.5 bg-orange-500 hover:bg-orange-600 active:scale-95 text-white rounded-xl text-xs sm:text-sm font-bold shadow transition">Save Changes</button>
                 </div>
             </form>
         </div>
     </div>
-
     <!-- Custom PIN Action Modal -->
     <div id="pinActionModal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 notranslate" translate="no">
         <div class="bg-white rounded-2xl max-w-xs sm:max-w-sm w-full p-5 shadow-2xl relative text-center">
@@ -1728,7 +1737,7 @@
             const saveBtn = document.getElementById('editSaveBtn');
 
             saveBtn.disabled = true;
-            saveBtn.innerText = "Updating...";
+            saveBtn.innerText = "Saving Changes...";
 
             const updatedData = {
                 title: document.getElementById('editTitle').value.trim(),
@@ -1744,7 +1753,7 @@
 
             try {
                 await db.collection("listings").doc(docId).update(updatedData);
-                closeAdminEditModal();
+                closeAdminEditModal(); // ഫോം സേവായ ഉടൻ വിൻഡോ തനിയെ ക്ലോസ് ആവുന്നു
                 alert("വിവരങ്ങൾ വിജയകരമായി അപ്‌ഡേറ്റ് ചെയ്തു!");
             } catch (err) {
                 alert("Update failed: " + err.message);
