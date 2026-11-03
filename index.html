@@ -83,21 +83,28 @@
         </div>
     </header>
 
-    <!-- Navigation Tabs (3 Tabs) -->
-    <nav class="bg-slate-950 text-white shadow-inner border-t border-slate-800 notranslate" translate="no">
-        <div class="max-w-7xl mx-auto px-3 flex space-x-2 sm:space-x-6 overflow-x-auto no-scrollbar">
-            <button onclick="switchTab('marketplace')" id="tab-marketplace" class="py-2.5 border-b-2 border-orange-500 text-orange-400 font-semibold text-xs sm:text-sm flex items-center space-x-1.5 whitespace-nowrap transition">
-                <i class="fa-solid fa-basket-shopping text-xs"></i>
-                <span>ചന്ത (വിൽക്കാൻ ഉള്ളവ)</span>
-            </button>
-            <button onclick="switchTab('wanted')" id="tab-wanted" class="py-2.5 border-b-2 border-transparent text-slate-400 hover:text-white font-semibold text-xs sm:text-sm flex items-center space-x-1.5 whitespace-nowrap transition">
-                <i class="fa-solid fa-bullhorn text-xs"></i>
-                <span>ആവശ്യങ്ങൾ (Wanted)</span>
-            </button>
-            <button onclick="switchTab('directory')" id="tab-directory" class="py-2.5 border-b-2 border-transparent text-slate-400 hover:text-white font-semibold text-xs sm:text-sm flex items-center space-x-1.5 whitespace-nowrap transition">
-                <i class="fa-solid fa-address-book text-xs"></i>
-                <span>ഡയറക്ടറി (Directory)</span>
-            </button>
+   <!-- Navigation Tabs (Fixed & Mobile Compact Grid) -->
+    <nav class="bg-slate-950 text-white shadow-md border-t border-slate-800 sticky top-[48px] sm:top-[52px] z-30 notranslate" translate="no">
+        <div class="max-w-7xl mx-auto px-1.5 sm:px-3">
+            <div class="grid grid-cols-3 gap-1 py-1 sm:py-0 sm:flex sm:space-x-6">
+                <!-- Tab 1: Marketplace -->
+                <button onclick="switchTab('marketplace')" id="tab-marketplace" class="py-2 sm:py-2.5 border-b-2 border-orange-500 text-orange-400 font-bold text-[11px] sm:text-sm flex flex-col sm:flex-row items-center justify-center gap-1 sm:space-x-1.5 transition">
+                    <i class="fa-solid fa-basket-shopping text-xs sm:text-sm"></i>
+                    <span><span class="sm:hidden">ചന്ത</span><span class="hidden sm:inline">ചന്ത (വിൽക്കാൻ ഉള്ളവ)</span></span>
+                </button>
+                
+                <!-- Tab 2: Wanted -->
+                <button onclick="switchTab('wanted')" id="tab-wanted" class="py-2 sm:py-2.5 border-b-2 border-transparent text-slate-400 hover:text-white font-semibold text-[11px] sm:text-sm flex flex-col sm:flex-row items-center justify-center gap-1 sm:space-x-1.5 transition">
+                    <i class="fa-solid fa-bullhorn text-xs sm:text-sm"></i>
+                    <span><span class="sm:hidden">ആവശ്യങ്ങൾ</span><span class="hidden sm:inline">ആവശ്യങ്ങൾ (Wanted)</span></span>
+                </button>
+                
+                <!-- Tab 3: Directory -->
+                <button onclick="switchTab('directory')" id="tab-directory" class="py-2 sm:py-2.5 border-b-2 border-transparent text-slate-400 hover:text-white font-semibold text-[11px] sm:text-sm flex flex-col sm:flex-row items-center justify-center gap-1 sm:space-x-1.5 transition">
+                    <i class="fa-solid fa-address-book text-xs sm:text-sm"></i>
+                    <span><span class="sm:hidden">ഡയറക്ടറി</span><span class="hidden sm:inline">ഡയറക്ടറി (Directory)</span></span>
+                </button>
+            </div>
         </div>
     </nav>
 
@@ -1368,18 +1375,19 @@
             const wantedBtn = document.getElementById('tab-wanted');
             const catFilters = document.getElementById('categoryFilters');
 
-            [dirBtn, mktBtn, wantedBtn].forEach(b => {
-                b.className = "py-2.5 border-b-2 border-transparent text-slate-400 hover:text-white font-semibold text-xs sm:text-sm flex items-center space-x-1.5 whitespace-nowrap transition";
-            });
+            const inactiveClass = "py-2 sm:py-2.5 border-b-2 border-transparent text-slate-400 hover:text-white font-semibold text-[11px] sm:text-sm flex flex-col sm:flex-row items-center justify-center gap-1 sm:space-x-1.5 transition";
+            const activeClass = "py-2 sm:py-2.5 border-b-2 border-orange-500 text-orange-400 font-bold text-[11px] sm:text-sm flex flex-col sm:flex-row items-center justify-center gap-1 sm:space-x-1.5 transition";
+
+            [dirBtn, mktBtn, wantedBtn].forEach(b => b.className = inactiveClass);
 
             if(tab === 'marketplace') {
-                mktBtn.className = "py-2.5 border-b-2 border-orange-500 text-orange-400 font-semibold text-xs sm:text-sm flex items-center space-x-1.5 whitespace-nowrap transition";
+                mktBtn.className = activeClass;
                 catFilters.style.display = 'none';
             } else if (tab === 'wanted') {
-                wantedBtn.className = "py-2.5 border-b-2 border-orange-500 text-orange-400 font-semibold text-xs sm:text-sm flex items-center space-x-1.5 whitespace-nowrap transition";
+                wantedBtn.className = activeClass;
                 catFilters.style.display = 'none';
             } else {
-                dirBtn.className = "py-2.5 border-b-2 border-orange-500 text-orange-400 font-semibold text-xs sm:text-sm flex items-center space-x-1.5 whitespace-nowrap transition";
+                dirBtn.className = activeClass;
                 catFilters.style.display = 'flex';
             }
             renderItems();
