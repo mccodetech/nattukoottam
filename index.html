@@ -22,29 +22,12 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Noto+Sans+Malayalam:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
+   <!-- Direct Tailwind CSS & Icons (Faster & Reliable) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#0f172a',
-                        secondary: '#2563eb',
-                        accent: '#f97316'
-                    },
-                    fontFamily: {
-                        sans: ['"Noto Sans Malayalam"', 'Inter', 'sans-serif']
-                    }
-                }
-            }
-        }
-    </script>
-    
     <style>
-        body { font-family: 'Noto Sans Malayalam', 'Inter', sans-serif; }
+        body { font-family: 'Noto Sans Malayalam', Inter, sans-serif; }
         .sold-card { opacity: 0.72; filter: grayscale(25%); }
         .uppercase-input { text-transform: uppercase; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
