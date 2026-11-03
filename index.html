@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google" content="notranslate">
-    <title>നാട്ടുകൂട്ടം (Naattukoottam) - Local Directory & Marketplace</title>
+    <title>നാട്ടുകൂട്ടം (Naattukoottam) - Local Marketplace & Directory</title>
     
     <!-- PWA Manifest & Service Worker Registration -->
     <link rel="manifest" href="manifest.json">
@@ -56,14 +56,14 @@
     <!-- Header -->
     <header class="bg-slate-900 text-white shadow-md sticky top-0 z-40 notranslate" translate="no">
         <div class="max-w-7xl mx-auto px-3 py-2.5 flex justify-between items-center gap-1.5">
-            <div class="flex items-center space-x-2 min-w-0 cursor-pointer" onclick="switchTab('directory')">
+            <div class="flex items-center space-x-2 min-w-0 cursor-pointer" onclick="switchTab('marketplace')">
                 <img id="appLogo" src="logo.png" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/3710/3710274.png';" alt="Logo" class="w-8 h-8 sm:w-10 sm:h-10 object-contain rounded-lg bg-white/10 p-0.5 shrink-0 border border-white/10 shadow-sm">
                 <div class="min-w-0">
                     <h1 class="text-sm sm:text-lg font-bold tracking-tight truncate leading-tight text-white flex items-center gap-1.5 notranslate" translate="no">
                         നാട്ടുകൂട്ടം
                         <span id="adminHeaderBadge" class="hidden text-[9px] bg-amber-500 text-slate-900 px-1 py-0.5 rounded font-bold uppercase tracking-wider">Admin</span>
                     </h1>
-                    <p class="text-[10px] sm:text-xs text-slate-300 truncate notranslate" translate="no">Local Directory & Marketplace</p>
+                    <p class="text-[10px] sm:text-xs text-slate-300 truncate notranslate" translate="no">Local Marketplace & Directory</p>
                 </div>
             </div>
             
@@ -83,16 +83,20 @@
         </div>
     </header>
 
-    <!-- Navigation Tabs -->
+    <!-- Navigation Tabs (3 Tabs) -->
     <nav class="bg-slate-950 text-white shadow-inner border-t border-slate-800 notranslate" translate="no">
-        <div class="max-w-7xl mx-auto px-3 flex space-x-4">
-            <button onclick="switchTab('directory')" id="tab-directory" class="py-2.5 border-b-2 border-orange-500 text-orange-400 font-semibold text-xs sm:text-sm flex items-center space-x-1.5 transition">
+        <div class="max-w-7xl mx-auto px-3 flex space-x-2 sm:space-x-6 overflow-x-auto no-scrollbar">
+            <button onclick="switchTab('marketplace')" id="tab-marketplace" class="py-2.5 border-b-2 border-orange-500 text-orange-400 font-semibold text-xs sm:text-sm flex items-center space-x-1.5 whitespace-nowrap transition">
+                <i class="fa-solid fa-basket-shopping text-xs"></i>
+                <span>ചന്ത (വിൽക്കാൻ ഉള്ളവ)</span>
+            </button>
+            <button onclick="switchTab('wanted')" id="tab-wanted" class="py-2.5 border-b-2 border-transparent text-slate-400 hover:text-white font-semibold text-xs sm:text-sm flex items-center space-x-1.5 whitespace-nowrap transition">
+                <i class="fa-solid fa-bullhorn text-xs"></i>
+                <span>ആവശ്യങ്ങൾ (Wanted)</span>
+            </button>
+            <button onclick="switchTab('directory')" id="tab-directory" class="py-2.5 border-b-2 border-transparent text-slate-400 hover:text-white font-semibold text-xs sm:text-sm flex items-center space-x-1.5 whitespace-nowrap transition">
                 <i class="fa-solid fa-address-book text-xs"></i>
                 <span>ഡയറക്ടറി (Directory)</span>
-            </button>
-            <button onclick="switchTab('marketplace')" id="tab-marketplace" class="py-2.5 border-b-2 border-transparent text-slate-400 hover:text-white font-semibold text-xs sm:text-sm flex items-center space-x-1.5 transition">
-                <i class="fa-solid fa-basket-shopping text-xs"></i>
-                <span>മാർക്കറ്റ്പ്ലേസ് (Marketplace)</span>
             </button>
         </div>
     </nav>
@@ -117,7 +121,8 @@
                 </div>
             </div>
             
-            <div id="categoryFilters" class="flex overflow-x-auto no-scrollbar gap-1.5 pb-1 text-xs notranslate" translate="no">
+            <!-- Category Filters for Directory only -->
+            <div id="categoryFilters" class="hidden flex overflow-x-auto no-scrollbar gap-1.5 pb-1 text-xs notranslate" translate="no">
                 <button onclick="filterCategory('All')" class="cat-btn bg-slate-900 text-white px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap shadow transition">All</button>
                 <button onclick="filterCategory('Shops')" class="cat-btn bg-white text-slate-700 border border-slate-300 px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap hover:bg-slate-100 transition">Shops</button>
                 <button onclick="filterCategory('Services')" class="cat-btn bg-white text-slate-700 border border-slate-300 px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap hover:bg-slate-100 transition">Services</button>
@@ -130,7 +135,6 @@
         <div id="itemsGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2.5 sm:gap-4 notranslate" translate="no"></div>
     </main>
 
-    <!-- Image Fullscreen Preview Modal (Lightbox) -->
     <!-- Image Fullscreen Preview Modal (Lightbox with Full Details) -->
     <div id="imageLightboxModal" class="fixed inset-0 bg-black/90 z-50 hidden flex flex-col items-center justify-between p-3 sm:p-5 notranslate" translate="no">
         <!-- Close Button -->
@@ -406,14 +410,15 @@
 
             <form id="listingForm" onsubmit="saveItem(event)" class="space-y-3">
                 <div>
-                    <label class="block font-semibold text-slate-600 mb-0.5">Section</label>
-                    <select id="itemSection" onchange="toggleFormFields()" class="w-full p-2 border border-slate-300 rounded-lg text-xs focus:ring-2 focus:ring-orange-500 focus:outline-none">
-                        <option value="directory">Local Directory (Shops, Services, Doctors)</option>
-                        <option value="marketplace">Marketplace / Classifieds (Sell Items)</option>
+                    <label class="block font-semibold text-slate-600 mb-0.5">വിഭാഗം (Section) *</label>
+                    <select id="itemSection" onchange="toggleFormFields()" class="w-full p-2 border border-slate-300 rounded-lg text-xs font-semibold focus:ring-2 focus:ring-orange-500 focus:outline-none bg-white">
+                        <option value="marketplace">🛍️ ചന്ത / വിൽക്കാൻ (Marketplace - Sell Items)</option>
+                        <option value="wanted">📢 ആവശ്യമുണ്ട് (Wanted / Requirements)</option>
+                        <option value="directory">📒 ഡയറക്ടറി (Local Directory - Shops, Services, Doctors)</option>
                     </select>
                 </div>
 
-                <div id="categoryFieldContainer">
+                <div id="categoryFieldContainer" class="hidden">
                     <label class="block font-semibold text-slate-600 mb-0.5">Category</label>
                     <select id="itemCategory" onchange="handleCategoryChange()" class="w-full p-2 border border-slate-300 rounded-lg text-xs focus:ring-2 focus:ring-orange-500 focus:outline-none">
                         <option value="Shops">Shops (കടകൾ)</option>
@@ -430,7 +435,7 @@
                 </div>
 
                 <div>
-                    <label class="block font-semibold text-slate-600 mb-0.5">Title / സ്ഥാപനം / ഉൽപ്പന്നത്തിന്റെ പേര് *</label>
+                    <label class="block font-semibold text-slate-600 mb-0.5">Title / സ്ഥാപനം / സാധനത്തിന്റെ പേര് *</label>
                     <input type="text" id="itemTitle" required placeholder="NAME / പേര്" class="uppercase-input w-full p-2 border border-slate-300 rounded-lg text-xs focus:ring-2 focus:ring-orange-500 focus:outline-none">
                 </div>
 
@@ -439,8 +444,8 @@
                     <input type="text" id="itemContactPerson" required placeholder="ഉദാ: മുഹമ്മദ് / സുരേഷ്" class="w-full p-2 border border-slate-300 rounded-lg text-xs focus:ring-2 focus:ring-orange-500 focus:outline-none">
                 </div>
 
-                <div id="priceFieldContainer" class="hidden">
-                    <label class="block font-semibold text-slate-600 mb-0.5">Price (₹)</label>
+                <div id="priceFieldContainer">
+                    <label class="block font-semibold text-slate-600 mb-0.5" id="priceFieldLabel">വില (Price in ₹ / പ്രതീക്ഷിത തുക)</label>
                     <input type="text" id="itemPrice" placeholder="ഉദാ: ₹35000" class="w-full p-2 border border-slate-300 rounded-lg text-xs focus:ring-2 focus:ring-orange-500 focus:outline-none">
                 </div>
 
@@ -466,7 +471,7 @@
                 <!-- Business / Available Hours -->
                 <div class="grid grid-cols-2 gap-2 p-2.5 bg-slate-50 border border-slate-200 rounded-xl">
                     <div>
-                        <label class="block font-bold text-slate-800 mb-0.5">സേവനം തുടങ്ങുന്ന സമയം</label>
+                        <label class="block font-bold text-slate-800 mb-0.5">ബന്ധപ്പെടാവുന്ന സമയം</label>
                         <input type="time" id="itemStartTime" value="08:00" class="w-full p-1.5 border border-slate-300 rounded text-xs bg-white">
                     </div>
                     <div>
@@ -543,7 +548,7 @@
         </div>
     </div>
 
-<!-- Complete Edit Modal with Security Locks -->
+    <!-- Complete Edit Modal with Security Locks -->
     <div id="adminEditModal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-3 sm:p-4 notranslate" translate="no">
         <div class="bg-white rounded-2xl max-w-lg w-full p-5 sm:p-6 shadow-2xl relative max-h-[92vh] overflow-y-auto text-xs sm:text-sm">
             <!-- Header -->
@@ -600,9 +605,9 @@
                     </div>
                 </div>
 
-                <!-- Price (Marketplace only) -->
-                <div id="editPriceContainer" class="hidden">
-                    <label class="block font-semibold text-slate-700 mb-1">Price (₹)</label>
+                <!-- Price (Marketplace & Wanted) -->
+                <div id="editPriceContainer">
+                    <label class="block font-semibold text-slate-700 mb-1">Price / പ്രതീക്ഷിത വില (₹)</label>
                     <input type="text" id="editPrice" placeholder="ഉദാ: ₹35000" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-orange-500">
                 </div>
 
@@ -770,7 +775,7 @@
             }
         }
 
-        let currentTab = 'directory';
+        let currentTab = 'marketplace'; // Default Tab is now Marketplace
         let currentCategory = 'All';
         let allItems = [];
         let deferredPrompt = null;
@@ -827,11 +832,16 @@
                 "വാഹനങ്ങൾ (Vehicles / Bikes / Cars)",
                 "വീട്ടുപകരണങ്ങൾ (Home Appliances)",
                 "വസ്തു / സ്ഥലം / വീട് (Real Estate / Property)",
+                "നാടൻ കോഴി / ആട് / മൃഗങ്ങൾ (Pets & Farm)",
+                "കൃഷി & പച്ചക്കറി (Agriculture Produce)",
                 "മറ്റ് സാധനങ്ങൾ (Other Items)"
             ]
         };
 
         function getDefaultImage(cat, subCat, section) {
+            if (section === 'wanted') {
+                return 'https://images.unsplash.com/photo-1512428559087-560fa5ceab42?auto=format&fit=crop&w=600&q=80';
+            }
             if (section === 'marketplace') {
                 return 'https://images.unsplash.com/photo-1526738549149-8e07eca6c147?auto=format&fit=crop&w=600&q=80';
             }
@@ -863,7 +873,12 @@
 
             document.getElementById('lightboxImage').src = finalImage;
             document.getElementById('lightboxTitle').innerText = item.title || 'Untitled';
-            document.getElementById('lightboxCategory').innerText = `${item.section === 'marketplace' ? 'മാർക്കറ്റ്പ്ലേസ്' : (item.category || '')} • ${item.subCategory || ''}`;
+            
+            let secLabel = item.category || '';
+            if (item.section === 'marketplace') secLabel = 'മാർക്കറ്റ്പ്ലേസ് (ചന്ത)';
+            else if (item.section === 'wanted') secLabel = 'ആവശ്യമുണ്ട് (Wanted)';
+            
+            document.getElementById('lightboxCategory').innerText = `${secLabel} • ${item.subCategory || ''}`;
 
             const locText = `📍 ${item.location || 'Local'}${item.landmark ? ' (' + item.landmark + ')' : ''}`;
             document.getElementById('lightboxLocation').innerText = locText;
@@ -872,8 +887,8 @@
             document.getElementById('lightboxDescription').innerText = item.desc || 'വിവരണം ലഭ്യമല്ല.';
 
             const priceBadge = document.getElementById('lightboxPriceBadge');
-            if (item.section === 'marketplace' && item.price) {
-                priceBadge.innerText = item.price;
+            if ((item.section === 'marketplace' || item.section === 'wanted') && item.price) {
+                priceBadge.innerText = (item.section === 'wanted' ? 'ബജറ്റ്: ' : '') + item.price;
                 priceBadge.classList.remove('hidden');
             } else {
                 priceBadge.classList.add('hidden');
@@ -1150,7 +1165,7 @@
                         <tr class="hover:bg-slate-50 transition border-b border-slate-100">
                             <td class="p-2.5 font-bold text-slate-800">
                                 ${d.title || d.name || 'Untitled'}
-                                <div class="text-[10px] text-orange-600 font-semibold uppercase">${d.section || 'directory'} • ${d.category || ''}</div>
+                                <div class="text-[10px] text-orange-600 font-semibold uppercase">${d.section || 'marketplace'} • ${d.category || ''}</div>
                             </td>
                             <td class="p-2.5">
                                 <span class="font-medium">${d.contactPerson || '-'}</span><br>
@@ -1312,7 +1327,7 @@
             loadMasterSettings();
 
             db.collection("listings")
-              .limit(40)
+              .limit(50)
               .onSnapshot((snapshot) => {
                 allItems = [];
                 snapshot.forEach((doc) => {
@@ -1350,16 +1365,22 @@
             currentTab = tab;
             const dirBtn = document.getElementById('tab-directory');
             const mktBtn = document.getElementById('tab-marketplace');
+            const wantedBtn = document.getElementById('tab-wanted');
             const catFilters = document.getElementById('categoryFilters');
 
-            if(tab === 'directory') {
-                dirBtn.className = "py-2.5 border-b-2 border-orange-500 text-orange-400 font-semibold text-xs sm:text-sm flex items-center space-x-1.5 transition";
-                mktBtn.className = "py-2.5 border-b-2 border-transparent text-slate-400 hover:text-white font-semibold text-xs sm:text-sm flex items-center space-x-1.5 transition";
-                catFilters.style.display = 'flex';
-            } else {
-                mktBtn.className = "py-2.5 border-b-2 border-orange-500 text-orange-400 font-semibold text-xs sm:text-sm flex items-center space-x-1.5 transition";
-                dirBtn.className = "py-2.5 border-b-2 border-transparent text-slate-400 hover:text-white font-semibold text-xs sm:text-sm flex items-center space-x-1.5 transition";
+            [dirBtn, mktBtn, wantedBtn].forEach(b => {
+                b.className = "py-2.5 border-b-2 border-transparent text-slate-400 hover:text-white font-semibold text-xs sm:text-sm flex items-center space-x-1.5 whitespace-nowrap transition";
+            });
+
+            if(tab === 'marketplace') {
+                mktBtn.className = "py-2.5 border-b-2 border-orange-500 text-orange-400 font-semibold text-xs sm:text-sm flex items-center space-x-1.5 whitespace-nowrap transition";
                 catFilters.style.display = 'none';
+            } else if (tab === 'wanted') {
+                wantedBtn.className = "py-2.5 border-b-2 border-orange-500 text-orange-400 font-semibold text-xs sm:text-sm flex items-center space-x-1.5 whitespace-nowrap transition";
+                catFilters.style.display = 'none';
+            } else {
+                dirBtn.className = "py-2.5 border-b-2 border-orange-500 text-orange-400 font-semibold text-xs sm:text-sm flex items-center space-x-1.5 whitespace-nowrap transition";
+                catFilters.style.display = 'flex';
             }
             renderItems();
         }
@@ -1415,14 +1436,17 @@
             const selectedArea = document.getElementById('userAreaFilter').value;
             
             let filtered = allItems.filter(item => {
-                const matchesTab = item.section === currentTab;
+                // Section matching (Backward compatible)
+                let itemSec = item.section || 'directory';
+                const matchesTab = (itemSec === currentTab);
+
                 const matchesSearch = (item.title && item.title.toLowerCase().includes(searchVal)) || 
                                       (item.desc && item.desc.toLowerCase().includes(searchVal)) ||
                                       (item.contactPerson && item.contactPerson.toLowerCase().includes(searchVal)) ||
                                       (item.subCategory && item.subCategory.toLowerCase().includes(searchVal)) ||
                                       (item.location && item.location.toLowerCase().includes(searchVal));
                 
-                const matchesCat = (currentTab === 'marketplace' || currentCategory === 'All' || item.category === currentCategory);
+                const matchesCat = (currentTab !== 'directory' || currentCategory === 'All' || item.category === currentCategory);
                 const matchesArea = (selectedArea === 'All' || !item.location || item.location.toLowerCase() === selectedArea.toLowerCase());
 
                 return matchesTab && matchesSearch && matchesCat && matchesArea;
@@ -1453,6 +1477,7 @@
                 else if (item.category === 'Services') badgeColor = 'bg-teal-700';
                 else if (item.category === 'Doctors' || item.category === 'Hospitals') badgeColor = 'bg-rose-700';
                 else if (item.section === 'marketplace') badgeColor = 'bg-orange-600';
+                else if (item.section === 'wanted') badgeColor = 'bg-blue-600';
 
                 const mapBtn = item.mapUrl ? `
                     <a href="${item.mapUrl}" target="_blank" class="bg-blue-500 hover:bg-blue-600 text-white px-2.5 py-1.5 rounded-lg text-xs transition flex items-center justify-center shadow-sm" title="Map">
@@ -1524,16 +1549,21 @@
 
                 const finalImage = item.image || getDefaultImage(item.category, item.subCategory, item.section);
 
+                let badgeDisplay = item.subCategory || (item.section === 'directory' ? item.category : 'Marketplace');
+                if (item.section === 'wanted') {
+                    badgeDisplay = `ആവശ്യമുണ്ട്: ${item.subCategory || 'General'}`;
+                }
+
                 return `
                     <div class="bg-white rounded-xl shadow-sm border border-slate-200 flex flex-col justify-between hover:shadow-md transition overflow-hidden relative ${soldClass}">
                         <div>
-                           <div class="h-28 sm:h-36 bg-slate-200 relative overflow-hidden cursor-pointer group" onclick="openImageLightbox('${item.id}')">
+                            <div class="h-28 sm:h-36 bg-slate-200 relative overflow-hidden cursor-pointer group" onclick="openImageLightbox('${item.id}')">
                                 <img src="${finalImage}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
                                 ${soldBadge}
-                                <span class="absolute top-1 right-1 ${badgeColor} text-white text-[9px] sm:text-[10px] px-1.5 py-0.5 rounded backdrop-blur-sm truncate max-w-[80%] font-semibold shadow">
-                                    ${item.subCategory || (item.section === 'directory' ? item.category : 'Marketplace')}
+                                <span class="absolute top-1 right-1 ${badgeColor} text-white text-[9px] sm:text-[10px] px-1.5 py-0.5 rounded backdrop-blur-sm truncate max-w-[85%] font-semibold shadow">
+                                    ${badgeDisplay}
                                 </span>
-                                ${item.price ? `<span class="absolute bottom-1 left-1 bg-slate-900/90 text-white text-[10px] px-1.5 py-0.5 rounded font-bold shadow">${item.price}</span>` : ''}
+                                ${item.price ? `<span class="absolute bottom-1 left-1 bg-slate-900/90 text-white text-[10px] px-1.5 py-0.5 rounded font-bold shadow">${item.section === 'wanted' ? 'ബജറ്റ്: ' : ''}${item.price}</span>` : ''}
                                 <span class="absolute bottom-1 right-1 bg-black/60 text-white text-[9px] px-1 rounded opacity-0 group-hover:opacity-100 transition"><i class="fa-solid fa-expand"></i></span>
                             </div>
                             
@@ -1563,7 +1593,31 @@
         function filterItems() { renderItems(); }
 
         function openModal() {
-            document.getElementById('itemModal').classList.remove('hidden');
+            if (isAdminLoggedIn) {
+                const phoneInput = document.getElementById('itemPhone');
+                phoneInput.readOnly = false;
+                phoneInput.classList.remove('bg-slate-100', 'cursor-not-allowed');
+                phoneInput.value = '';
+                document.getElementById('itemModal').classList.remove('hidden');
+                return;
+            }
+
+            if (!verifiedUserPhone) {
+                openUserLoginModal();
+            } else {
+                const phoneInput = document.getElementById('itemPhone');
+                phoneInput.value = verifiedUserPhone;
+                phoneInput.readOnly = true;
+                
+                // Automatically match current selected tab when opening form
+                const secSelect = document.getElementById('itemSection');
+                if (currentTab === 'wanted') secSelect.value = 'wanted';
+                else if (currentTab === 'directory') secSelect.value = 'directory';
+                else secSelect.value = 'marketplace';
+                
+                toggleFormFields();
+                document.getElementById('itemModal').classList.remove('hidden');
+            }
         }
 
         function closeModal() {
@@ -1580,11 +1634,13 @@
             const catContainer = document.getElementById('categoryFieldContainer');
             const subCatContainer = document.getElementById('subCategoryContainer');
             const priceContainer = document.getElementById('priceFieldContainer');
+            const priceLabel = document.getElementById('priceFieldLabel');
 
-            if(section === 'marketplace') {
+            if(section === 'marketplace' || section === 'wanted') {
                 catContainer.classList.add('hidden');
                 subCatContainer.classList.remove('hidden');
                 priceContainer.classList.remove('hidden');
+                priceLabel.innerText = section === 'wanted' ? "പ്രതീക്ഷിക്കുന്ന ബജറ്റ് / തുക (Budget in ₹ - Optional)" : "വില (Price in ₹)";
                 handleMarketplaceCategoryChange();
             } else {
                 catContainer.classList.remove('hidden');
@@ -1596,7 +1652,7 @@
 
         function handleCategoryChange() {
             const section = document.getElementById('itemSection').value;
-            if (section === 'marketplace') {
+            if (section === 'marketplace' || section === 'wanted') {
                 handleMarketplaceCategoryChange();
                 return;
             }
@@ -1624,7 +1680,7 @@
         function handleMarketplaceCategoryChange() {
             const subCatSelect = document.getElementById('itemSubCategory');
             const subCatLabel = document.getElementById('subCategoryLabel');
-            subCatLabel.innerText = "ഉൽപ്പന്ന വിഭാഗം (Item Category)";
+            subCatLabel.innerText = "ഉൽപ്പന്ന / ആവശ്യ വിഭാഗം (Item Category)";
 
             subCatSelect.innerHTML = '';
             const list = appSubCategories.Marketplace || [];
@@ -1656,8 +1712,8 @@
             if (!isAdminLoggedIn) {
                 try {
                     const phoneCheckSnap = await db.collection("listings").where("phone", "==", phone).get();
-                    if (phoneCheckSnap.size >= 3) {
-                        alert("ഈ ഫോൺ നമ്പർ ഉപയോഗിച്ച് ഇതിനകം 3 ലിസ്റ്റിംഗുകൾ ചേർത്തിട്ടുണ്ട്! പുതിയത് ചേർക്കാൻ പഴയവയിൽ ഒന്ന് ഡിലീറ്റ് ചെയ്യുക.");
+                    if (phoneCheckSnap.size >= 4) {
+                        alert("ഈ ഫോൺ നമ്പർ ഉപയോഗിച്ച് ഇതിനകം 4 ലിസ്റ്റിംഗുകൾ ചേർത്തിട്ടുണ്ട്! പുതിയത് ചേർക്കാൻ പഴയവയിൽ ഒന്ന് ഡിലീറ്റ് ചെയ്യുക.");
                         saveBtn.disabled = false;
                         saveBtn.innerText = "Save Item";
                         return;
@@ -1675,9 +1731,15 @@
                 title = title.toUpperCase();
             }
 
-            const category = section === 'directory' ? document.getElementById('itemCategory').value : 'Marketplace';
+            let category = 'Marketplace';
+            if (section === 'directory') {
+                category = document.getElementById('itemCategory').value;
+            } else if (section === 'wanted') {
+                category = 'Wanted';
+            }
+
             const subCategory = document.getElementById('itemSubCategory').value || '';
-            const price = section === 'marketplace' ? document.getElementById('itemPrice').value.trim() : '';
+            const price = (section === 'marketplace' || section === 'wanted') ? document.getElementById('itemPrice').value.trim() : '';
             const location = document.getElementById('itemLocation').value;
             const landmark = document.getElementById('itemLandmark').value.trim();
             const mapUrl = document.getElementById('itemMapUrl').value.trim();
@@ -1878,26 +1940,24 @@
                 document.getElementById('editDocId').value = docId;
                 document.getElementById('editTitle').value = item.title || '';
                 document.getElementById('editContactPerson').value = item.contactPerson || '';
-                document.getElementById('editPhone').value = item.phone || ''; // ലോക്ക് ചെയ്ത നമ്പർ
+                document.getElementById('editPhone').value = item.phone || '';
                 document.getElementById('editLandmark').value = item.landmark || '';
                 document.getElementById('editMapUrl').value = item.mapUrl || '';
                 document.getElementById('editDesc').value = item.desc || '';
                 document.getElementById('editStartTime').value = item.startTime || '08:00';
                 document.getElementById('editEndTime').value = item.endTime || '20:00';
 
-                // Marketplace Price Visibility
                 const priceContainer = document.getElementById('editPriceContainer');
-                if (item.section === 'marketplace') {
+                if (item.section === 'marketplace' || item.section === 'wanted') {
                     priceContainer.classList.remove('hidden');
                     document.getElementById('editPrice').value = item.price || '';
                 } else {
                     priceContainer.classList.add('hidden');
                 }
 
-                // Populate SubCategories based on Section & Category
                 const subCatSelect = document.getElementById('editSubCategory');
                 subCatSelect.innerHTML = '';
-                const list = item.section === 'marketplace' ? (appSubCategories.Marketplace || []) : (appSubCategories[item.category] || []);
+                const list = (item.section === 'marketplace' || item.section === 'wanted') ? (appSubCategories.Marketplace || []) : (appSubCategories[item.category] || []);
                 list.forEach(val => {
                     const opt = document.createElement('option');
                     opt.value = val;
@@ -1906,7 +1966,6 @@
                     subCatSelect.appendChild(opt);
                 });
 
-                // Populate Locations Dropdown
                 const locSelect = document.getElementById('editLocation');
                 locSelect.innerHTML = '';
                 appLocations.forEach(loc => {
@@ -1983,31 +2042,10 @@
         }
 
         window.onload = loadData;
-let loginConfirmationResult = null;
+
+        // Firebase Auth Variables
+        let loginConfirmationResult = null;
         let verifiedUserPhone = localStorage.getItem('nk_verified_phone') || null;
-
-        // '+ Add' click cheyyumbol call cheyyunnadhu
-        function openModal() {
-            if (isAdminLoggedIn) {
-                const phoneInput = document.getElementById('itemPhone');
-                phoneInput.readOnly = false;
-                phoneInput.classList.remove('bg-slate-100', 'cursor-not-allowed');
-                phoneInput.value = '';
-                document.getElementById('itemModal').classList.remove('hidden');
-                return;
-            }
-
-            // User login cheythittillel login modal kaanikkum
-            if (!verifiedUserPhone) {
-                openUserLoginModal();
-            } else {
-                // Verify cheytha number auto-fill aayi lock aavum
-                const phoneInput = document.getElementById('itemPhone');
-                phoneInput.value = verifiedUserPhone;
-                phoneInput.readOnly = true;
-                document.getElementById('itemModal').classList.remove('hidden');
-            }
-        }
 
         function openUserLoginModal() {
             document.getElementById('loginStepPhone').classList.remove('hidden');
@@ -2090,7 +2128,6 @@ let loginConfirmationResult = null;
                     alert("Thettaaya OTP! Dayavaayi parishodhikkuka.");
                 });
         }
-        
     </script>
 </body>
 </html>
