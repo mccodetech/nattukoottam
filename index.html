@@ -22,9 +22,26 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Noto+Sans+Malayalam:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
-   <!-- Direct Tailwind CSS & Icons (Faster & Reliable) -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
+   <!-- Tailwind CSS (Version 3) & Font Awesome -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0f172a',
+                        secondary: '#2563eb',
+                        accent: '#f97316'
+                    },
+                    fontFamily: {
+                        sans: ['"Noto Sans Malayalam"', 'Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
     
     <style>
         body { font-family: 'Noto Sans Malayalam', Inter, sans-serif; }
@@ -32,6 +49,9 @@
         .uppercase-input { text-transform: uppercase; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        /* CDN ലോഡ് ആവാൻ വൈകിയാലും ഹെഡറും നാവിഗേഷനും കറുപ്പ് നിറത്തിൽ തന്നെ നിൽക്കാൻ */
+        header { background-color: #0f172a !important; color: #ffffff !important; }
+        nav { background-color: #020617 !important; color: #ffffff !important; }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col antialiased selection:bg-orange-500 selection:text-white notranslate" translate="no">
