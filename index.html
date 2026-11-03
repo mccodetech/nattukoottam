@@ -1057,13 +1057,20 @@
             if (cat === 'Marketplace') inputId = 'newMarketplaceTypeInput';
             
             const input = document.getElementById(inputId);
-            const val = input.value.trim();
+            let val = input.value.trim();
             if (!val) return;
+
             if (!appSubCategories[cat]) appSubCategories[cat] = [];
-            if (!appSubCategories[cat].includes(val)) {
+
+            // ഇതിനകം ലിസ്റ്റിലുള്ളതാണോ എന്ന് കേസ് വ്യത്യാസമില്ലാതെ പരിശോധിക്കുന്നു
+            const exists = appSubCategories[cat].some(item => item.trim().toLowerCase() === val.toLowerCase());
+
+            if (!exists) {
                 appSubCategories[cat].push(val);
                 await db.collection("app_settings").doc("masters").update({ subCategories: appSubCategories });
                 input.value = '';
+            } else {
+                alert("ഈ വിഭാഗം ഇതിനകം ലിസ്റ്റിൽ ഉൾപ്പെടുത്തിയിട്ടുണ്ട്!");
             }
         }
 
