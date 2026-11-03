@@ -397,7 +397,7 @@
                 <p class="text-[11px] text-emerald-700 font-medium bg-emerald-50 p-2 rounded-lg border border-emerald-200">
                     നിങ്ങളുടെ ഫോണിലേക്ക് 6-അക്ക OTP അയച്ചിട്ടുണ്ട്.
                 </p>
-                <input type="password" id="loginOtpCode" maxlength="6" pattern="[0-9]{6}" placeholder="••••••" class="w-36 mx-auto text-center tracking-[0.5em] text-lg font-bold p-2 border-2 border-slate-300 rounded-xl focus:border-orange-500 focus:outline-none">
+                <input type="tel" id="loginOtpCode" maxlength="6" pattern="[0-9]{6}" autocomplete="one-time-code" inputmode="numeric" placeholder="••••••" class="w-36 mx-auto text-center tracking-[0.5em] text-lg font-bold p-2 border-2 border-slate-300 rounded-xl focus:border-orange-500 focus:outline-none">
                 
                 <button type="button" id="verifyOtpSubmitBtn" onclick="verifyLoginOtp()" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white font-bold rounded-xl text-xs shadow transition">
                     Verify & Continue
@@ -2107,33 +2107,53 @@
         }
 
         async function sendLoginOtp() {
-            const rawPhone = document.getElementById('loginMobileInput').value.trim();
-            if (rawPhone.length !== 10 || isNaN(rawPhone)) {
-                alert("Dayavaayi valid aaya 10-digit mobile number nalkuka!");
-                return;
-            }
+    const rawPhone = document.getElementById('loginMobileInput').value.trim();
+    if (rawPhone.length !== 10 || isNaN(rawPhone)) {
+        alert("Dayavaayi valid aaya 10-digit mobile number nalkuka!");
+        return;
+    }
 
-            const sendBtn = document.getElementById('sendOtpSubmitBtn');
-            sendBtn.disabled = true;
-            sendBtn.innerText = "OTP ayakkunnu...";
+    const sendBtn = document.getElementById('sendOtpSubmitBtn');
+    sendBtn.disabled = true;
+    sendBtn.innerText = "OTP ayakkunnu...";
 
-            initLoginRecaptcha();
-            const formattedPhone = "+91" + rawPhone;
+    initLoginRecaptcha();
+    const formattedPhone = "+91" + rawPhone;
 
-            firebase.auth().signInWithPhoneNumber(formattedPhone, window.recaptchaVerifier)
-                .then((confirmationResult) => {
-                    loginConfirmationResult = confirmationResult;
-                    document.getElementById('loginStepPhone').classList.add('hidden');
-                    document.getElementById('loginStepOtp').classList.remove('hidden');
-                    sendBtn.disabled = false;
-                    sendBtn.innerText = "Send OTP (SMS Ayakkuka)";
-                })
-                .catch((error) => {
-                    sendBtn.disabled = false;
-                    sendBtn.innerText = "Send OTP (SMS Ayakkuka)";
-                    alert("SMS ayakkan kazhinjilla: " + error.message);
+    firebase.auth().signInWithPhoneNumber(formattedPhone, window.recaptchaVerifier)
+        .then((confirmationResult) => {
+            loginConfirmationResult = confirmationResult;
+            document.getElementById('loginStepPhone').classList.add('hidden');
+            document.getElementById('loginStepOtp').classList.remove('hidden');
+            sendBtn.disabled = false;
+            sendBtn.innerText = "Send OTP (SMS Ayakkuka)";
+
+            // WebOTP API: SMS ഫോണിൽ വരുമ്പോൾ തനിയെ കോഡ് കണ്ടെത്തി ഫിൽ ചെയ്യുന്നു
+            if ('OTPCredential' in window) {
+                const ac = new AbortController();
+                navigator.credentials.get({
+                    otp: { transport: ['sms'] },
+                    signal: ac.signal
+                }).then(otp => {
+                    if (otp && otp.code) {
+                        const otpInput = document.getElementById('loginOtpCode');
+                        if (otpInput) {
+                            otpInput.value = otp.code;
+                            // OTP സ്വയം വെരിഫൈ ചെയ്യാൻ വിളിക്കുന്നു
+                            verifyLoginOtp();
+                        }
+                    }
+                }).catch(err => {
+                    console.log("Auto-OTP Cancelled or not supported:", err);
                 });
-        }
+            }
+        })
+        .catch((error) => {
+            sendBtn.disabled = false;
+            sendBtn.innerText = "Send OTP (SMS Ayakkuka)";
+            alert("SMS ayakkan kazhinjilla: " + error.message);
+        });
+}
 
         async function verifyLoginOtp() {
             const code = document.getElementById('loginOtpCode').value.trim();
