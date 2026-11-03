@@ -904,7 +904,17 @@
                 priceBadge.classList.add('hidden');
             }
 
-            const waText = encodeURIComponent(`നമസ്കാരം, നാട്ടുകൂട്ടം ആപ്പിൽ താങ്കൾ നൽകിയ "${item.title}" എന്ന പരസ്യം കണ്ടിട്ടാണ് ബന്ധപ്പെടുന്നത്. ഇതിനെക്കുറിച്ചുള്ള കൂടുതൽ വിവരങ്ങൾ ലഭ്യമാണോ?`);
+            // ഓരോ വിഭാഗത്തിനും അനുയോജ്യമായ വാട്സാപ്പ് സന്ദേശം
+            let msg = '';
+            if (item.section === 'wanted') {
+                msg = `നമസ്കാരം, നാട്ടുകൂട്ടം ആപ്പിൽ താങ്കൾ അന്വേഷിച്ച "${item.title}" എന്റെ പക്കലുണ്ട് / നൽകുവാൻ തയ്യാറാണ്. താങ്കൾക്ക് ഇപ്പോഴും ഇത് ആവശ്യമുണ്ടോ?`;
+            } else if (item.section === 'marketplace') {
+                msg = `നമസ്കാരം, നാട്ടുകൂട്ടം ആപ്പിൽ താങ്കൾ നൽകിയ "${item.title}" എന്ന സാധനം വിൽക്കാനുണ്ടോ? ഇതിനെക്കുറിച്ചുള്ള കൂടുതൽ വിവരങ്ങൾ ലഭ്യമാണോ?`;
+            } else {
+                msg = `നമസ്കാരം, നാട്ടുകൂട്ടം ആപ്പിൽ താങ്കളുടെ "${item.title}" എന്ന സ്ഥാപനം / സേവനത്തെക്കുറിച്ച് കണ്ടിട്ടാണ് ബന്ധപ്പെടുന്നത്. നിങ്ങളുടെ സേവനം ഇപ്പോൾ ലഭ്യമാണോ?`;
+            }
+
+            const waText = encodeURIComponent(msg);
             const waUrl = item.phone ? `https://wa.me/91${item.phone.replace(/[^0-9]/g,'')}?text=${waText}` : '#';
 
             const actionContainer = document.getElementById('lightboxActionButtons');
@@ -1512,8 +1522,18 @@
                     </a>
                 ` : '';
 
-                const waText = encodeURIComponent(`നമസ്കാരം, നാട്ടുകൂട്ടം ആപ്പിൽ താങ്കൾ നൽകിയ "${item.title}" എന്ന പരസ്യം കണ്ടിട്ടാണ് ബന്ധപ്പെടുന്നത്. ഇതിനെക്കുറിച്ചുള്ള കൂടുതൽ വിവരങ്ങൾ ലഭ്യമാണോ?`);
-                const waUrl = item.phone ? `https://wa.me/91${item.phone.replace(/[^0-9]/g,'')}?text=${waText}` : '#';
+                // ഓരോ വിഭാഗത്തിനും അനുയോജ്യമായ വാട്സാപ്പ് സന്ദേശം
+            let msg = '';
+            if (item.section === 'wanted') {
+                msg = `നമസ്കാരം, നാട്ടുകൂട്ടം ആപ്പിൽ താങ്കൾ അന്വേഷിച്ച "${item.title}" എന്റെ പക്കലുണ്ട് / നൽകുവാൻ തയ്യാറാണ്. താങ്കൾക്ക് ഇപ്പോഴും ഇത് ആവശ്യമുണ്ടോ?`;
+            } else if (item.section === 'marketplace') {
+                msg = `നമസ്കാരം, നാട്ടുകൂട്ടം ആപ്പിൽ താങ്കൾ നൽകിയ "${item.title}" എന്ന സാധനം വിൽക്കാനുണ്ടോ? ഇതിനെക്കുറിച്ചുള്ള കൂടുതൽ വിവരങ്ങൾ ലഭ്യമാണോ?`;
+            } else {
+                msg = `നമസ്കാരം, നാട്ടുകൂട്ടം ആപ്പിൽ താങ്കളുടെ "${item.title}" എന്ന സ്ഥാപനം / സേവനത്തെക്കുറിച്ച് കണ്ടിട്ടാണ് ബന്ധപ്പെടുന്നത്. നിങ്ങളുടെ സേവനം ഇപ്പോൾ ലഭ്യമാണോ?`;
+            }
+
+            const waText = encodeURIComponent(msg);
+            const waUrl = item.phone ? `https://wa.me/91${item.phone.replace(/[^0-9]/g,'')}?text=${waText}` : '#';
 
                 let contactButtons = '';
                 if(item.section === 'marketplace' && isSold) {
