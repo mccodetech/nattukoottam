@@ -1025,15 +1025,24 @@
         }
 
         async function addNewLocation() {
-            const input = document.getElementById('newLocationInput');
-            const val = input.value.trim();
-            if (!val) return;
-            if (!appLocations.includes(val)) {
-                appLocations.push(val);
-                await db.collection("app_settings").doc("masters").update({ locations: appLocations });
-                input.value = '';
-            }
-        }
+    const input = document.getElementById('newLocationInput');
+    let val = input.value.trim();
+    if (!val) return;
+
+    // വലിയക്ഷരങ്ങളാക്കി മാറ്റുന്നു (Uniformity ഉറപ്പാക്കാൻ)
+    val = val.toUpperCase();
+
+    // ഇതിനകം ലിസ്റ്റിലുള്ളതാണോ എന്ന് കേസ് വ്യത്യാസമില്ലാതെ പരിശോധിക്കുന്നു
+    const exists = appLocations.some(loc => loc.trim().toUpperCase() === val);
+    
+    if (!exists) {
+        appLocations.push(val);
+        await db.collection("app_settings").doc("masters").update({ locations: appLocations });
+        input.value = '';
+    } else {
+        alert("ഈ സ്ഥലം ഇതിനകം ലിസ്റ്റിൽ ഉൾപ്പെടുത്തിയിട്ടുണ്ട്!");
+    }
+}
 
         async function removeLocation(loc) {
             if (confirm(`'${loc}' നീക്കം ചെയ്യണോ?`)) {
