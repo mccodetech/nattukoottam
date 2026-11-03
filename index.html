@@ -1602,14 +1602,16 @@
                 return;
             }
 
+            // ലോക്കൽ സ്റ്റോറേജിൽ നിന്ന് നമ്പർ ഉറപ്പുവരുത്തുന്നു
+            verifiedUserPhone = localStorage.getItem('nk_verified_phone') || verifiedUserPhone;
+
             if (!verifiedUserPhone) {
                 openUserLoginModal();
             } else {
                 const phoneInput = document.getElementById('itemPhone');
-                phoneInput.value = verifiedUserPhone;
+                phoneInput.value = verifiedUserPhone; // നമ്പർ ഓട്ടോമാറ്റിക്കായി ഫിൽ ചെയ്യുന്നു
                 phoneInput.readOnly = true;
                 
-                // Automatically match current selected tab when opening form
                 const secSelect = document.getElementById('itemSection');
                 if (currentTab === 'wanted') secSelect.value = 'wanted';
                 else if (currentTab === 'directory') secSelect.value = 'directory';
@@ -1625,10 +1627,15 @@
             document.getElementById('listingForm').reset();
             document.getElementById('imagePreviewContainer').classList.add('hidden');
             selectedFileToUpload = null;
+
+            // ഫോം റീസെറ്റ് ആയാലും വെരിഫൈ ചെയ്ത നമ്പർ ബോക്സിൽ നിലനിർത്തുന്നു
+            if (!isAdminLoggedIn && verifiedUserPhone) {
+                document.getElementById('itemPhone').value = verifiedUserPhone;
+            }
+
             toggleFormFields();
             handleCategoryChange();
         }
-
         function toggleFormFields() {
             const section = document.getElementById('itemSection').value;
             const catContainer = document.getElementById('categoryFieldContainer');
