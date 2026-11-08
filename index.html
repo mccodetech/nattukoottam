@@ -1649,24 +1649,34 @@
                 return;
             }
 
-            // ലോക്കൽ സ്റ്റോറേജിൽ നിന്ന് നമ്പർ ഉറപ്പുവരുത്തുന്നു
+            // മുൻപ് വെരിഫൈ ചെയ്ത നമ്പർ ഉണ്ടോ എന്ന് നോക്കുന്നു
             verifiedUserPhone = localStorage.getItem('nk_verified_phone') || verifiedUserPhone;
+            const freeAdUsed = localStorage.getItem('nk_free_ad_used');
 
-            if (!verifiedUserPhone) {
+            // നേരത്തെ ഫ്രീ പരസ്യം നൽകിയ ആളാണെങ്കിൽ മാത്രം വെരിഫിക്കേഷൻ നിർബന്ധമാക്കുന്നു
+            if (!verifiedUserPhone && freeAdUsed) {
+                alert("നിങ്ങൾ ഇതിനകം ഒരു സൗജന്യ പരസ്യം നൽകിയിട്ടുണ്ട്. കൂടുതൽ പരസ്യങ്ങൾ ചേർക്കാൻ ദയവായി OTP വെരിഫിക്കേഷൻ പൂർത്തിയാക്കുക.");
                 openUserLoginModal();
-            } else {
-                const phoneInput = document.getElementById('itemPhone');
-                phoneInput.value = verifiedUserPhone; // നമ്പർ ഓട്ടോമാറ്റിക്കായി ഫിൽ ചെയ്യുന്നു
-                phoneInput.readOnly = true;
-                
-                const secSelect = document.getElementById('itemSection');
-                if (currentTab === 'wanted') secSelect.value = 'wanted';
-                else if (currentTab === 'directory') secSelect.value = 'directory';
-                else secSelect.value = 'marketplace';
-                
-                toggleFormFields();
-                document.getElementById('itemModal').classList.remove('hidden');
+                return;
             }
+
+            const phoneInput = document.getElementById('itemPhone');
+            if (verifiedUserPhone) {
+                phoneInput.value = verifiedUserPhone;
+                phoneInput.readOnly = true;
+            } else {
+                phoneInput.value = '';
+                phoneInput.readOnly = false;
+                phoneInput.classList.remove('bg-slate-100', 'cursor-not-allowed');
+            }
+
+            const secSelect = document.getElementById('itemSection');
+            if (currentTab === 'wanted') secSelect.value = 'wanted';
+            else if (currentTab === 'directory') secSelect.value = 'directory';
+            else secSelect.value = 'marketplace';
+
+            toggleFormFields();
+            document.getElementById('itemModal').classList.remove('hidden');
         }
 
         function closeModal() {
@@ -1853,22 +1863,28 @@
         }
 
         function uploadToFirebase(dataObj) {
-            const saveBtn = document.getElementById('saveBtn');
-            const finalData = {
-                ...dataObj,
-                createdAt: firebase.firestore.FieldValue.serverTimestamp()
-            };
+    const saveBtn = document.getElementById('saveBtn');
+    const finalData = {
+        ...dataObj,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    };
 
-            db.collection("listings").add(finalData).then(() => {
-                saveBtn.disabled = false;
-                saveBtn.innerText = "Save Item";
-                closeModal();
-            }).catch((error) => {
-                saveBtn.disabled = false;
-                saveBtn.innerText = "Save Item";
-                alert("Error adding item: " + error.message);
-            });
+    db.collection("listings").add(finalData).then(() => {
+        saveBtn.disabled = false;
+        saveBtn.innerText = "Save Item";
+
+        // ആദ്യത്തെ സൗജന്യ പരസ്യം നൽകിയതായി ഫോണിൽ രേഖപ്പെടുത്തുന്നു
+        if (!isAdminLoggedIn && !verifiedUserPhone) {
+            localStorage.setItem('nk_free_ad_used', 'true');
         }
+
+        closeModal();
+    }).catch((error) => {
+        saveBtn.disabled = false;
+        saveBtn.innerText = "Save Item";
+        alert("Error adding item: " + error.message);
+    });
+}
 
         // Custom PIN & Verification Actions
         let currentActionDocId = null;
