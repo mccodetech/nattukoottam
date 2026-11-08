@@ -741,6 +741,17 @@
             console.log("Persistence status:", err.code);
         });
 
+        // അഡ്മിൻ ലോഗിൻ നിലനിർത്തുന്നു (ഇമെയിൽ കോഡിൽ വെളിപ്പെടുത്താതെ)
+firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+        isAdminLoggedIn = true;
+        updateAdminUI();
+    } else {
+        isAdminLoggedIn = false;
+        updateAdminUI();
+    }
+});
+
         // Device Identity & IP Capture
         let userDeviceToken = localStorage.getItem('nk_user_token');
         if (!userDeviceToken) {
