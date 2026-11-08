@@ -1,0 +1,8 @@
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "mccodetech.nattukoottam",
+        "sha256_cert_fingerprints": ["46:B0:91:6D:B5:AB:22:02:2F:2B:F5:73:B1:BB:36:38:52:2A:1C:60:7A:F0:81:03:89:23:AC:44:73:33:96:DD"]
+      }
+    }]
